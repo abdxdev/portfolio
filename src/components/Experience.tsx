@@ -5,43 +5,26 @@ import { CalendarDays } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { JobImages } from "@/components/JobImages";
+import { log } from "console";
 
 const jobs = [
     {
-        role: "Senior Full-Stack Developer", // TODO: Replace with actual role
-        company: "Tech Innovators Inc.", // TODO: Replace with actual company name
-        logo: "/company.svg", // TODO: Replace with actual logo
-        duration: "2020 - Present",
+        role: "Freelance Designer", 
+        company: "Self-Employed", 
+        logo: "/company.svg", 
+        duration: "2021 - 2023",
         description:
-            "Lead developer for multiple high-impact projects, mentoring junior developers, and implementing best practices.",
-        link: "https://techinnovators.com",
+            "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
         images: [],
     },
     {
-        role: "Senior Full-Stack Developer", // TODO: Replace with actual role
-        company: "Tech Innovators Inc.", // TODO: Replace with actual company name
-        logo: "/company.svg", // TODO: Replace with actual logo
-        duration: "2018 - 2020",
+        role: "Freelance Backend Developer",
+        company: "Self-Employed",
+        logo: "/company.svg",
+        duration: "2022 - Present",
         description:
-            "Developed and maintained various client projects, focusing on responsive design and performance optimization.",
-        link: "https://websolutions.com",
-        images: [
-            "/devvault.png",
-            "/devvault.png",
-        ],
-    },
-    {
-        role: "Senior Full-Stack Developer", // TODO: Replace with actual role
-        company: "Tech Innovators Inc.", // TODO: Replace with actual company name
-        logo: "/company.svg", // TODO: Replace with actual logo
-        duration: "2016 - 2018",
-        description:
-            "Assisted in the development of web applications, gained experience in agile methodologies and version control.",
-        link: "https://startupventures.com",
-        images: [
-            "/devvault.png",
-            "/devvault.png",
-        ],
+            "Developed and maintained backend services for web applications, including RESTful APIs, serverless functions, and database management.",
+        images: [],
     },
 ]
 
@@ -78,12 +61,12 @@ export const Experience = () => {
                                 </p>
                                 <p className="text-sm mt-2">{j.description}</p>
                                 {/* Job Images */}
-                                <JobImages 
+                                {/* <JobImages 
                                     role={j.role} 
                                     link={j.link}
                                     images={j.images} 
                                     duration={j.duration} 
-                                />
+                                /> */}
                             </li>
                         ))}
                     </ul>

@@ -12,20 +12,14 @@ import { Button } from "@/components/ui/button";
 const socials = [
     {
         name: "Github",
-        link: "https://github.com/achris-alonzo30",
+        link: "https://github.com/abdbbdii",
         icon: <FaGithub className="size-4" />
     },
     {
         name: "LinkedIn",
-        link: "https://linkedin.com/in/lonzochris",
+        link: "https://linkedin.com/in/abdbbdii",
         icon: <FaLinkedin className="size-4" />
     },
-    {
-        name: "X (Twitter)",
-        link: "https://x.com/lonz_chris",
-        icon: <FaXTwitter className="size-4" />
-    }
-    // TODO: Add more socials here
 ]
 
 export const Profile = () => {
@@ -43,16 +37,27 @@ export const Profile = () => {
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2"
                         />
                         <div className="flex flex-col items-start justify-center">
-                            <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Chris Lonzo</h1>
+                            <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
-                                Solopreneur Developer
+                                Software Developer
                             </p>
                         </div>
                     </div>
                     <p className="mt-2 text-start text-sm text-muted-foreground">
-                        I am a solopreneur developer with a passion for building products that solve real-world problems.
+                    I am a software developer and designer with expertise in building efficient, user-friendly applications across different platforms.
                     </p>
                     <Button className="mt-4 w-full" asChild>
+                        {/* TODO: Add resume link */}
+                        {/* or link to schedule a meeting using Calendly or Cal*/}
+                        <Link
+                            target="_blank"
+                            href="mailto:abdulrahman.abd.dev@gmail.com"
+                            className="font-semibold"
+                        >
+                            CONTACT ME
+                        </Link>
+                    </Button>
+                    <Button className="w-full border border-border text-primary hover:bg-primary hover:text-white hover:border-primary bg-transparent" asChild>
                         {/* TODO: Add resume link */}
                         {/* or link to schedule a meeting using Calendly or Cal*/}
                         <Link
@@ -60,7 +65,7 @@ export const Profile = () => {
                             href="/resume.pdf"
                             className="font-semibold"
                         >
-                            CONTACT ME
+                            RESUME
                         </Link>
                     </Button>
                     <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">

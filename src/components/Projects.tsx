@@ -1,50 +1,68 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
 import { ExternalLink } from "lucide-react";
-
 import { Card, CardContent } from "@/components/ui/card";
-
-export const projects = [
-    {
-        title: "E-commerce Platform",
-        description: "A full-stack e-commerce solution with React, Node.js, and MongoDB",
-        tech: "React",
-        link: "#",
-    },
-    {
-        title: "Task Management App",
-        description: "A productivity app built with React Native and Firebase",
-        tech: "React Native",
-        link: "#",
-    },
-    {
-        title: "Data Visualization Dashboard",
-        description: "An interactive dashboard using D3.js and Vue.js",
-        tech: "Vue.js",
-        link: "#",
-    },
-    {
-        title: "AI Chatbot",
-        description: "A machine learning powered chatbot using Python and TensorFlow",
-        tech: "Python",
-        link: "#",
-    },
-]
 
 const techColors = {
     "React": "bg-blue-500",
     "React Native": "bg-green-500",
     "Vue.js": "bg-purple-500",
     "Python": "bg-yellow-500",
-}
+    "Default": "bg-gray-500",
+    "C++": "bg-red-500",
+    "C#": "bg-purple-500",
+    "Java": "bg-orange-500",
+    "JavaScript": "bg-yellow-500",
+    "TSQL": "bg-blue-500",
+};
+
+type Project = {
+    title: string;
+    description: string;
+    tech: string;
+    link: string;
+};
 
 export const Projects = () => {
+    const [projects, setProjects] = useState<Project[]>([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch(
+                    "https://api.github.com/users/abdbbdii/repos"
+                );
+                const data = await response.json();
+
+                // Filter repositories whose descriptions end with ':add'
+                const filteredProjects = data
+                    .filter(
+                        (repo: any) =>
+                            repo.description &&
+                            repo.description.endsWith(":add")
+                    )
+                    .map((repo: any) => ({
+                        title: repo.name,
+                        description: repo.description.replace(" :add", ""),
+                        tech: repo.language || "Default",
+                        link: repo.html_url,
+                    }));
+
+                setProjects(filteredProjects);
+            } catch (error) {
+                console.error("Error fetching repositories:", error);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
     return (
         <>
-            <h2 className="text-xl font-bold mb-4">
-                Featured Projects
-            </h2>
+            <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 {projects.map((p, i) => (
                     <Card key={i}>
@@ -64,7 +82,8 @@ export const Projects = () => {
                                         <div
                                             className={cn(
                                                 "size-4 rounded-full",
-                                                techColors[p.tech as keyof typeof techColors]
+                                                techColors[p.tech as keyof typeof techColors] ||
+                                                    techColors.Default
                                             )}
                                         />
                                         <span className="text-xs font-medium text-muted-foreground">
@@ -85,5 +104,5 @@ export const Projects = () => {
                 ))}
             </div>
         </>
-    )
-}
+    );
+};
