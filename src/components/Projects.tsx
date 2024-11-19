@@ -6,17 +6,24 @@ import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-const techColors = {
+const techColors: Record<string, string> = {
     "React": "bg-blue-500",
     "React Native": "bg-green-500",
     "Vue.js": "bg-purple-500",
     "Python": "bg-yellow-500",
-    "Default": "bg-gray-500",
     "C++": "bg-red-500",
     "C#": "bg-purple-500",
     "Java": "bg-orange-500",
     "JavaScript": "bg-yellow-500",
     "TSQL": "bg-blue-500",
+    "Default": "bg-gray-500",
+};
+
+type Repo = {
+    name: string;
+    description: string | null;
+    language: string | null;
+    html_url: string;
 };
 
 type Project = {
@@ -35,18 +42,23 @@ export const Projects = () => {
                 const response = await fetch(
                     "https://api.github.com/users/abdbbdii/repos"
                 );
-                const data = await response.json();
 
-                // Filter repositories whose descriptions end with ':add'
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data: Repo[] = await response.json();
+
+                // Filter and map repositories
                 const filteredProjects = data
                     .filter(
-                        (repo: any) =>
+                        (repo) =>
                             repo.description &&
                             repo.description.endsWith(":add")
                     )
-                    .map((repo: any) => ({
+                    .map((repo) => ({
                         title: repo.name,
-                        description: repo.description.replace(" :add", ""),
+                        description: repo.description!.replace(" :add", ""),
                         tech: repo.language || "Default",
                         link: repo.html_url,
                     }));
@@ -64,34 +76,33 @@ export const Projects = () => {
         <>
             <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {projects.map((p, i) => (
-                    <Card key={i}>
+                {projects.map((project, index) => (
+                    <Card key={index}>
                         <CardContent className="pt-6 h-full">
                             <div className="flex flex-col h-full">
                                 <Link
-                                    href={p.link}
+                                    href={project.link}
                                     className="font-semibold text-primary hover:underline"
                                 >
-                                    {p.title}
+                                    {project.title}
                                 </Link>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4">
-                                    {p.description}
+                                    {project.description}
                                 </p>
                                 <div className="mt-auto flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
                                         <div
                                             className={cn(
                                                 "size-4 rounded-full",
-                                                techColors[p.tech as keyof typeof techColors] ||
-                                                    techColors.Default
+                                                techColors[project.tech] || techColors.Default
                                             )}
                                         />
                                         <span className="text-xs font-medium text-muted-foreground">
-                                            {p.tech}
+                                            {project.tech}
                                         </span>
                                     </div>
                                     <Link
-                                        href={p.link}
+                                        href={project.link}
                                         className="flex items-center gap-2 text-sm text-primary hover:underline"
                                     >
                                         View Project
