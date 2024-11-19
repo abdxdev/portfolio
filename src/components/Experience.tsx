@@ -4,8 +4,8 @@ import { CalendarDays } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 
-import { JobImages } from "@/components/JobImages";
-import { log } from "console";
+// import { JobImages } from "@/components/JobImages";
+// import { log } from "console";
 
 const jobs = [
     {
