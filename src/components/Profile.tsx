@@ -44,11 +44,9 @@ export const Profile = () => {
                         </div>
                     </div>
                     <p className="mt-2 text-start text-sm text-muted-foreground">
-                    I am a software developer and designer with expertise in building efficient, user-friendly applications across different platforms.
+                    I'm a passionate software developer and tech enthusiast, with a deep focus on Python programming and creative design.
                     </p>
                     <Button className="mt-4 w-full" asChild>
-                        {/* TODO: Add resume link */}
-                        {/* or link to schedule a meeting using Calendly or Cal*/}
                         <Link
                             target="_blank"
                             href="mailto:abdulrahman.abd.dev@gmail.com"
@@ -57,9 +55,8 @@ export const Profile = () => {
                             CONTACT ME
                         </Link>
                     </Button>
+                    
                     <Button className="w-full border border-border text-primary hover:bg-primary hover:text-white hover:border-primary bg-transparent" asChild>
-                        {/* TODO: Add resume link */}
-                        {/* or link to schedule a meeting using Calendly or Cal*/}
                         <Link
                             target="_blank"
                             href="/resume.pdf"

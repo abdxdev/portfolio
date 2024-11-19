@@ -48,16 +48,22 @@ export const Projects = () => {
                 }
 
                 const data: Repo[] = await response.json();
-
+                const TitleCase = (str: string) => {
+                    str = str.replaceAll("-", " ").replaceAll("_", " ")
+                    return str.split(' ').map(function(word) {
+                        return word.replace(word[0], word[0].toUpperCase());
+                    }).join(' ');
+                };
+                
                 // Filter and map repositories
                 const filteredProjects = data
-                    .filter(
-                        (repo) =>
-                            repo.description &&
-                            repo.description.endsWith(":add")
-                    )
-                    .map((repo) => ({
-                        title: repo.name,
+                .filter(
+                    (repo) =>
+                        repo.description &&
+                    repo.description.endsWith(":add")
+                )
+                .map((repo) => ({
+                        title: TitleCase(repo.name),
                         description: repo.description!.replace(" :add", ""),
                         tech: repo.language || "Default",
                         link: repo.html_url,
