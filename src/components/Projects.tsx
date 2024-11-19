@@ -17,6 +17,7 @@ const techColors: Record<string, string> = {
     "JavaScript": "bg-yellow-500",
     "TSQL": "bg-blue-500",
     "Default": "bg-gray-500",
+    "TypeScript": "bg-blue-500",
 };
 
 type Repo = {
