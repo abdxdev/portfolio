@@ -44,7 +44,7 @@ export const Profile = () => {
                         </div>
                     </div>
                     <p className="mt-2 text-start text-sm text-muted-foreground">
-                    I\'m a passionate software developer and tech enthusiast, with a deep focus on Python programming and creative design.
+                    I&apos;'m a passionate software developer and tech enthusiast, with a deep focus on Python programming and creative design.
                     </p>
                     <Button className="mt-4 w-full" asChild>
                         <Link
