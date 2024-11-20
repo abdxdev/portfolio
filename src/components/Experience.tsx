@@ -8,6 +8,15 @@ import { Card, CardContent } from "@/components/ui/card";
 // import { log } from "console";
 
 const jobs = [
+{
+        role: "Freelance Backend Developer",
+        company: "Self-Employed",
+        logo: "/company.svg",
+        duration: "2023 - Present",
+        description:
+            "Developed and maintained backend services for web applications, including RESTful APIs, serverless functions, and database management.",
+        images: [],
+    },
     {
         role: "Freelance Designer", 
         company: "Self-Employed", 
@@ -15,15 +24,6 @@ const jobs = [
         duration: "2021 - 2023",
         description:
             "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
-        images: [],
-    },
-    {
-        role: "Freelance Backend Developer",
-        company: "Self-Employed",
-        logo: "/company.svg",
-        duration: "2022 - Present",
-        description:
-            "Developed and maintained backend services for web applications, including RESTful APIs, serverless functions, and database management.",
         images: [],
     },
 ]
