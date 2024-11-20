@@ -43,10 +43,10 @@ export const Profile = () => {
                             </p>
                         </div>
                     </div>
-                    <p className="mt-2 text-start text-sm text-muted-foreground">
-                    I&apos;m a passionate software developer and tech enthusiast, with a deep focus on Python programming and creative design.
-                    </p>
-                    <Button className="mt-4 w-full" asChild>
+                    {/* <p className="mt-2 text-start text-sm text-muted-foreground">
+                        
+                    </p> */}
+                    <Button className="mt-2 w-full" asChild>
                         <Link
                             target="_blank"
                             href="mailto:abdulrahman.abd.dev@gmail.com"
