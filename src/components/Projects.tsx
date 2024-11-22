@@ -25,6 +25,7 @@ type Repo = {
     description: string | null;
     language: string | null;
     html_url: string;
+    created_at: string;
 };
 
 type Project = {
@@ -32,6 +33,7 @@ type Project = {
     description: string;
     tech: string;
     link: string;
+    createdAt: string;
 };
 
 export const Projects = () => {
@@ -68,7 +70,12 @@ export const Projects = () => {
                         description: repo.description!.replace(" :add", ""),
                         tech: repo.language || "Default",
                         link: repo.html_url,
+                        createdAt: repo.created_at,
                     }));
+                
+                filteredProjects.sort((a, b) => {
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                });
 
                 setProjects(filteredProjects);
             } catch (error) {
