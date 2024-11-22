@@ -11,7 +11,8 @@ const jobs = [
 {
         role: "Freelance Backend Developer",
         company: "Self-Employed",
-        logo: "/company.svg",
+        logo: "/avatar.svg",
+        logo_dark: "/avatar-white.svg",
         duration: "2023 - Present",
         description:
             "Developed and maintained backend services for web applications, including RESTful APIs, serverless functions, and database management.",
@@ -20,7 +21,8 @@ const jobs = [
     {
         role: "Freelance Designer", 
         company: "Self-Employed", 
-        logo: "/company.svg", 
+        logo: "/avatar.svg", 
+        logo_dark: "/avatar-white.svg",
         duration: "2021 - 2023",
         description:
             "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
@@ -44,7 +46,14 @@ export const Experience = () => {
                                         alt={j.company}
                                         width={40}
                                         height={40}
-                                        className="rounded-md border shadow-md object-cover"
+                                        className="rounded-md border shadow-md object-cover dark:hidden"
+                                    />
+                                    <Image
+                                        src={j.logo_dark}
+                                        alt={j.company}
+                                        width={40}
+                                        height={40}
+                                        className="rounded-md border shadow-md object-cover hidden dark:block"
                                     />
                                     <div>
                                         <h3 className="font-semibold">

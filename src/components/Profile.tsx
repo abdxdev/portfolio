@@ -28,18 +28,28 @@ export const Profile = () => {
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
                     <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4">
+                        {/* Light Mode Image */}
                         <Image
                             width={150}
                             height={150}
                             quality={100}
                             src="/avatar.svg"
                             alt="Profile Picture"
-                            className="rounded-full size-12 md:w-full h-auto object-cover border-2"
+                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden"
+                        />
+                        {/* Dark Mode Image */}
+                        <Image
+                            width={150}
+                            height={150}
+                            quality={100}
+                            src="/avatar-white.svg"
+                            alt="Profile Picture"
+                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block"
                         />
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
-                            Python Developer | Full-Stack Engineer
+                                Python Developer | Full-Stack Engineer
                             </p>
                         </div>
                     </div>
@@ -55,11 +65,11 @@ export const Profile = () => {
                             CONTACT ME
                         </Link>
                     </Button>
-                    
-                    <Button className="w-full border border-border text-primary hover:bg-primary hover:text-white hover:border-primary bg-transparent" asChild>
+
+                    <Button className="w-full border border-border hover:border-primary hover:bg-primary bg-transparent text-primary hover:text-primary-foreground">
                         <Link
                             target="_blank"
-                            href="/resume/Abdul_Rahman_Resume.pdf"
+                            href="/resume/Abdul Rahman - Resume.pdf"
                             className="font-semibold"
                         >
                             RESUME
