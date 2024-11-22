@@ -21,7 +21,7 @@ export default function RootLayout({
         )}
       >
         {/* hide on mobile: */}
-        <header className="flex justify-between items-center sticky top-1 bg-secondary">
+        <header className="flex justify-between items-center">
           <ThemeToggler />
         </header>
         <main>{children}</main>
