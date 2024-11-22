@@ -59,7 +59,7 @@ export const Profile = () => {
                     <Button className="w-full border border-border text-primary hover:bg-primary hover:text-white hover:border-primary bg-transparent" asChild>
                         <Link
                             target="_blank"
-                            href="/resume.pdf"
+                            href="/Abdul_Rahman_Resume.pdf"
                             className="font-semibold"
                         >
                             RESUME
