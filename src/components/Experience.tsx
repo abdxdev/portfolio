@@ -8,24 +8,22 @@ import { Card, CardContent } from "@/components/ui/card";
 // import { log } from "console";
 
 const jobs = [
-{
-        role: "Freelance Backend Developer",
-        company: "Self-Employed",
+    {
+        role: "Backend Developer",
+        company: "Freelance (Self Employed)",
         logo: "/avatar.svg",
         logo_dark: "/avatar-white.svg",
         duration: "2023 - Present",
-        description:
-            "Developed and maintained backend services for web applications, including RESTful APIs, serverless functions, and database management.",
+        description: "Developed backend systems for web applications using Django, Flask, and .NET, including RESTful APIs, authentication, and database management.",
         images: [],
     },
     {
-        role: "Freelance Designer", 
-        company: "Self-Employed", 
-        logo: "/avatar.svg", 
+        role: "Graphic Designer",
+        company: "Freelance (Self Employed)",
+        logo: "/avatar.svg",
         logo_dark: "/avatar-white.svg",
         duration: "2021 - 2023",
-        description:
-            "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
+        description: "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
         images: [],
     },
 ]
@@ -65,7 +63,7 @@ export const Experience = () => {
                                     </div>
                                 </div>
                                 <p className="text-xs text-muted-foreground mt-2 flex items-center">
-                                    <CalendarDays className="size-3 mr-2"/>
+                                    <CalendarDays className="size-3 mr-2" />
                                     {j.duration}
                                 </p>
                                 <p className="text-sm mt-2">{j.description}</p>
