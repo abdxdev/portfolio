@@ -23,7 +23,7 @@ const jobs = [
         logo: "/avatar.svg",
         logo_dark: "/avatar-white.svg",
         duration: "2021 - 2023",
-        description: "Directed and designed the process for projects, including UI for web and mobile applications, packaging, branding, and social media posts for businesses.",
+        description: "Directed and designed marketing materials for clients, including UI/UX design, branding, and social media content.",
         images: [],
     },
 ]
@@ -32,7 +32,7 @@ export const Experience = () => {
     return (
         <>
             <h2 className="text-xl font-bold mb-4">Work Experience</h2>
-            <Card>
+            <Card className="mb-6">
                 <CardContent className="pt-6">
                     <ul className="space-y-8">
                         {jobs.map((j, i) => (

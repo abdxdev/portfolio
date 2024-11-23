@@ -19,10 +19,10 @@ export default function Home() {
           <main className="md:col-span-2">
             {/* About Me Section */}
             <AboutMe />
-            {/* Projects Section */}
-            <Projects />
             {/* Experience Section */}
             <Experience />
+            {/* Projects Section */}
+            <Projects />
           </main>
         </div>
       </div>
