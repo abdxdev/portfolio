@@ -49,7 +49,7 @@ export const Profile = () => {
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
-                                Python Developer | Full-Stack Engineer
+                                Software Engineer | Backend Developer
                             </p>
                         </div>
                     </div>
