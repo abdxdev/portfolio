@@ -14,7 +14,7 @@ const jobs = [
         logo: "/avatar.svg",
         logo_dark: "/avatar-white.svg",
         duration: "2023 - Present",
-        description: "Developed backend systems for web applications using Django, Flask, and .NET, including RESTful APIs, authentication, and database management.",
+        description: "Developed backend systems for clients using Django, Flask, and .NET, including REST APIs, web applications, and automation scripts.",
         images: [],
     },
     {
