@@ -1,11 +1,6 @@
 import Image from "next/image";
-
 import { CalendarDays } from "lucide-react";
-
 import { Card, CardContent } from "@/components/ui/card";
-
-// import { JobImages } from "@/components/JobImages";
-// import { log } from "console";
 
 const jobs = [
     {
@@ -26,7 +21,7 @@ const jobs = [
         description: "Directed and designed marketing materials for clients, including UI/UX design, branding, and social media content.",
         images: [],
     },
-]
+];
 
 export const Experience = () => {
     return (
@@ -39,29 +34,31 @@ export const Experience = () => {
                             <li key={i} className="border-b last:border-b-0 pb-8 last:pb-0">
                                 {/* Job Details */}
                                 <div className="flex items-center space-x-4">
-                                    <Image
-                                        src={j.logo}
-                                        alt={j.company}
-                                        width={40}
-                                        height={40}
-                                        className="rounded-md border shadow-md object-cover dark:hidden"
-                                    />
-                                    <Image
-                                        src={j.logo_dark}
-                                        alt={j.company}
-                                        width={40}
-                                        height={40}
-                                        className="rounded-md border shadow-md object-cover hidden dark:block"
-                                    />
+                                    <div className="relative">
+                                        {/* Light Mode Logo */}
+                                        <Image
+                                            src={j.logo}
+                                            alt={j.company}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-md border shadow-md object-cover dark:hidden"
+                                        />
+                                        {/* Dark Mode Logo */}
+                                        <Image
+                                            src={j.logo_dark}
+                                            alt={j.company}
+                                            width={40}
+                                            height={40}
+                                            className="rounded-md border shadow-md object-cover hidden dark:block"
+                                        />
+                                    </div>
+
                                     <div>
-                                        <h3 className="font-semibold">
-                                            {j.role}
-                                        </h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {j.company}
-                                        </p>
+                                        <h3 className="font-semibold">{j.role}</h3>
+                                        <p className="text-sm text-muted-foreground">{j.company}</p>
                                     </div>
                                 </div>
+
                                 <p className="text-xs text-muted-foreground mt-2 flex items-center">
                                     <CalendarDays className="size-3 mr-2" />
                                     {j.duration}
@@ -80,5 +77,5 @@ export const Experience = () => {
                 </CardContent>
             </Card>
         </>
-    )
-}
+    );
+};
