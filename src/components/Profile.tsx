@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -60,20 +62,19 @@ export const Profile = () => {
                         <Link
                             target="_blank"
                             href="mailto:abdulrahman.abd.dev@gmail.com"
-                            className="font-semibold"
+                            className="font-semibold w-full h-full"
                         >
                             CONTACT ME
                         </Link>
                     </Button>
 
-                    <Button className="w-full border border-border hover:border-primary hover:bg-primary bg-transparent text-primary hover:text-primary-foreground">
-                        <Link
-                            target="_blank"
-                            href="/resume/Abdul Rahman - Resume.pdf"
-                            className="font-semibold"
-                        >
+                    <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground" 
+                        onClick={() => {
+                            window.open('/resume/Abdul Rahman - Resume.pdf', '_blank')
+                        }}>
+                        <p className="font-semibold w-full h-full">
                             RESUME
-                        </Link>
+                        </p>
                     </Button>
                     <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
                         {socials.map((s, i) => {
