@@ -61,7 +61,7 @@ export const Profile = () => {
                     <Button className="mt-2 w-full" asChild>
                         <Link
                             target="_blank"
-                            href="mailto:abdulrahman@abd-dev.studio"
+                            href="mailto:abdulrahman.abd.dev@gmail.com"
                             className="font-semibold w-full h-full"
                         >
                             CONTACT ME
