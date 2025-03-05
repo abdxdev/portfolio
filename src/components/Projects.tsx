@@ -58,6 +58,9 @@ export const Projects = () => {
                     }).join(' ');
                 };
                 const camalToTitle = (str: string) => {
+                    if (str.includes("LaTeX")) {
+                        return str;
+                    }
                     return str.replace(/([a-z])([A-Z])/g, '$1 $2');
                 };
                 
