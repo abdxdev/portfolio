@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const techColors: Record<string, string> = {
     "React": "bg-blue-500",
@@ -38,6 +39,7 @@ type Project = {
 
 export const Projects = () => {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [visibleCount, setVisibleCount] = useState(4); // Number of visible projects
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -52,36 +54,41 @@ export const Projects = () => {
 
                 const data: Repo[] = await response.json();
                 const snakeToTitle = (str: string) => {
-                    str = str.replaceAll("-", " ").replaceAll("_", " ")
-                    return str.split(' ').map(function(word) {
-                        return word.replace(word[0], word[0].toUpperCase());
-                    }).join(' ');
+                    str = str.replaceAll("-", " ").replaceAll("_", " ");
+                    return str
+                        .split(" ")
+                        .map((word) =>
+                            word.replace(word[0], word[0].toUpperCase())
+                        )
+                        .join(" ");
                 };
                 const camalToTitle = (str: string) => {
                     if (str.includes("LaTeX")) {
                         return str;
                     }
-                    return str.replace(/([a-z])([A-Z])/g, '$1 $2');
+                    return str.replace(/([a-z])([A-Z])/g, "$1 $2");
                 };
-                
+
                 // Filter and map repositories
                 const filteredProjects = data
-                .filter(
-                    (repo) =>
-                        repo.description &&
-                    repo.description.endsWith(":add")
-                )
-                .map((repo) => ({
+                    .filter(
+                        (repo) =>
+                            repo.description &&
+                            repo.description.endsWith(":add")
+                    )
+                    .map((repo) => ({
                         title: camalToTitle(snakeToTitle(repo.name)),
                         description: repo.description!.replace(" :add", ""),
                         tech: repo.language || "Default",
                         link: repo.html_url,
                         createdAt: repo.created_at,
                     }));
-                
-                filteredProjects.sort((a, b) => {
-                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                });
+
+                filteredProjects.sort(
+                    (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                );
 
                 setProjects(filteredProjects);
             } catch (error) {
@@ -96,7 +103,7 @@ export const Projects = () => {
         <>
             <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.map((project, index) => (
+                {projects.slice(0, visibleCount).map((project, index) => (
                     <Card key={index}>
                         <CardContent className="pt-6 h-full">
                             <div className="flex flex-col h-full">
@@ -114,7 +121,8 @@ export const Projects = () => {
                                         <div
                                             className={cn(
                                                 "size-4 rounded-full",
-                                                techColors[project.tech] || techColors.Default
+                                                techColors[project.tech] ||
+                                                    techColors.Default
                                             )}
                                         />
                                         <span className="text-xs font-medium text-muted-foreground">
@@ -134,6 +142,20 @@ export const Projects = () => {
                     </Card>
                 ))}
             </div>
+
+            {/* Load More Button */}
+            {visibleCount < projects.length && (
+                <div className="flex justify-end mt-4">
+                    <Button
+                        variant="ghost"
+                        onClick={() => setVisibleCount(visibleCount + 4)}
+                    >
+                        <p className="font-semibold w-full h-full">
+                            Load More
+                        </p>
+                    </Button>
+                </div>
+            )}
         </>
     );
 };
