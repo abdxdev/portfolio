@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-
-// import { FaXTwitter } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 import {
@@ -22,6 +21,11 @@ const socials = [
         link: "https://linkedin.com/in/abdxdev",
         icon: <FaLinkedin className="size-4" />
     },
+    {
+        name: "X (Twitter)",
+        link: "https://x.com/abdxdev",
+        icon: <FaXTwitter className="size-4" />
+    }
 ]
 
 export const Profile = () => {
@@ -51,7 +55,7 @@ export const Profile = () => {
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
-                                Software Engineer | Backend Developer
+                                Software Developer
                             </p>
                         </div>
                     </div>
@@ -60,7 +64,6 @@ export const Profile = () => {
                     </p>
                     <Button className="mt-2 w-full" asChild>
                         <Link
-                            target="_blank"
                             href="mailto:abdulrahman.abd.dev@gmail.com"
                             className="font-semibold w-full h-full"
                         >
@@ -68,7 +71,7 @@ export const Profile = () => {
                         </Link>
                     </Button>
 
-                    <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground" 
+                    <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground"
                         onClick={() => {
                             window.open('/resume/Abdul Rahman - Resume.pdf', '_blank')
                         }}>
@@ -78,8 +81,8 @@ export const Profile = () => {
                     </Button>
                     <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
                         {socials.map((s, i) => {
-                            const parts = s.link.split('/')
-                            const username = parts[parts.length - 1]
+                            const parts = s.link.split('/');
+                            const username = parts[parts.length - 1];
                             return (
                                 <Link
                                     key={i}
@@ -89,9 +92,9 @@ export const Profile = () => {
                                     className="cursor-pointer flex items-center gap-2 group"
                                 >
                                     {s.icon}
-                                    <p className="text-sm text-muted-foreground group-hover:text-primary transition-color duration-200 ease-linear">
+                                    <span className="text-sm text-muted-foreground group-hover:text-primary transition-color duration-200 ease-linear">
                                         /{username}
-                                    </p>
+                                    </span>
                                 </Link>
                             )
                         })}
