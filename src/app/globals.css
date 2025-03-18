@@ -11,6 +11,11 @@ html {
   /* position:; */
 }
 
+::selection {
+  background-color: lightgray; /* Light gray background for selected text */
+  color: black; /* Optional: Change the text color if needed */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
