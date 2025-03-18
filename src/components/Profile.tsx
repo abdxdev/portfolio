@@ -14,12 +14,12 @@ import { Button } from "@/components/ui/button";
 const socials = [
     {
         name: "Github",
-        link: "https://github.com/abdbbdii",
+        link: "https://github.com/abdxdev",
         icon: <FaGithub className="size-4" />
     },
     {
         name: "LinkedIn",
-        link: "https://linkedin.com/in/abdbbdii",
+        link: "https://linkedin.com/in/abdxdev",
         icon: <FaLinkedin className="size-4" />
     },
 ]

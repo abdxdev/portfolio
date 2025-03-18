@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 export function constructMetadata({
   title = 'Abdul Rahman - Portfolio',
-  description = "I am a software developer and designer with expertise in building efficient, user-friendly applications across different platforms. With a focus on problem-solving and creative design, I enjoy crafting innovative solutions that make a difference.",
+  description = "I'm a software developer and designer who lives by two mottos: “Work smarter, not harder” and “If it's not broken, add more features.”",
   image = '/thumbnail.svg', 
   icons = '/avatar-white.svg', 
   noIndex = false
@@ -29,7 +29,7 @@ export function constructMetadata({
     //   creator: '@chrislonzo'
     // },
     icons,
-    metadataBase: new URL('https://abdbbdii.vercel.app/'),
+    metadataBase: new URL('https://abd-dev.studio/'),
     ...(noIndex && {
       robots: {
         index: false,

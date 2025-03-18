@@ -45,7 +45,7 @@ export const Projects = () => {
         const fetchProjects = async () => {
             try {
                 const response = await fetch(
-                    "https://api.github.com/users/abdbbdii/repos"
+                    "https://api.github.com/users/abdxdev/repos"
                 );
 
                 if (!response.ok) {
