@@ -55,9 +55,9 @@ export const Profile = () => {
                             </p>
                         </div>
                     </div>
-                    {/* <p className="mt-2 text-start text-sm text-muted-foreground">
-                        
-                    </p> */}
+                    <p className="mt-2 text-start text-sm text-muted-foreground">
+                        I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
+                    </p>
                     <Button className="mt-2 w-full" asChild>
                         <Link
                             target="_blank"
