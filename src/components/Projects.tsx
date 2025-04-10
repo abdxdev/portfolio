@@ -332,7 +332,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                     alt={selectedName || "Project Screenshot"}
                                     width={1920}
                                     height={1080}
-                                    className="w-full h-auto max-h-screen object-contain rounded opacity-10"
+                                    className="w-full h-auto max-h-screen object-contain rounded"
                                 />
                             </div>
                         )}
