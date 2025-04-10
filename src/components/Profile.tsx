@@ -39,7 +39,7 @@ export const Profile = () => {
                             width={150}
                             height={150}
                             quality={100}
-                            src="/avatar.svg"
+                            src="/white-bg-r1.gif"
                             alt="Profile Picture"
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden"
                         />
@@ -48,7 +48,7 @@ export const Profile = () => {
                             width={150}
                             height={150}
                             quality={100}
-                            src="/avatar-white.svg"
+                            src="/black-bg-r1.gif"
                             alt="Profile Picture"
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block"
                         />
