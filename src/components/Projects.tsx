@@ -15,7 +15,6 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogTitle,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import Autoplay from "embla-carousel-autoplay";
@@ -324,19 +323,16 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
             {/* Image Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="max-w-screen-2xl p-0 overflow-hidden bg-transparent border-0">
-                    <DialogTitle className="text-lg font-semibold text-center mb-4">
-                        {selectedName}
-                    </DialogTitle>
                     <div className="relative w-full">
 
                         {selectedImage && (
                             <div className="bg-black bg-opacity-20 backdrop-blur-sm p-2 rounded-lg">
                                 <Image
                                     src={selectedImage}
-                                    alt="Enlarged screenshot"
+                                    alt={selectedName || "Project Screenshot"}
                                     width={1920}
                                     height={1080}
-                                    className="w-full h-auto max-h-screen object-contain rounded"
+                                    className="w-full h-auto max-h-screen object-contain rounded opacity-10"
                                 />
                             </div>
                         )}
