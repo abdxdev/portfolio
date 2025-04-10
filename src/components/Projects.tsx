@@ -15,6 +15,7 @@ import {
 import {
     Dialog,
     DialogContent,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import Autoplay from "embla-carousel-autoplay";
@@ -42,12 +43,17 @@ type Project = {
     thumbnails: string[];
 };
 
-export const Projects = () => {
+type ProjectsProps = {
+    repoName: string;
+};
+
+export const Projects = ({ repoName }: ProjectsProps) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [visibleCount, setVisibleCount] = useState(4);
     const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
     const [loadedImages, setLoadedImages] = useState<Record<number, Set<number>>>({});
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedName, setSelectedName] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -73,8 +79,9 @@ export const Projects = () => {
         });
     };
 
-    const openImageDialog = (imageUrl: string) => {
+    const openImageDialog = (imageUrl: string, name: string | null) => {
         setSelectedImage(imageUrl);
+        setSelectedName(name);
         setIsDialogOpen(true);
     };
 
@@ -83,7 +90,7 @@ export const Projects = () => {
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    "https://api.github.com/users/abdxdev/repos"
+                    `https://api.github.com/users/${repoName}/repos`
                 );
 
                 if (!response.ok) {
@@ -121,7 +128,7 @@ export const Projects = () => {
                         html_url: repo.html_url,
                         created_at: repo.created_at,
                         thumbnails: Array.from({ length: 5 }, (_, i) =>
-                            `https://github.com/abdxdev/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                            `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
                         )
                     }));
 
@@ -140,7 +147,7 @@ export const Projects = () => {
         };
 
         fetchProjects();
-    }, []);
+    }, [repoName]);
 
     // Render loading skeletons
     if (isLoading) {
@@ -225,10 +232,10 @@ export const Projects = () => {
                                                                             <Image
                                                                                 src={thumb}
                                                                                 alt={`Screenshot ${imageIndex + 1}`}
-                                                                                width={500}
-                                                                                height={200}
+                                                                                width={400}
+                                                                                height={300}
                                                                                 className={cn(
-                                                                                    "w-full h-full object-cover cursor-pointer hover:opacity-90 transition-all duration-500 ease-in-out",
+                                                                                    "w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out",
                                                                                     isImageLoaded ? "opacity-100" : "opacity-0"
                                                                                 )}
                                                                                 onLoad={() => {
@@ -237,7 +244,7 @@ export const Projects = () => {
                                                                                 onError={() =>
                                                                                     handleImageError(projectIndex, imageIndex)
                                                                                 }
-                                                                                onClick={() => openImageDialog(thumb)}
+                                                                                onClick={() => openImageDialog(thumb, project.name)}
                                                                             />
                                                                         </div>
                                                                     </CardContent>
@@ -300,7 +307,10 @@ export const Projects = () => {
 
             {/* Image Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-0">
+                <DialogContent className="max-w-screen-2xl p-0 overflow-hidden bg-transparent border-0">
+                    <DialogTitle className="text-lg font-semibold text-center mb-4">
+                        {selectedName}
+                    </DialogTitle>
                     <div className="relative w-full">
 
                         {selectedImage && (
