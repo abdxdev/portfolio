@@ -214,7 +214,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                                                         alt="Placeholder"
                                                                         width={400}
                                                                         height={300}
-                                                                        className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out"
+                                                                        className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
                                                                         onClick={() =>
                                                                             openImageDialog(
                                                                                 `https://opengraph.githubassets.com/1/${githubUsername}/${project.raw_name}`,
