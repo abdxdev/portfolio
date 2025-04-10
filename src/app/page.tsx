@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
   return (
-    <ScrollArea className="bg-background min-h-screen h-screen overflow-y-auto relative w-full rounded-md border p-0">
+    <ScrollArea className="bg-background min-h-screen h-screen overflow-y-auto relative w-full p-0">
       <div className="relative w-full h-full">
       {/* Glare Effect */}
       <Glare />
