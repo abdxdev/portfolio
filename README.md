@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with Next.js, Tailwind CSS, shadcn/ui and radix-ui components. This portfolio showcases a developer's skills, experience, and projects with a clean, professional design and smooth animations.
 
-![alt text](media/screenshot_1.png)
+![alt text](screenshots/screenshot_1.png)
 
 ## Features
 

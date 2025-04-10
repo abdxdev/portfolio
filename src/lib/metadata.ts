@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export function constructMetadata({
-  title = 'Abdul Rahman - Portfolio',
+  title = 'abdxdev',
   description = "I'm a software developer and designer who lives by two mottos: \"Work smarter, not harder\" and \"If it's not broken, add more features.\"",
   image = '/thumbnail.svg', 
   icons = '/avatar-white.svg', 

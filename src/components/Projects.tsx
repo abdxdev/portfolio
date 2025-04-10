@@ -35,6 +35,7 @@ const techColors: Record<string, string> = {
 };
 
 type Project = {
+    raw_name: string;
     name: string;
     description: string;
     language: string;
@@ -47,7 +48,7 @@ type ProjectsProps = {
     repoName: string;
 };
 
-export const Projects = ({ repoName }: ProjectsProps) => {
+export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [visibleCount, setVisibleCount] = useState(4);
     const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
@@ -90,7 +91,7 @@ export const Projects = ({ repoName }: ProjectsProps) => {
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    `https://api.github.com/users/${repoName}/repos`
+                    `https://api.github.com/users/${githubUsername}/repos`
                 );
 
                 if (!response.ok) {
@@ -122,13 +123,14 @@ export const Projects = ({ repoName }: ProjectsProps) => {
                             repo.description.endsWith(":add")
                     )
                     .map((repo) => ({
+                        raw_name: repo.name,
                         name: camalToTitle(snakeToTitle(repo.name)),
                         description: repo.description.replace(" :add", ""),
                         language: repo.language,
                         html_url: repo.html_url,
                         created_at: repo.created_at,
                         thumbnails: Array.from({ length: 5 }, (_, i) =>
-                            `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                            `https://github.com/${githubUsername}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
                         )
                     }));
 
@@ -147,7 +149,7 @@ export const Projects = ({ repoName }: ProjectsProps) => {
         };
 
         fetchProjects();
-    }, [repoName]);
+    }, [githubUsername]);
 
     // Render loading skeletons
     if (isLoading) {
@@ -204,10 +206,24 @@ export const Projects = ({ repoName }: ProjectsProps) => {
                                         <CarouselContent>
                                             {!hasValidImages || allImagesFailed ? (
                                                 <CarouselItem>
-                                                    <div className="p-0">
-                                                        <Card className="overflow-hidden">
-                                                            <CardContent className="flex aspect-video items-center justify-center p-6 bg-accent">
-                                                                <span className="text-4l font-semibold text-center">{project.name}</span>
+                                                    <div>
+                                                        <Card className="w-full h-full overflow-hidden">
+                                                            <CardContent className="p-0">
+                                                                <div className="aspect-video overflow-hidden relative">
+                                                                    <Image
+                                                                        src={`https://opengraph.githubassets.com/1/${githubUsername}/${project.raw_name}`}
+                                                                        alt="Placeholder"
+                                                                        width={400}
+                                                                        height={300}
+                                                                        className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out"
+                                                                        onClick={() =>
+                                                                            openImageDialog(
+                                                                                `https://opengraph.githubassets.com/1/${githubUsername}/${project.raw_name}`,
+                                                                                project.name
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </div>
                                                             </CardContent>
                                                         </Card>
                                                     </div>
