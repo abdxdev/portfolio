@@ -1,11 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+} from "@/components/ui/carousel";
+import {
+    Dialog,
+    DialogContent,
+} from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import Autoplay from "embla-carousel-autoplay";
 
 const techColors: Record<string, string> = {
     "React": "bg-blue-500",
@@ -21,28 +33,54 @@ const techColors: Record<string, string> = {
     "TypeScript": "bg-blue-500",
 };
 
-type Repo = {
+type Project = {
     name: string;
-    description: string | null;
-    language: string | null;
+    description: string;
+    language: string;
     html_url: string;
     created_at: string;
-};
-
-type Project = {
-    title: string;
-    description: string;
-    tech: string;
-    link: string;
-    createdAt: string;
+    thumbnails: string[];
 };
 
 export const Projects = () => {
     const [projects, setProjects] = useState<Project[]>([]);
-    const [visibleCount, setVisibleCount] = useState(4); // Number of visible projects
+    const [visibleCount, setVisibleCount] = useState(4);
+    const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
+    const [loadedImages, setLoadedImages] = useState<Record<number, Set<number>>>({});
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const handleImageError = (projectIndex: number, imageIndex: number) => {
+        setFailedImages((prev) => {
+            const updated = { ...prev };
+            if (!updated[projectIndex]) {
+                updated[projectIndex] = new Set();
+            }
+            updated[projectIndex].add(imageIndex);
+            return updated;
+        });
+    };
+
+    const handleImageLoaded = (projectIndex: number, imageIndex: number) => {
+        setLoadedImages((prev) => {
+            const updated = { ...prev };
+            if (!updated[projectIndex]) {
+                updated[projectIndex] = new Set();
+            }
+            updated[projectIndex].add(imageIndex);
+            return updated;
+        });
+    };
+
+    const openImageDialog = (imageUrl: string) => {
+        setSelectedImage(imageUrl);
+        setIsDialogOpen(true);
+    };
 
     useEffect(() => {
         const fetchProjects = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(
                     "https://api.github.com/users/abdxdev/repos"
@@ -52,7 +90,8 @@ export const Projects = () => {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const data: Repo[] = await response.json();
+                const data: Project[] = await response.json();
+
                 const snakeToTitle = (str: string) => {
                     str = str.replaceAll("-", " ").replaceAll("_", " ");
                     return str
@@ -69,7 +108,6 @@ export const Projects = () => {
                     return str.replace(/([a-z])([A-Z])/g, "$1 $2");
                 };
 
-                // Filter and map repositories
                 const filteredProjects = data
                     .filter(
                         (repo) =>
@@ -77,70 +115,175 @@ export const Projects = () => {
                             repo.description.endsWith(":add")
                     )
                     .map((repo) => ({
-                        title: camalToTitle(snakeToTitle(repo.name)),
-                        description: repo.description!.replace(" :add", ""),
-                        tech: repo.language || "Default",
-                        link: repo.html_url,
-                        createdAt: repo.created_at,
+                        name: camalToTitle(snakeToTitle(repo.name)),
+                        description: repo.description.replace(" :add", ""),
+                        language: repo.language,
+                        html_url: repo.html_url,
+                        created_at: repo.created_at,
+                        thumbnails: Array.from({ length: 5 }, (_, i) =>
+                            `https://github.com/abdxdev/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                        )
                     }));
 
                 filteredProjects.sort(
                     (a, b) =>
-                        new Date(b.createdAt).getTime() -
-                        new Date(a.createdAt).getTime()
+                        new Date(b.created_at).getTime() -
+                        new Date(a.created_at).getTime()
                 );
 
                 setProjects(filteredProjects);
+                setIsLoading(false);
             } catch (error) {
                 console.error("Error fetching repositories:", error);
+                setIsLoading(false);
             }
         };
 
         fetchProjects();
     }, []);
 
+    // Render loading skeletons
+    if (isLoading) {
+        return (
+            <>
+                <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <Card key={index} className="animate-pulse">
+                            <CardContent className="pt-6 h-full">
+                                <div className="flex flex-col h-full">
+                                    <Skeleton className="w-full aspect-video max-w-xs mb-4" />
+                                    <Skeleton className="h-6 w-3/4 mb-2" />
+                                    <Skeleton className="h-4 w-full mb-2" />
+                                    <Skeleton className="h-4 w-5/6 mb-4" />
+                                    <div className="mt-auto flex items-center justify-between">
+                                        <Skeleton className="h-4 w-16" />
+                                        <Skeleton className="h-4 w-24" />
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </>
+        );
+    }
+
     return (
         <>
             <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projects.slice(0, visibleCount).map((project, index) => (
-                    <Card key={index}>
-                        <CardContent className="pt-6 h-full">
-                            <div className="flex flex-col h-full">
-                                <Link
-                                    href={project.link}
-                                    className="font-semibold text-primary hover:underline"
-                                >
-                                    {project.title}
-                                </Link>
-                                <p className="text-sm text-muted-foreground mt-1 mb-4">
-                                    {project.description}
-                                </p>
-                                <div className="mt-auto flex items-center justify-between">
-                                    <div className="flex items-center space-x-2">
-                                        <div
-                                            className={cn(
-                                                "size-4 rounded-full",
-                                                techColors[project.tech] ||
-                                                    techColors.Default
-                                            )}
-                                        />
-                                        <span className="text-xs font-medium text-muted-foreground">
-                                            {project.tech}
-                                        </span>
-                                    </div>
-                                    <Link
-                                        href={project.link}
-                                        className="flex items-center gap-2 text-sm text-primary hover:underline"
+                {projects.slice(0, visibleCount).map((project, projectIndex) => {
+                    // Determine if all images have failed or if there are no images
+                    const allImagesFailed = project.thumbnails.every(
+                        (_, imageIndex) => failedImages[projectIndex]?.has(imageIndex)
+                    );
+                    const hasValidImages = project.thumbnails.some(
+                        (_, imageIndex) => !failedImages[projectIndex]?.has(imageIndex)
+                    );
+
+                    return (
+                        <Card key={projectIndex} className="transition-opacity duration-500 ease-in-out">
+                            <CardContent className="pt-6 h-full">
+                                <div className="flex flex-col h-full">
+                                    <Carousel
+                                        plugins={[
+                                            Autoplay({
+                                                delay: 5000,
+                                            }),
+                                        ]}
+                                        className="w-full max-w-xs pb-4"
                                     >
-                                        View Project
-                                        <ExternalLink className="inline-block size-3" />
+                                        <CarouselContent>
+                                            {!hasValidImages || allImagesFailed ? (
+                                                <CarouselItem>
+                                                    <div className="p-0">
+                                                        <Card className="overflow-hidden">
+                                                            <CardContent className="flex aspect-video items-center justify-center p-6 bg-accent">
+                                                                <span className="text-4l font-semibold text-center">{project.name}</span>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </div>
+                                                </CarouselItem>
+                                            ) : (
+                                                project.thumbnails.map((thumb, imageIndex) => {
+                                                    if (failedImages[projectIndex]?.has(imageIndex)) {
+                                                        return null;
+                                                    }
+
+                                                    const isImageLoaded = loadedImages[projectIndex]?.has(imageIndex);
+
+                                                    return (
+                                                        <CarouselItem key={imageIndex}>
+                                                            <div>
+                                                                <Card className="w-full h-full overflow-hidden">
+                                                                    <CardContent className="p-0">
+                                                                        <div className="aspect-video overflow-hidden relative">
+                                                                            {!isImageLoaded && (
+                                                                                <div className="absolute inset-0 bg-accent animate-pulse" />
+                                                                            )}
+                                                                            <Image
+                                                                                src={thumb}
+                                                                                alt={`Screenshot ${imageIndex + 1}`}
+                                                                                width={500}
+                                                                                height={200}
+                                                                                className={cn(
+                                                                                    "w-full h-full object-cover cursor-pointer hover:opacity-90 transition-all duration-500 ease-in-out",
+                                                                                    isImageLoaded ? "opacity-100" : "opacity-0"
+                                                                                )}
+                                                                                onLoad={() => {
+                                                                                    handleImageLoaded(projectIndex, imageIndex);
+                                                                                }}
+                                                                                onError={() =>
+                                                                                    handleImageError(projectIndex, imageIndex)
+                                                                                }
+                                                                                onClick={() => openImageDialog(thumb)}
+                                                                            />
+                                                                        </div>
+                                                                    </CardContent>
+                                                                </Card>
+                                                            </div>
+                                                        </CarouselItem>
+                                                    );
+                                                })
+                                            )}
+                                        </CarouselContent>
+                                    </Carousel>
+                                    <Link
+                                        href={project.html_url}
+                                        className="font-semibold text-primary hover:underline"
+                                    >
+                                        {project.name}
                                     </Link>
+                                    <p className="text-sm text-muted-foreground mt-1 mb-4">
+                                        {project.description}
+                                    </p>
+                                    <div className="mt-auto flex items-center justify-between">
+                                        <div className="flex items-center space-x-2">
+                                            <div
+                                                className={cn(
+                                                    "size-4 rounded-full",
+                                                    techColors[project.language] ||
+                                                    techColors.Default
+                                                )}
+                                            />
+                                            <span className="text-xs font-medium text-muted-foreground">
+                                                {project.language}
+                                            </span>
+                                        </div>
+                                        <Link
+                                            href={project.html_url}
+                                            className="flex items-center gap-2 text-sm text-primary hover:underline"
+                                        >
+                                            View Project
+                                            <ExternalLink className="inline-block size-3" />
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
+                            </CardContent>
+                        </Card>
+                    );
+                })}
             </div>
 
             {/* Load More Button */}
@@ -150,12 +293,30 @@ export const Projects = () => {
                         variant="ghost"
                         onClick={() => setVisibleCount(visibleCount + 4)}
                     >
-                        <p className="font-semibold w-full h-full">
-                            Load More
-                        </p>
+                        <p className="font-semibold w-full h-full">Load More</p>
                     </Button>
                 </div>
             )}
+
+            {/* Image Dialog */}
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-0">
+                    <div className="relative w-full">
+
+                        {selectedImage && (
+                            <div className="bg-black bg-opacity-20 backdrop-blur-sm p-2 rounded-lg">
+                                <Image
+                                    src={selectedImage}
+                                    alt="Enlarged screenshot"
+                                    width={1920}
+                                    height={1080}
+                                    className="w-full h-auto max-h-screen object-contain rounded"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     );
 };
