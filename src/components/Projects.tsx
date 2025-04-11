@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +11,8 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/ui/carousel";
 import {
     Dialog,
@@ -52,8 +54,8 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
     const [visibleCount, setVisibleCount] = useState(4);
     const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
     const [loadedImages, setLoadedImages] = useState<Record<number, Set<number>>>({});
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectedName, setSelectedName] = useState<string | null>(null);
+    const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -79,8 +81,8 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
         });
     };
 
-    const openImageDialog = (imageUrl: string, name: string | null) => {
-        setSelectedImage(imageUrl);
+    const openImageDialog = (projectIndex: number, name: string | null) => {
+        setSelectedProjectIndex(projectIndex);
         setSelectedName(name);
         setIsDialogOpen(true);
     };
@@ -135,7 +137,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
 
                 filteredProjects.sort(
                     (a, b) =>
-                        new Date(b.created_at).getTime() -
+                        new Date(b.created_at).getTime() - 
                         new Date(a.created_at).getTime()
                 );
 
@@ -217,7 +219,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                                                         className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
                                                                         onClick={() =>
                                                                             openImageDialog(
-                                                                                `https://opengraph.githubassets.com/1/${githubUsername}/${project.raw_name}`,
+                                                                                projectIndex,
                                                                                 project.name
                                                                             )
                                                                         }
@@ -259,7 +261,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                                                                 onError={() =>
                                                                                     handleImageError(projectIndex, imageIndex)
                                                                                 }
-                                                                                onClick={() => openImageDialog(thumb, project.name)}
+                                                                                onClick={() => openImageDialog(projectIndex, project.name)}
                                                                             />
                                                                         </div>
                                                                     </CardContent>
@@ -322,21 +324,30 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
 
             {/* Image Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogContent className="max-w-screen-2xl p-0 overflow-hidden bg-transparent border-0">
-                    <div className="relative w-full">
-
-                        {selectedImage && (
-                            <div className="bg-black bg-opacity-20 backdrop-blur-sm p-2 rounded-lg">
-                                <Image
-                                    src={selectedImage}
-                                    alt={selectedName || "Project Screenshot"}
-                                    width={1920}
-                                    height={1080}
-                                    className="w-full h-auto max-h-screen object-contain rounded"
-                                />
-                            </div>
-                        )}
-                    </div>
+                <DialogContent className="max-w-screen-xl p-0 overflow-hidden bg-transparent border-0">
+                    {selectedProjectIndex !== null && (
+                        <div className="bg-black bg-opacity-20 backdrop-blur-sm p-2 rounded-lg">
+                            <Carousel opts={{ align: "center" }} className="w-full max-w-7xl mx-auto">
+                                <CarouselContent>
+                                    {projects[selectedProjectIndex].thumbnails
+                                        .filter((_, index) => !failedImages[selectedProjectIndex]?.has(index))
+                                        .map((image, index) => (
+                                            <CarouselItem key={index} className="flex items-center justify-center">
+                                                <Image
+                                                    src={image}
+                                                    alt={selectedName || "Project Screenshot"}
+                                                    width={1920}
+                                                    height={1080}
+                                                    className="w-full h-auto max-h-[80vh] object-contain rounded"
+                                                />
+                                            </CarouselItem>
+                                        ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="left-2" />
+                                <CarouselNext className="right-2" />
+                            </Carousel>
+                        </div>
+                    )}
                 </DialogContent>
             </Dialog>
         </>
