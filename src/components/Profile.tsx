@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import AnilistIcon from "@/components/icons/AnilistIcon";
 
 import {
     Card,
@@ -25,6 +26,16 @@ const socials = [
         name: "X (Twitter)",
         link: "https://x.com/abdxdev",
         icon: <FaXTwitter className="size-4" />
+    },
+    // {
+    //     name: "Instagram",
+    //     link: "https://instagram.com/abdxdev",
+    //     icon: <FaInstagram className="size-4" />
+    // },
+    {
+        name: "Anilist",
+        link: "https://anilist.co/user/abdxdev",
+        icon: <AnilistIcon className="size-4 fill-primary" />
     }
 ]
 
