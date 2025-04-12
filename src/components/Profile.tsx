@@ -30,7 +30,7 @@ const socials = [
 
 export const Profile = () => {
     return (
-        <Card>
+        <Card className="mb-6">
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
                     <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4">

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ThumbsUp, ThumbsDown, Send } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Send, LinkIcon } from "lucide-react";
 
-export const Feedback = () => {
+export const Feedback = ({ id }: { id?: string }) => {
     const [feedback, setFeedback] = useState("");
     const [sentiment, setSentiment] = useState<"like" | "dislike" | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,44 +40,52 @@ export const Feedback = () => {
     };
 
     return (
-        <Card className="mt-6">
-            <CardHeader>
-                <CardTitle>Feedback</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    <div className="flex gap-2">
+        <section id={id}>
+            <Card className="mb-6">
+                <CardHeader>
+                    <CardTitle className="flex items-center group">
+                        Feedback
+                        <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
+                        </a>
+                    </CardTitle>                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <div className="flex gap-2">
+                            <Button 
+                                variant={sentiment === "like" ? "default" : "outline"}
+                                onClick={() => setSentiment("like")}
+                                className="w-full"
+                                >
+                                <ThumbsUp className="h-4 w-4" />
+                                Like
+                            </Button>
+                            <Button 
+                                variant={sentiment === "dislike" ? "default" : "outline"}
+                                onClick={() => setSentiment("dislike")}
+                                className="w-full"
+                            >
+                                <ThumbsDown className="h-4 w-4" />
+                                Dislike
+                            </Button>
+                        </div>
+                        <Textarea
+                            placeholder="Share your thoughts anonymously..."
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                        />
                         <Button 
-                            variant={sentiment === "like" ? "default" : "outline"}
-                            size="icon"
-                            onClick={() => setSentiment("like")}
+                            className="w-full" 
+                            onClick={handleSubmit}
+                            disabled={isSubmitting || (!feedback && !sentiment)}
+                            variant={(isSubmitting || (!feedback && !sentiment) ? "outline" : "default")}
                         >
-                            <ThumbsUp className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                            variant={sentiment === "dislike" ? "default" : "outline"}
-                            size="icon"
-                            onClick={() => setSentiment("dislike")}
-                        >
-                            <ThumbsDown className="h-4 w-4" />
+                            <Send className="mr-2 h-4 w-4" />
+                            Send Anonymously
                         </Button>
                     </div>
-                    <Textarea
-                        placeholder="Share your thoughts anonymously..."
-                        value={feedback}
-                        onChange={(e) => setFeedback(e.target.value)}
-                        className="min-h-[100px]"
-                    />
-                    <Button 
-                        className="w-full" 
-                        onClick={handleSubmit}
-                        disabled={isSubmitting || (!feedback && !sentiment)}
-                    >
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Anonymously
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </section>
     );
 };

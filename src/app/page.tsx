@@ -23,11 +23,11 @@ export default function Home() {
           {/* Main Section */}
           <main className="md:col-span-2">
             {/* About Me Section */}
-            <AboutMe />
+            <AboutMe id="about-me" />
             {/* Experience Section */}
-            <Experience />
+            <Experience id="experience" />
             {/* Projects Section */}
-            <Projects repoName="abdxdev" />
+            <Projects id="projects" repoName="abdxdev" />
           </main>
         </div>
       </div>

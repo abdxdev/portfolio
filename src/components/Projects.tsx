@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,11 +45,7 @@ type Project = {
     thumbnails: string[];
 };
 
-type ProjectsProps = {
-    repoName: string;
-};
-
-export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
+export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [visibleCount, setVisibleCount] = useState(4);
     const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
@@ -81,10 +77,20 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
         });
     };
 
-    const openImageDialog = (projectIndex: number, name: string | null) => {
+    const openImageDialog = (projectIndex: number, name: string | null, isDefaultThumbnail = false) => {
         setSelectedProjectIndex(projectIndex);
         setSelectedName(name);
         setIsDialogOpen(true);
+        if (isDefaultThumbnail) {
+            setFailedImages((prev) => {
+                const updated = { ...prev };
+                if (!updated[projectIndex]) {
+                    updated[projectIndex] = new Set();
+                }
+                updated[projectIndex].add(-1); // Use -1 to represent the default thumbnail
+                return updated;
+            });
+        }
     };
 
     useEffect(() => {
@@ -92,7 +98,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    `https://api.github.com/users/${githubUsername}/repos`
+                    `https://api.github.com/users/${repoName}/repos`
                 );
 
                 if (!response.ok) {
@@ -131,7 +137,7 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                         html_url: repo.html_url,
                         created_at: repo.created_at,
                         thumbnails: Array.from({ length: 5 }, (_, i) =>
-                            `https://github.com/${githubUsername}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                            `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
                         )
                     }));
 
@@ -150,12 +156,12 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
         };
 
         fetchProjects();
-    }, [githubUsername]);
+    }, [repoName]);
 
     // Render loading skeletons
     if (isLoading) {
         return (
-            <>
+            <section id={id}>
                 <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {Array.from({ length: 4 }).map((_, index) => (
@@ -175,13 +181,18 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                         </Card>
                     ))}
                 </div>
-            </>
+            </section>
         );
     }
 
     return (
-        <>
-            <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
+        <section id={id}>
+            <h2 className="text-xl font-bold mb-4 flex items-center group">
+                Featured Projects
+                <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
+                </a>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {projects.slice(0, visibleCount).map((project, projectIndex) => {
                     // Determine if all images have failed or if there are no images
@@ -212,17 +223,12 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                                             <CardContent className="p-0">
                                                                 <div className="aspect-video overflow-hidden relative">
                                                                     <Image
-                                                                        src={`https://opengraph.githubassets.com/1/${githubUsername}/${project.raw_name}`}
-                                                                        alt="Placeholder"
+                                                                        src={`https://opengraph.githubassets.com/1/${repoName}/${project.raw_name}`}
+                                                                        alt="Default Thumbnail"
                                                                         width={400}
                                                                         height={300}
                                                                         className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
-                                                                        onClick={() =>
-                                                                            openImageDialog(
-                                                                                projectIndex,
-                                                                                project.name
-                                                                            )
-                                                                        }
+                                                                        onClick={() => openImageDialog(projectIndex, project.name, true)}
                                                                     />
                                                                 </div>
                                                             </CardContent>
@@ -342,6 +348,17 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                                                 />
                                             </CarouselItem>
                                         ))}
+                                    {failedImages[selectedProjectIndex]?.has(-1) && (
+                                        <CarouselItem className="flex items-center justify-center">
+                                            <Image
+                                                src={`https://opengraph.githubassets.com/1/${repoName}/${projects[selectedProjectIndex].raw_name}`}
+                                                alt={selectedName || "Default Thumbnail"}
+                                                width={1920}
+                                                height={1080}
+                                                className="w-full h-auto max-h-[80vh] object-contain rounded"
+                                            />
+                                        </CarouselItem>
+                                    )}
                                 </CarouselContent>
                                 <CarouselPrevious className="left-2" />
                                 <CarouselNext className="right-2" />
@@ -350,6 +367,6 @@ export const Projects = ({ repoName: githubUsername }: ProjectsProps) => {
                     )}
                 </DialogContent>
             </Dialog>
-        </>
+        </section>
     );
 };

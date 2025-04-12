@@ -6,11 +6,11 @@ export const Sidebar = () => {
     return (
         <aside className="md:col-span-1">
             {/* Profile Section */}
-            < Profile />
+            <Profile />
             {/* Skills Section */}
-            <Skills />
+            <Skills id="skills" />
             {/* Feedback Section */}
-            <Feedback />
+            <Feedback id="feedback" />
         </aside>
     )
 }
