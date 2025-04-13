@@ -85,7 +85,7 @@ export const Profile = () => {
                 imageElement.classList.remove('border-[#ff79c6]');
             }, 1800);
         }
-                
+
         setSrc(placeholderSrc);
         setTimeout(() => {
             setSrc(gifSrc);
@@ -135,7 +135,7 @@ export const Profile = () => {
                                     {easterEggMessage}
                                 </PopoverContent>
                             </Popover>
-                            
+
                             <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
                                 <PopoverTrigger asChild>
                                     <div className="relative">
@@ -156,7 +156,7 @@ export const Profile = () => {
                                 </PopoverContent>
                             </Popover>
                         </div>
-                        
+
                         {/* Text content */}
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-0 text-xl md:text-2xl">Abdul Rahman</h1>
@@ -165,11 +165,11 @@ export const Profile = () => {
                             </p>
                         </div>
                     </div>
-                    
+
                     <p className="mt-2 text-start text-sm text-muted-foreground">
                         I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
                     </p>
-                    
+
                     <Button className="mt-2 w-full" asChild>
                         <Link
                             href="mailto:abdulrahman.abd.dev@gmail.com"
@@ -187,7 +187,7 @@ export const Profile = () => {
                             RESUME
                         </p>
                     </Button>
-                    
+
                     <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
                         {socials.map((s, i) => {
                             const parts = s.link.split('/');
