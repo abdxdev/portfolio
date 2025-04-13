@@ -1,16 +1,18 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "@/components/icons/AnilistIcon";
+import { useState } from 'react';
+import Image from 'next/image';
 
 import {
     Card,
     CardContent
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
 const socials = [
     {
         name: "Github",
@@ -40,29 +42,50 @@ const socials = [
 ]
 
 export const Profile = () => {
+    const [lightGifSrc, setLightGifSrc] = useState('/white-bg-r1.gif');
+    const [darkGifSrc, setDarkGifSrc] = useState('/black-bg-r1.gif');
+
+    const reloadGif = (setSrc: (src: string) => void, src: string) => {
+        const timestamp = new Date().getTime();
+        setSrc(`${src}?t=${timestamp}`);
+        const imageElements = document.querySelectorAll('#profile-pic');
+        imageElements.forEach((img) => {
+            const classes = "border-[#ff79c6] transition-all ease-out duration-100";
+            img.classList.add(...classes.split(' '));
+            setTimeout(() => {
+                img.classList.remove(...classes.split(' '));
+            }, 100);
+        });
+
+    };
+
     return (
         <Card className="mb-6">
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
                     <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4">
-                        {/* Light Mode Image */}
-                        <Image
-                            width={150}
-                            height={150}
-                            quality={100}
-                            src="/white-bg-r1.gif"
-                            alt="Profile Picture"
-                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden"
-                        />
-                        {/* Dark Mode Image */}
-                        <Image
-                            width={150}
-                            height={150}
-                            quality={100}
-                            src="/black-bg-r1.gif"
-                            alt="Profile Picture"
-                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block"
-                        />
+                        {(
+                            <Image
+                                src={lightGifSrc}
+                                id="profile-pic"
+                                alt="Profile Picture"
+                                width={150}
+                                height={150}
+                                className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                                onClick={() => reloadGif(setLightGifSrc, lightGifSrc)}
+                            />
+                        )}
+                        {(
+                            <Image
+                                src={darkGifSrc}
+                                id="profile-pic"
+                                alt="Profile Picture"
+                                width={150}
+                                height={150}
+                                className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                                onClick={() => reloadGif(setDarkGifSrc, darkGifSrc)}
+                            />
+                        )}
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
