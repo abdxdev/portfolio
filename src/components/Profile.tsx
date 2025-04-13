@@ -50,11 +50,10 @@ export const Profile = () => {
         setSrc(`${src}?t=${timestamp}`);
         const imageElements = document.querySelectorAll('#profile-pic');
         imageElements.forEach((img) => {
-            const classes = "border-[#ff79c6] transition-all ease-out duration-100";
-            img.classList.add(...classes.split(' '));
+            img.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
             setTimeout(() => {
-                img.classList.remove(...classes.split(' '));
-            }, 100);
+                img.classList.remove('border-[#ff79c6]');
+            }, 1000);
         });
 
     };
@@ -64,28 +63,26 @@ export const Profile = () => {
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
                     <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4">
-                        {(
-                            <Image
-                                src={lightGifSrc}
-                                id="profile-pic"
-                                alt="Profile Picture"
-                                width={150}
-                                height={150}
-                                className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                                onClick={() => reloadGif(setLightGifSrc, lightGifSrc)}
-                            />
-                        )}
-                        {(
-                            <Image
-                                src={darkGifSrc}
-                                id="profile-pic"
-                                alt="Profile Picture"
-                                width={150}
-                                height={150}
-                                className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                                onClick={() => reloadGif(setDarkGifSrc, darkGifSrc)}
-                            />
-                        )}
+                        <Image
+                            src={lightGifSrc}
+                            id="profile-pic"
+                            alt="Profile Picture"
+                            width={150}
+                            height={150}
+                            unoptimized={true}
+                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                            onClick={() => reloadGif(setLightGifSrc, lightGifSrc)}
+                        />
+                        <Image
+                            src={darkGifSrc}
+                            id="profile-pic"
+                            alt="Profile Picture"
+                            width={150}
+                            height={150}
+                            unoptimized={true}
+                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                            onClick={() => reloadGif(setDarkGifSrc, darkGifSrc)}
+                        />
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
