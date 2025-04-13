@@ -6,12 +6,17 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "@/components/icons/AnilistIcon";
 import { useState } from 'react';
 import Image from 'next/image';
-
+import easterEggMessages from '@/data/easterEggMessages.json';
 import {
     Card,
     CardContent
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 
 const socials = [
     {
@@ -29,11 +34,6 @@ const socials = [
         link: "https://x.com/abdxdev",
         icon: <FaXTwitter className="size-4" />
     },
-    // {
-    //     name: "Instagram",
-    //     link: "https://instagram.com/abdxdev",
-    //     icon: <FaInstagram className="size-4" />
-    // },
     {
         name: "Anilist",
         link: "https://anilist.co/user/abdxdev",
@@ -42,75 +42,119 @@ const socials = [
 ]
 
 export const Profile = () => {
-    const lightGifPath = '/white-bg-r1.gif';
-    const darkGifPath = '/black-bg-r1.gif';
-    
+    const lightGifPath = '/bfg-r1.gif';
+    const darkGifPath = '/wfg-r1.gif';
+
     // Placeholder static images
     const lightPlaceholder = '/bfg.png';
     const darkPlaceholder = '/wfg.png';
-    
+
     // Source states for the images
     const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
     const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
-    
+    const [onCooldown, setOnCooldown] = useState(false);
+
     // Flag to prevent multiple rapid clicks
     const [isReloading, setIsReloading] = useState(false);
 
+    // Easter egg states - separate for light and dark mode
+    const [lightPopoverOpen, setLightPopoverOpen] = useState(false);
+    const [darkPopoverOpen, setDarkPopoverOpen] = useState(false);
+    const [easterEggMessage, setEasterEggMessage] = useState('');
+
+
     const reloadGif = (isLight: boolean) => {
-        // Prevent multiple rapid clicks
-        if (isReloading) return;
+        if (isReloading || onCooldown) return;
+
+        setOnCooldown(true);
+        setTimeout(() => {
+            setOnCooldown(false);
+        }, 1800);
+
         setIsReloading(true);
-        
-        // Select the correct elements and paths based on light/dark mode
+
         const selector = isLight ? '#light-profile-pic' : '#dark-profile-pic';
         const setSrc = isLight ? setLightGifSrc : setDarkGifSrc;
         const placeholderSrc = isLight ? lightPlaceholder : darkPlaceholder;
         const gifSrc = isLight ? lightGifPath : darkGifPath;
-        
-        // Add visual feedback with border highlight
+
         const imageElement = document.querySelector(selector);
         if (imageElement) {
             imageElement.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
             setTimeout(() => {
                 imageElement.classList.remove('border-[#ff79c6]');
-            }, 1000);
+            }, 1800);
         }
-        
-        // First set to placeholder image
+                
         setSrc(placeholderSrc);
-        
-        // After a very brief delay, set back to GIF to force reload
         setTimeout(() => {
             setSrc(gifSrc);
+            const randomMessage = easterEggMessages[Math.floor(Math.random() * easterEggMessages.length)];
+            setEasterEggMessage(randomMessage);
+
+            if (isLight) {
+                setLightPopoverOpen(true);
+            } else {
+                setDarkPopoverOpen(true);
+            }
+
+            setTimeout(() => {
+                if (isLight) {
+                    setLightPopoverOpen(false);
+                } else {
+                    setDarkPopoverOpen(false);
+                }
+            }, 1800);
+
             setIsReloading(false);
-        }, 10); // Just enough delay to trigger a reload
+        }, 10);
     };
 
     return (
         <Card className="mb-6">
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
-                    <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4">
-                        <Image
-                            src={lightGifSrc}
-                            id="light-profile-pic"
-                            alt="Profile Picture"
-                            width={150}
-                            height={150}
-                            unoptimized={true}
-                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                            onClick={() => reloadGif(true)}
-                        />
-                        <Image
-                            src={darkGifSrc}
-                            id="dark-profile-pic"
-                            alt="Profile Picture"
-                            width={150}
-                            height={150}
-                            unoptimized={true}
-                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                            onClick={() => reloadGif(false)}
-                        />
+                    <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4 relative">
+                        <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
+                            <PopoverTrigger asChild>
+                                <div className="relative">
+                                    <Image
+                                        src={lightGifSrc}
+                                        id="light-profile-pic"
+                                        alt="Profile Picture"
+                                        width={150}
+                                        height={150}
+                                        unoptimized={true}
+                                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                                        onClick={() => reloadGif(true)}
+                                    />
+                                </div>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-2 text-center" side="top">
+                                {easterEggMessage}
+                            </PopoverContent>
+                        </Popover>
+
+                        <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
+                            <PopoverTrigger asChild>
+                                <div className="relative">
+                                    <Image
+                                        src={darkGifSrc}
+                                        id="dark-profile-pic"
+                                        alt="Profile Picture"
+                                        width={150}
+                                        height={150}
+                                        unoptimized={true}
+                                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                                        onClick={() => reloadGif(false)}
+                                    />
+                                </div>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-2 text-center" side="top">
+                                {easterEggMessage}
+                            </PopoverContent>
+                        </Popover>
+
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
@@ -132,7 +176,7 @@ export const Profile = () => {
 
                     <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground"
                         onClick={() => {
-                            window.open('/abdxdev-resume', '_blank')
+                            window.open('/abdxdev-resume.pdf', '_blank')
                         }}>
                         <p className="font-semibold w-full h-full">
                             RESUME
