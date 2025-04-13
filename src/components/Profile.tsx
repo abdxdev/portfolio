@@ -45,26 +45,45 @@ export const Profile = () => {
     const lightGifPath = '/white-bg-r1.gif';
     const darkGifPath = '/black-bg-r1.gif';
     
+    // Placeholder static images
+    const lightPlaceholder = '/bfg.png';
+    const darkPlaceholder = '/wfg.png';
+    
+    // Source states for the images
     const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
     const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
+    
+    // Flag to prevent multiple rapid clicks
+    const [isReloading, setIsReloading] = useState(false);
 
-    const reloadGif = (setSrc: (src: string) => void, originalSrc: string, selector: string) => {
-        // Clear the source entirely to force a complete unload
-        setSrc('');
+    const reloadGif = (isLight: boolean) => {
+        // Prevent multiple rapid clicks
+        if (isReloading) return;
+        setIsReloading(true);
+        
+        // Select the correct elements and paths based on light/dark mode
+        const selector = isLight ? '#light-profile-pic' : '#dark-profile-pic';
+        const setSrc = isLight ? setLightGifSrc : setDarkGifSrc;
+        const placeholderSrc = isLight ? lightPlaceholder : darkPlaceholder;
+        const gifSrc = isLight ? lightGifPath : darkGifPath;
         
         // Add visual feedback with border highlight
-        const imageElements = document.querySelectorAll(selector);
-        imageElements.forEach((img) => {
-            img.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
+        const imageElement = document.querySelector(selector);
+        if (imageElement) {
+            imageElement.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
             setTimeout(() => {
-                img.classList.remove('border-[#ff79c6]');
+                imageElement.classList.remove('border-[#ff79c6]');
             }, 1000);
-        });
+        }
         
-        // After a brief delay, set the source back to reload the GIF
+        // First set to placeholder image
+        setSrc(placeholderSrc);
+        
+        // After a very brief delay, set back to GIF to force reload
         setTimeout(() => {
-            setSrc(originalSrc);
-        }, 50);
+            setSrc(gifSrc);
+            setIsReloading(false);
+        }, 10); // Just enough delay to trigger a reload
     };
 
     return (
@@ -80,7 +99,7 @@ export const Profile = () => {
                             height={150}
                             unoptimized={true}
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                            onClick={() => reloadGif(setLightGifSrc, lightGifPath, '#light-profile-pic')}
+                            onClick={() => reloadGif(true)}
                         />
                         <Image
                             src={darkGifSrc}
@@ -90,7 +109,7 @@ export const Profile = () => {
                             height={150}
                             unoptimized={true}
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                            onClick={() => reloadGif(setDarkGifSrc, darkGifPath, '#dark-profile-pic')}
+                            onClick={() => reloadGif(false)}
                         />
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
@@ -113,7 +132,7 @@ export const Profile = () => {
 
                     <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground"
                         onClick={() => {
-                            window.open('/resume/Abdul Rahman - Resume.pdf', '_blank')
+                            window.open('/abdxdev-resume', '_blank')
                         }}>
                         <p className="font-semibold w-full h-full">
                             RESUME
