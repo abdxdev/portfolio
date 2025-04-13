@@ -42,12 +42,17 @@ const socials = [
 ]
 
 export const Profile = () => {
-    const [lightGifSrc, setLightGifSrc] = useState('/white-bg-r1.gif');
-    const [darkGifSrc, setDarkGifSrc] = useState('/black-bg-r1.gif');
+    const lightGifPath = '/white-bg-r1.gif';
+    const darkGifPath = '/black-bg-r1.gif';
+    
+    const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
+    const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
 
-    const reloadGif = (setSrc: (src: string) => void, src: string, selector: string) => {
-        const timestamp = new Date().getTime();
-        setSrc(`${src}?t=${timestamp}`);
+    const reloadGif = (setSrc: (src: string) => void, originalSrc: string, selector: string) => {
+        // Clear the source entirely to force a complete unload
+        setSrc('');
+        
+        // Add visual feedback with border highlight
         const imageElements = document.querySelectorAll(selector);
         imageElements.forEach((img) => {
             img.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
@@ -55,6 +60,11 @@ export const Profile = () => {
                 img.classList.remove('border-[#ff79c6]');
             }, 1000);
         });
+        
+        // After a brief delay, set the source back to reload the GIF
+        setTimeout(() => {
+            setSrc(originalSrc);
+        }, 50);
     };
 
     return (
@@ -70,7 +80,7 @@ export const Profile = () => {
                             height={150}
                             unoptimized={true}
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                            onClick={() => reloadGif(setLightGifSrc, lightGifSrc, '#light-profile-pic')}
+                            onClick={() => reloadGif(setLightGifSrc, lightGifPath, '#light-profile-pic')}
                         />
                         <Image
                             src={darkGifSrc}
@@ -80,7 +90,7 @@ export const Profile = () => {
                             height={150}
                             unoptimized={true}
                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                            onClick={() => reloadGif(setDarkGifSrc, darkGifSrc, '#dark-profile-pic')}
+                            onClick={() => reloadGif(setDarkGifSrc, darkGifPath, '#dark-profile-pic')}
                         />
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
