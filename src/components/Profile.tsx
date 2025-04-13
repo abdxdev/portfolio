@@ -83,7 +83,7 @@ export const Profile = () => {
             imageElement.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
             setTimeout(() => {
                 imageElement.classList.remove('border-[#ff79c6]');
-            }, 1800);
+            }, 1000);
         }
 
         setSrc(placeholderSrc);
