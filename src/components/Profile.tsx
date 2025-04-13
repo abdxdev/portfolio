@@ -114,57 +114,62 @@ export const Profile = () => {
         <Card className="mb-6">
             <CardContent className="pt-6">
                 <div className="flex flex-col items-start gap-2 ">
-                    <div className="flex flex-row md:flex-col items-center md:items-start w-full gap-4 relative">
-                        <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
-                            <PopoverTrigger asChild>
-                                <div className="relative">
-                                    <Image
-                                        src={lightGifSrc}
-                                        id="light-profile-pic"
-                                        alt="Profile Picture"
-                                        width={150}
-                                        height={150}
-                                        unoptimized={true}
-                                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                                        onClick={() => reloadGif(true)}
-                                    />
-                                </div>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-2 text-center" side="top">
-                                {easterEggMessage}
-                            </PopoverContent>
-                        </Popover>
-
-                        <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
-                            <PopoverTrigger asChild>
-                                <div className="relative">
-                                    <Image
-                                        src={darkGifSrc}
-                                        id="dark-profile-pic"
-                                        alt="Profile Picture"
-                                        width={150}
-                                        height={150}
-                                        unoptimized={true}
-                                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                                        onClick={() => reloadGif(false)}
-                                    />
-                                </div>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-2 text-center" side="top">
-                                {easterEggMessage}
-                            </PopoverContent>
-                        </Popover>
-
+                    <div className="flex flex-row md:flex-col w-full">
+                        <div className="flex-none mr-4 md:mr-0 md:mb-4">
+                            <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
+                                <PopoverTrigger asChild>
+                                    <div className="relative">
+                                        <Image
+                                            src={lightGifSrc}
+                                            id="light-profile-pic"
+                                            alt="Profile Picture"
+                                            width={150}
+                                            height={150}
+                                            unoptimized={true}
+                                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                                            onClick={() => reloadGif(true)}
+                                        />
+                                    </div>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2 text-center" side="top">
+                                    {easterEggMessage}
+                                </PopoverContent>
+                            </Popover>
+                            
+                            <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
+                                <PopoverTrigger asChild>
+                                    <div className="relative">
+                                        <Image
+                                            src={darkGifSrc}
+                                            id="dark-profile-pic"
+                                            alt="Profile Picture"
+                                            width={150}
+                                            height={150}
+                                            unoptimized={true}
+                                            className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                                            onClick={() => reloadGif(false)}
+                                        />
+                                    </div>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2 text-center" side="top">
+                                    {easterEggMessage}
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                        
+                        {/* Text content */}
                         <div className="flex flex-col items-start justify-center">
-                            <h1 className="font-bold md:mt-4 text-xl md:text-2xl">Abdul Rahman</h1>
+                            <h1 className="font-bold md:mt-0 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
                                 Software Developer
                             </p>
                         </div>
                     </div>
+                    
                     <p className="mt-2 text-start text-sm text-muted-foreground">
                         I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
                     </p>
+                    
                     <Button className="mt-2 w-full" asChild>
                         <Link
                             href="mailto:abdulrahman.abd.dev@gmail.com"
@@ -182,6 +187,7 @@ export const Profile = () => {
                             RESUME
                         </p>
                     </Button>
+                    
                     <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
                         {socials.map((s, i) => {
                             const parts = s.link.split('/');
