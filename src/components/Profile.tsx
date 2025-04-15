@@ -122,10 +122,11 @@ export const Profile = () => {
                                         <Image
                                             src={lightGifSrc}
                                             id="light-profile-pic"
-                                            alt="Profile Picture"
+                                            alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
                                             width={150}
                                             height={150}
                                             unoptimized={true}
+                                            loading="eager"
                                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
                                             onClick={() => reloadGif(true)}
                                         />
@@ -142,10 +143,11 @@ export const Profile = () => {
                                         <Image
                                             src={darkGifSrc}
                                             id="dark-profile-pic"
-                                            alt="Profile Picture"
+                                            alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
                                             width={150}
                                             height={150}
                                             unoptimized={true}
+                                            loading="eager"
                                             className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
                                             onClick={() => reloadGif(false)}
                                         />
@@ -161,7 +163,7 @@ export const Profile = () => {
                         <div className="flex flex-col items-start justify-center">
                             <h1 className="font-bold md:mt-0 text-xl md:text-2xl">Abdul Rahman</h1>
                             <p className="text-sm md:text-base text-muted-foreground">
-                                Software Developer
+                                Software Developer & UI/UX Designer
                             </p>
                         </div>
                     </div>

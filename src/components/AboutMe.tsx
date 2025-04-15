@@ -8,21 +8,22 @@ import {
 
 export const AboutMe = ({ id }: { id?: string }) => {
     return (
-        <section id={id}>
+        <section id={id} aria-labelledby="about-heading">
             <Card className="mb-6">
                 <CardHeader>
                     <CardTitle className="flex items-center group">
-                        About Me
-                        <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <h2 id="about-heading">About Me</h2>
+                        <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Link to About Me section">
                             <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
                         </a>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">
-                        {/* Write 1-2 sentences about yourself */}
-                        I am a software developer and designer with expertise in building efficient, user-friendly applications across different platforms. With a focus on problem-solving and creative design, I enjoy crafting innovative solutions that make a difference.
-                    </p>
+                    <div className="prose prose-sm dark:prose-invert text-muted-foreground">
+                        <p>
+                            Software developer and designer specializing in Python, C/C++, Django, Flask, and UI/UX design. Creator of VS Code extensions and innovative software solutions.
+                        </p>
+                    </div>
                 </CardContent>
             </Card>
         </section>
