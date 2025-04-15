@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 
 export function constructMetadata({
-  title = 'Abdul Rahman | Python & Full-Stack Developer | UI/UX Designer',
+  title = 'Abdul Rahman | Software Developer & Designer Portfolio',
   description = "Software developer and designer specializing in Python, C/C++, Django, Flask, and UI/UX design. Creator of VS Code extensions and innovative software solutions.",
-  image = '/thumbnail.png',
-  icons = '/favicon.png',
+  image = '/wfg.png',  // Changed from .svg to .png for better compatibility
+  icons = '/favicon.png', 
   noIndex = false,
   keywords = 'Python developer, C/C++ developer, Django, Flask, UI/UX design, VS Code extensions, software development, graphics design, abdxdev'
 }: {
@@ -25,7 +25,12 @@ export function constructMetadata({
     openGraph: {
       title,
       description,
-      images: [image],
+      images: [{
+        url: image,
+        width: 420,
+        height: 420,
+        alt: 'Abdul Rahman - Software Developer & Designer'
+      }],
       type: 'website',
       locale: 'en_US',
       siteName: 'Abdul Rahman - Developer Portfolio',
@@ -35,7 +40,10 @@ export function constructMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: [image],
+      images: [{
+        url: image,
+        alt: 'Abdul Rahman - Software Developer & Designer'
+      }],
       creator: '@abdxdev'
     },
     icons,
