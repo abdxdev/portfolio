@@ -52,13 +52,14 @@ export function WebsiteSchema() {
           '@type': 'WebSite',
           url: 'https://abd-dev.studio',
           name: 'Abdul Rahman - Software Developer Portfolio',
-          description: "Portfolio of Abdul Rahman (abdxdev), a software developer and UI/UX designer specializing in Python, C/C++, Django, and innovative software solutions",
+          description: "Portfolio of Abdul Rahman (abd), a software developer and UI/UX designer specializing in Python, C/C++, Django, and innovative software solutions",
           author: {
             '@type': 'Person',
             name: 'Abdul Rahman',
             alternateName: 'abdxdev'
           },
-          keywords: 'Python developer, C/C++ developer, Django, Flask, UI/UX design, VS Code extensions, software development, graphics design'
+          keywords: 'Python developer, C/C++ developer, Django, Flask, UI/UX design, VS Code extensions, software development, graphics design',
+          additionalType: 'http://www.productontology.org/id/Software'
         })
       }}
     />

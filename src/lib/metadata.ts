@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 export function constructMetadata({
   title = 'Abdul Rahman | Software Developer & Designer Portfolio',
   description = "Software developer and designer specializing in Python, C/C++, Django, Flask, and UI/UX design. Creator of VS Code extensions and innovative software solutions.",
-  image = '/wfg.png',  // Changed from .svg to .png for better compatibility
+  image = '/wfg.png',
   icons = '/favicon.png', 
   noIndex = false,
   keywords = 'Python developer, C/C++ developer, Django, Flask, UI/UX design, VS Code extensions, software development, graphics design, abdxdev'

@@ -10,8 +10,8 @@ import { constructMetadata } from "@/lib/metadata";
 // Per-page metadata for better SEO
 export const metadata = constructMetadata({
   title: 'Abdul Rahman | Software Developer & UI/UX Designer Portfolio',
-  description: 'Portfolio of Abdul Rahman (abdxdev), a software developer specializing in Python, C/C++, Django, Flask applications and VS Code extensions development with expertise in UI/UX design.',
-  keywords: 'Python developer, C/C++ programmer, Django, Flask, VS Code extensions, abdxdev, UI/UX design, Adobe design, Figma, 10x Pretender, AI LaTeX Helper'
+  description: 'Portfolio of Abdul Rahman (abd), a software developer specializing in Python, C/C++, Django, Flask applications and VS Code extensions development with expertise in UI/UX design.',
+  keywords: 'Python developer, C/C++ programmer, Django, Flask, VS Code extensions, abdxdev, abd, UI/UX design, Adobe design, Figma, 10x Pretender, AI LaTeX Helper',
 });
 
 export default function Home() {
