@@ -14,6 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="google-site-verification" content="hCeXpe7cAWrD1ZYAH3YfCWT80G6rx6AqSkQbMYgmZ3U" />
         <PersonSchema />
         <WebsiteSchema />
         <ProjectsSchema />
