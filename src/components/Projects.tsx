@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, parse } from "@/lib/utils";
 import { ExternalLink, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,10 +39,11 @@ type Project = {
     raw_name: string;
     name: string;
     description: string;
-    language: string;
+    language: string | null;
     html_url: string;
     created_at: string;
     thumbnails: string[];
+    priority?: number;
 };
 
 export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) => {
@@ -87,7 +88,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                 if (!updated[projectIndex]) {
                     updated[projectIndex] = new Set();
                 }
-                updated[projectIndex].add(-1); // Use -1 to represent the default thumbnail
+                updated[projectIndex].add(-1);
                 return updated;
             });
         }
@@ -105,7 +106,15 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                const data: Project[] = await response.json();
+                interface GitHubRepo {
+                    name: string;
+                    description: string | null;
+                    language: string | null;
+                    html_url: string;
+                    created_at: string;
+                }
+
+                const data: GitHubRepo[] = await response.json();
 
                 const snakeToTitle = (str: string) => {
                     str = str.replaceAll("-", " ").replaceAll("_", " ");
@@ -124,28 +133,43 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                 };
 
                 const filteredProjects = data
-                    .filter(
-                        (repo) =>
-                            repo.description &&
-                            repo.description.endsWith(":add")
-                    )
-                    .map((repo) => ({
-                        raw_name: repo.name,
-                        name: camalToTitle(snakeToTitle(repo.name)),
-                        description: repo.description.replace(" :add", ""),
-                        language: repo.language,
-                        html_url: repo.html_url,
-                        created_at: repo.created_at,
-                        thumbnails: Array.from({ length: 5 }, (_, i) =>
-                            `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
-                        )
-                    }));
+                    .filter((repo) => {
+                        if (!repo.description) return false;
+                        const parsedDesc = parse(repo.description);
+                        return parsedDesc.is_parsable;
+                    })
+                    .map((repo) => {
+                        const parsedDesc = parse(repo.description || '');
 
-                filteredProjects.sort(
-                    (a, b) =>
-                        new Date(b.created_at).getTime() - 
-                        new Date(a.created_at).getTime()
-                );
+                        const screenshotCount = typeof parsedDesc.s === 'number' ? parsedDesc.s : 5;
+
+                        const priority = typeof parsedDesc.p === 'number' ? parsedDesc.p : undefined;
+
+                        return {
+                            raw_name: repo.name,
+                            name: camalToTitle(snakeToTitle(repo.name)),
+                            description: parsedDesc.description,
+                            language: repo.language,
+                            html_url: repo.html_url,
+                            created_at: repo.created_at,
+                            priority,
+                            thumbnails: Array.from({ length: screenshotCount }, (_, i) =>
+                                `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                            )
+                        };
+                    });
+
+                filteredProjects.sort((a, b) => {
+                    if (a.priority !== undefined && b.priority !== undefined) {
+                        if (a.priority === b.priority) {
+                            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                        }
+                        return a.priority - b.priority;
+                    }
+                    if (a.priority !== undefined) return -1;
+                    if (b.priority !== undefined) return 1;
+                    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                });
 
                 setProjects(filteredProjects);
                 setIsLoading(false);
@@ -158,7 +182,6 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
         fetchProjects();
     }, [repoName]);
 
-    // Render loading skeletons
     if (isLoading) {
         return (
             <section id={id}>
@@ -195,7 +218,6 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {projects.slice(0, visibleCount).map((project, projectIndex) => {
-                    // Determine if all images have failed or if there are no images
                     const allImagesFailed = project.thumbnails.every(
                         (_, imageIndex) => failedImages[projectIndex]?.has(imageIndex)
                     );
@@ -293,7 +315,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                                             <div
                                                 className={cn(
                                                     "size-4 rounded-full",
-                                                    techColors[project.language] ||
+                                                    project.language ? techColors[project.language] : techColors.Default ||
                                                     techColors.Default
                                                 )}
                                             />
@@ -323,7 +345,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                         variant="ghost"
                         onClick={() => setVisibleCount(visibleCount + 4)}
                     >
-                        <p className="font-semibold w-full h-full">Load More</p>
+                        Load More
                     </Button>
                 </div>
             )}
