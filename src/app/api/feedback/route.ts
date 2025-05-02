@@ -1,24 +1,23 @@
-import { Pool } from 'pg';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { getPool, initDatabase } from '@/lib/db/init';
 
-const pool = new Pool({
-    connectionString: process.env.POSTGRES_URL
-});
+const pool = getPool();
+initDatabase().catch(err => console.error('Failed to initialize database:', err));
 
 export async function POST(request: Request) {
     try {
         const { feedback, sentiment, createdAt } = await request.json();
+
+        if (typeof feedback !== 'string' || typeof sentiment !== 'string' || typeof createdAt !== 'string') {
+            return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+        }
 
         const cookieStore = await cookies();
         let sessionId = cookieStore.get('feedback_session')?.value;
         if (!sessionId) {
             sessionId = crypto.randomUUID();
             cookieStore.set('feedback_session', sessionId);
-        }
-
-        if (typeof feedback !== 'string' || typeof sentiment !== 'string' || typeof createdAt !== 'string') {
-            return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
         }
 
         const query = {
@@ -28,7 +27,10 @@ export async function POST(request: Request) {
 
         await pool.query(query);
 
-        return NextResponse.json({ message: 'Feedback submitted successfully' }, { status: 201 });
+        const response = NextResponse.json({ message: 'Feedback submitted successfully' }, { status: 201 });
+        response.cookies.set('feedback_session', sessionId);
+
+        return response;
     } catch (error) {
         console.error('Error submitting feedback:', error);
         return NextResponse.json({ error: 'Error submitting feedback' }, { status: 500 });

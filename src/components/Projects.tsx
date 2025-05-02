@@ -4,9 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn, parse } from "@/lib/utils";
-import { ExternalLink, LinkIcon } from "lucide-react";
+import { Github, Globe, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Carousel,
   CarouselContent,
@@ -163,7 +164,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
               workingOn,
               thumbnails: screenshotCount > 0
                 ? Array.from({ length: screenshotCount }, (_, i) =>
-                  `https://github.com/${repoName}/${repo.name}/blob/main/screenshots/screenshot_${i + 1}.png?raw=true`
+                  `https://raw.githubusercontent.com/${repoName}/${repo.name}/main/screenshots/screenshot_${i + 1}.png`
                 )
                 : []
             };
@@ -312,28 +313,26 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                     </CarouselContent>
                   </Carousel>
                   <div className="flex justify-between items-start mb-1">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={project.html_url}
-                        className="font-semibold text-primary hover:underline"
-                      >
-                        {project.name}
-                      </Link>
-
+                    <Link
+                      href={project.html_url}
+                      className="font-semibold text-primary hover:underline"
+                    >
+                      {project.name}
                       {project.priority === 0 && (
-                        <span className="text-yellow-500" title="Featured Project">★</span>
+                        <span className="text-yellow-500 ml-2" title="Featured Project">★</span>
                       )}
-                    </div>
+                    </Link>
+
                     <div className="flex gap-1.5 items-center">
                       {project.workingOn && (
-                        <span className="text-xs bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded-full font-medium">
+                        <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30">
                           Active
-                        </span>
+                        </Badge>
                       )}
                       {project.isUniversityProject && (
-                        <span className="text-xs bg-blue-500/20 dark:bg-blue-600/30 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded-full font-medium">
+                        <Badge className="bg-blue-500/20 dark:bg-blue-600/30 text-blue-700 dark:text-blue-400 hover:bg-blue-500/30">
                           University
-                        </span>
+                        </Badge>
                       )}
                     </div>
                   </div>
@@ -353,7 +352,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                         {project.language}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                       {project.homepage && (
                         <Link
                           href={project.homepage}
@@ -361,16 +360,16 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Visit Site
-                          <ExternalLink className="inline-block size-3" />
+                          <Globe className="size-4" />
+                          <span>Site</span>
                         </Link>
                       )}
                       <Link
                         href={project.html_url}
                         className="flex items-center gap-1 text-sm text-primary hover:underline"
                       >
-                        View Project
-                        <ExternalLink className="inline-block size-3" />
+                        <Github className="size-4" />
+                        <span>GitHub</span>
                       </Link>
                     </div>
                   </div>
