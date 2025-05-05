@@ -184,19 +184,17 @@
 	\kern 0.25 cm%
 	\AND%
 	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{tel:+92-312-4996133}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 312 4996133}}%
-	\kern 0.25 cm%
-	\AND%
-	\kern 0.25 cm%
+	\mbox{\hrefWithoutArrow{tel:+92-320-1002771}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 320 1002771}}%
+    \\
 	\mbox{\hrefWithoutArrow{https://abd-dev.studio/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}abd-dev.studio}}%
 	\kern 0.25 cm%
 	\AND%
 	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}%
+	\mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}%
 	\kern 0.25 cm%
 	\AND%
 	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}%
+	\mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}%
 \end{header}
 
 % \section{About Me}
@@ -224,8 +222,8 @@
     \renewcommand{\arraystretch}{} % Adjusts row spacing
     \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
     \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
-        \textbf{Programming Languages:}    & Python, C++, C, JavaScript, SQL, C\#.                    \\
-        \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet.   \\
+        \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                    \\
+        \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js, Tailwind CSS.   \\
         \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.      \\
         \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access. \\
         % \textbf{UI/UX:}                    & Adobe Illustrator, Adobe Photoshop, Figma.               \\
@@ -248,106 +246,41 @@
     
 \section{Projects}
 
-    \createpointblock{10x Pretender\href{https://github.com/abdxdev/10x-Pretender}{}}{}
-    {Tech Stack: TypeScript, VSCode API}{}
-    {%
-        \item Built a VSCode extension to make you look like a coding genius by simulating realistic typing from your clipboard.
-    }
+% VSCode Extensions
+\textbf{VSCode Extensions}
+\begin{highlights}
+    \item \textbf{AI Regex Search} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool. \href{https://github.com/abdxdev/ai-regex-search}{}
+    \item \textbf{10x Pretender} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging. \href{https://github.com/abdxdev/10x-Pretender}{}
+    \item \textbf{AI LaTeX Helper} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX. \href{https://github.com/abdxdev/AI-LaTeX-Helper}{}
+\end{highlights}
 
-    \vspace{0.2 cm}
+\vspace{0.2 cm}
 
-    \createpointblock{AI LaTeX Helper\href{https://github.com/abdxdev/AI-LaTeX-Helper}{}}{}
-    {Tech Stack: TypeScript, VSCode API, Gemini}{}
-    {%
-    \item Developed a VSCode extension to assist users in writing LaTeX documents using AI-based suggestions.
-    }
-    
-    \vspace{0.2 cm}
-    
-    \createpointblock{Context Menu Plugin Manager\href{https://github.com/abdxdev/Context-Menu-Plugin-Manager}{}}{}
-    {Tech Stack: Python, Flet}{}
-    {%
-        \item Created a Python-based utility to manage context menu plugins for extending functionality in various directories.
-    }
+% Desktop Applications
+\textbf{Desktop Applications}
+\begin{highlights}
+    \item \textbf{Context Menu Plugin Manager} (Python, Flet): Developed a desktop app that allows users to manage and extend Windows context menus with custom Python plugins for enhanced directory actions. \href{https://github.com/abdxdev/Context-Menu-Plugin-Manager}{}
+    \item \textbf{AMOS} (C\#, WinUI 3): Designed a modern restaurant management system enabling seamless order processing and administration for customers, managers, and admins. \href{https://github.com/abdxdev/AMOS}{}
+    \item \textbf{Prize Bond Finder} (Python): Created a user-friendly desktop tool for efficiently managing, searching, and tracking prize bonds with a simple interface. \href{https://github.com/abdxdev/prize-bond-finder}{}
+\end{highlights}
 
-    \vspace{0.2 cm}
+\vspace{0.2 cm}
 
-    \createpointblock{Terminal Based Rich Text Editor\href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{}}{}
-    {Tech Stack: C++}{}
-    {%
-        \item Built a C++ application to edit rich text files in the terminal with features like syntax highlighting and formatting.
-    }
+% Web Applications
+\textbf{Web Applications}
+\begin{highlights}
+    \item \textbf{Odoo Lens} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights. \href{https://github.com/abdxdev/odoo-lens}{}
+    \item \textbf{Markdown Badge Generator} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs. \href{https://github.com/abdxdev/Markdown-badge-generator}{}
+    \item \textbf{Recurrence Relation Solver} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation. \href{https://github.com/abdxdev/Recurrence-Relation-Solver}{}
+\end{highlights}
 
-    \vspace{0.2 cm}
+\vspace{0.2 cm}
 
-    \createpointblock{Automated Menu Ordering System\href{https://github.com/abdxdev/Automated-Menu-Ordering-System}{}}{}
-    {Tech Stack: C\#, WinUI 3}{}
-    {%
-        \item Built a .NET application using WinUI 3 to automate the process of ordering food from a menu.
-    }
-
-    \vspace{0.2 cm}
-
-    \createpointblock{HiAnime to MyAnimeList Transfer Tool\href{https://github.com/abdxdev/hianime-to-myanimelist}{}}{}
-    {Tech Stack: Python, Django, HTML, CSS, JavaScript}{}
-    {%
-        \item Streamlined the process of transferring anime lists from HiAnime to MyAnimeList using a Django web application.
-    }
-
-    \vspace{0.2 cm}
-
-    % \createpointblock{Google Classroom Notifications System\href{https://github.com/abdxdev/Google_Classroom_API}{}}{}
-    % {Tech Stack: Python, Django, Google Classroom API}{}
-    % {%
-    % 	\item Designed a Django-based API to send notifications for new assignments and announcements on Google Classroom.
-    % }
-
-    % \vspace{0.2 cm}
-
-    \createpointblock{WhatsApp API Integration System\href{https://github.com/abdxdev/Whatsapp_API}{}}{}
-    {Tech Stack: Python, Django, OpenAI's GPT}{}
-    {%
-        \item Engineered a Django-based API to integrate WhatsApp with OpenAI's GPT-3 for generating responses.
-    }
-
-    \vspace{0.2 cm}
-
-    \createpointblock{Markdown Badge Generator\href{https://github.com/abdxdev/Markdown-badge-generator}{}}{}
-    {Tech Stack: Python, Streamlit}{}
-    {%
-        \item Streamlined the process of generating markdown badges for markdown files using a Streamlit web application.
-    }
-
-    \vspace{0.2 cm}
-
-    % \createpointblock{Prize Bond Finder\href{https://github.com/abdxdev/prize-bond-finder}{}}{}
-    % {Tech Stack: Python, Tkinter}{}
-    % {%
-    % 	\item Developed a desktop application to streamline the management and tracking of prize bonds.
-    % }
-
-    % \vspace{0.2 cm}
-
-    % \createpointblock{Student Management System\href{https://github.com/abdxdev/LMS-Semester-Project}{}}{}
-    % {Tech Stack: C++}{}
-    % {%
-    % 	\item Created a C++ application to manage student records, courses, grades, assignments, and co-curricular activities.
-    % }
-
-    % \vspace{0.2 cm}
-
-    % \createpointblock{Car Rental Management System\href{https://github.com/abdxdev/Car-Rental-Management-System}{}}{}
-    % {Tech Stack: C++}{}
-    % {%
-    % 	\item Developed a C++ application to manage car rentals, customer records, and bookings.
-    % }
-
-    % \vspace{0.2 cm}
-
-    \createpointblock{Minecraft Hotkey Map Generator\href{https://github.com/abdxdev/minecraft-hotkey-map}{}}{}
-    {Tech Stack: Python}{}
-    {%
-        \item Designed a Python script to generate a map of hotkeys for Minecraft based on the user's keybinds.
-    }
+% Utilities & Tools
+\textbf{Utilities \& Tools}
+\begin{highlights}
+    \item \textbf{Terminal Based Rich Text Editor} (C++): Engineered a fast terminal editor featuring autosuggestions, undo/redo, and customizable shortcuts for efficient text editing. \href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{}
+    \item \textbf{Console Utility} (C++): Developed a C++ library offering advanced console text formatting and cursor control utilities for terminal applications. \href{https://github.com/abdxdev/Console-Utility}{}
+\end{highlights}
 
 \end{document}
