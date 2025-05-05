@@ -14,6 +14,15 @@ interface Project {
   workingOn?: boolean;
 }
 
+interface GitHubRepo {
+  name: string;
+  description: string | null;
+  language: string | null;
+  html_url: string;
+  homepage: string | null;
+  created_at: string;
+}
+
 const snakeToTitle = (str: string) => {
   str = str.replaceAll("-", " ").replaceAll("_", " ");
   return str
@@ -38,15 +47,15 @@ async function getGithubProjects(username: string): Promise<Project[]> {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
-  const data = await response.json();
+  const data: GitHubRepo[] = await response.json();
 
   const filteredProjects = data
-    .filter((repo: any) => {
+    .filter((repo: GitHubRepo) => {
       if (!repo.description) return false;
       const parsedDesc = parse(repo.description);
       return parsedDesc.is_parsable;
     })
-    .map((repo: any) => {
+    .map((repo: GitHubRepo) => {
       const parsedDesc = parse(repo.description || '');
 
       const screenshotCount = typeof parsedDesc.s === 'number' ? parsedDesc.s : 0;
