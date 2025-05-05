@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { cn, parse } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Github, Globe, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -103,86 +103,15 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://api.github.com/users/${repoName}/repos`
+          `/api/projects?source=github&username=${repoName}`
         );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        interface GitHubRepo {
-          name: string;
-          description: string | null;
-          language: string | null;
-          html_url: string;
-          homepage: string | null;
-          created_at: string;
-        }
-
-        const data: GitHubRepo[] = await response.json();
-
-        const snakeToTitle = (str: string) => {
-          str = str.replaceAll("-", " ").replaceAll("_", " ");
-          return str
-            .split(" ")
-            .map((word) =>
-              word.replace(word[0], word[0].toUpperCase())
-            )
-            .join(" ");
-        };
-        const camalToTitle = (str: string) => {
-          if (str.includes("LaTeX")) {
-            return str;
-          }
-          return str.replace(/([a-z])([A-Z])/g, "$1 $2");
-        };
-
-        const filteredProjects = data
-          .filter((repo) => {
-            if (!repo.description) return false;
-            const parsedDesc = parse(repo.description);
-            return parsedDesc.is_parsable;
-          })
-          .map((repo) => {
-            const parsedDesc = parse(repo.description || '');
-
-            const screenshotCount = typeof parsedDesc.s === 'number' ? parsedDesc.s : 0;
-            const priority = typeof parsedDesc.p === 'number' ? parsedDesc.p : undefined;
-            const isUniversityProject = parsedDesc.m === true;
-            const workingOn = parsedDesc.w === true;
-
-            return {
-              raw_name: repo.name,
-              name: camalToTitle(snakeToTitle(repo.name)),
-              description: parsedDesc.description,
-              language: repo.language,
-              html_url: repo.html_url,
-              homepage: repo.homepage,
-              created_at: repo.created_at,
-              priority,
-              isUniversityProject,
-              workingOn,
-              thumbnails: screenshotCount > 0
-                ? Array.from({ length: screenshotCount }, (_, i) =>
-                  `https://raw.githubusercontent.com/${repoName}/${repo.name}/main/screenshots/screenshot_${i + 1}.png`
-                )
-                : []
-            };
-          });
-
-        filteredProjects.sort((a, b) => {
-          if (a.priority !== undefined && b.priority !== undefined) {
-            if (a.priority === b.priority) {
-              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-            }
-            return a.priority - b.priority;
-          }
-          if (a.priority !== undefined) return -1;
-          if (b.priority !== undefined) return 1;
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
-
-        setProjects(filteredProjects);
+        const data = await response.json();
+        setProjects(data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching repositories:", error);

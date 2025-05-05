@@ -37,8 +37,16 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const password = searchParams.get('password');
+        const adminPassword = process.env.ADMIN_PASSWORD;
+
+        if (!adminPassword || !password || password !== adminPassword) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const result = await pool.query('SELECT * FROM feedbacks ORDER BY created_at DESC LIMIT $1', [100]);
         return NextResponse.json(result.rows);
     } catch (error) {

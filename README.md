@@ -12,6 +12,7 @@ A modern, responsive portfolio website built with Next.js, Tailwind CSS, shadcn/
 - **Dynamic Project Gallery**: Interactive project cards with image carousel and popup view
 - **GitHub Integration**: Automatically fetches and displays GitHub repositories
 - **Modern UI Components**: Built with shadcn/ui for consistent, accessible design
+- **Visitor Feedback**: Interactive feedback system allowing visitors to leave comments and reviews
 
 ## Installation
 
@@ -19,7 +20,7 @@ A modern, responsive portfolio website built with Next.js, Tailwind CSS, shadcn/
 
    ```bash
    git clone https://github.com/abdxdev/portfolio.git
-   cd portfolio-website
+   cd portfolio
    ```
 
 2. Install dependencies:
@@ -32,14 +33,11 @@ A modern, responsive portfolio website built with Next.js, Tailwind CSS, shadcn/
    pnpm install
    ```
 
-3. Install required shadcn/ui components:
+3. Set up the database:
 
-   ```bash
-   npx shadcn-ui@latest add dialog
-   npx shadcn-ui@latest add skeleton
-   npx shadcn-ui@latest add scroll-area
-   npx shadcn-ui@latest add carousel
-   ```
+   - Create a new database for the portfolio
+   - Execute the SQL schema from `src/lib/db/schema.sql`
+   - Create a `.env` file with your database connection details
 
 4. Run the development server:
 

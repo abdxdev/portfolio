@@ -6,20 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, LinkIcon, ArrowBigUp, ArrowBigDown, Loader2 } from "lucide-react";
 
-export const Feedback = ({ id }: { id?: string }) => {
+export const Feedback = ({ id, adminToken }: { id?: string, adminToken?: string }) => {
   const [feedback, setFeedback] = useState("");
   const [sentiment, setSentiment] = useState<"upvote" | "downvote" | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     if (!feedback && !sentiment) return;
-
+    setError(null);
     setIsSubmitting(true);
+
     try {
       const response = await fetch('/api/feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(adminToken ? { 'Authorization': `Bearer ${adminToken}` } : {})
         },
         body: JSON.stringify({
           feedback,
@@ -31,9 +34,13 @@ export const Feedback = ({ id }: { id?: string }) => {
       if (response.ok) {
         setFeedback("");
         setSentiment(null);
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Failed to submit feedback');
       }
     } catch (error) {
       console.error('Error submitting feedback:', error);
+      setError('Failed to submit feedback');
     } finally {
       setIsSubmitting(false);
     }
@@ -75,6 +82,9 @@ export const Feedback = ({ id }: { id?: string }) => {
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
             />
+            {error && (
+              <p className="text-sm text-red-500">{error}</p>
+            )}
             <Button
               className="w-full flex items-center justify-center"
               onClick={handleSubmit}
@@ -86,7 +96,7 @@ export const Feedback = ({ id }: { id?: string }) => {
               ) : (
                 <Send />
               )}
-              Send Anonymously
+              Send {adminToken ? '' : 'Anonymously'}
             </Button>
           </div>
         </CardContent>
