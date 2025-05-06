@@ -2,7 +2,6 @@ import { Pool } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
-// Create a singleton pool that can be reused across API calls
 let pool: Pool | null = null;
 
 export const getPool = () => {
@@ -25,18 +24,4 @@ export async function initDatabase() {
     console.error('Error initializing database:', error);
     return false;
   }
-}
-
-// Export a cleanup function for use in development or testing
-export async function closePool() {
-  if (pool) {
-    await pool.end();
-    pool = null;
-    console.log('Database connection pool closed');
-  }
-}
-
-// Only run init on direct execution (not when imported)
-if (require.main === module) {
-  initDatabase().then(() => closePool());
 }

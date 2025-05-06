@@ -183,7 +183,7 @@ export const Profile = () => {
 
           <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground"
             onClick={() => {
-              window.open('/abdxdev-resume.pdf', '_blank')
+              window.open('/resume', '_blank')
             }}>
             <p className="font-semibold w-full h-full">
               RESUME

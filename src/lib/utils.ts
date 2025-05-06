@@ -27,7 +27,7 @@ export function parse(string: string): {
   description: string;
   [key: string]: boolean | string | number;
 } {
-  const result: { 
+  const result: {
     is_parsable: boolean;
     description: string;
     [key: string]: boolean | string | number;
@@ -53,8 +53,7 @@ export function parse(string: string): {
 
   const description = parts[0];
   const markerParts = parts.slice(1);
-  
-  // Check if any marker part contains spaces
+
   for (const part of markerParts) {
     if (part.trim() && part.includes(" ")) {
       return result;
@@ -63,20 +62,18 @@ export function parse(string: string): {
 
   result.is_parsable = true;
   result.description = description.trim();
-  
+
   for (const part of markerParts) {
     const trimmedPart = part.trim();
     if (!trimmedPart) {
       continue;
     }
-    
-    // Handle bare number case
+
     if (/^\d+$/.test(trimmedPart)) {
       result.number = parseInt(trimmedPart, 10);
       continue;
     }
 
-    // Handle letter marker with optional number
     const match = trimmedPart.match(/^([a-zA-Z]+)(\d+)?$/);
     if (match) {
       const [, marker, value] = match;

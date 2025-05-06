@@ -1,0 +1,260 @@
+[
+    {
+        "category": "Programming Languages",
+        "description": "Languages I write software in daily.",
+        "skills": [
+            {
+                "name": "Python",
+                "portfolio": true
+            },
+            {
+                "name": "C/C++",
+                "portfolio": true
+            },
+            {
+                "name": "C#",
+                "portfolio": true
+            },
+            {
+                "name": "JavaScript",
+                "portfolio": true
+            },
+            {
+                "name": "Typescript",
+                "portfolio": true
+            },
+            {
+                "name": "SQL",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Markup Languages",
+        "description": "Languages for structuring content.",
+        "skills": [
+            {
+                "name": "HTML",
+                "portfolio": false
+            },
+            {
+                "name": "XML",
+                "portfolio": false
+            },
+            {
+                "name": "Markdown",
+                "portfolio": false
+            },
+            {
+                "name": "LaTeX",
+                "portfolio": true
+            }
+        ]
+    },
+    {
+        "category": "Style Sheet Languages",
+        "description": "Languages for styling web pages.",
+        "skills": [
+            {
+                "name": "CSS",
+                "portfolio": false
+            },
+            {
+                "name": "Tailwind CSS",
+                "portfolio": true
+            }
+        ]
+    },
+    {
+        "category": "IDEs",
+        "description": "Tools for writing and debugging code.",
+        "skills": [
+            {
+                "name": "VS Code",
+                "portfolio": false
+            },
+            {
+                "name": "Visual Studio",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Version Control",
+        "description": "Tools for source code management.",
+        "skills": [
+            {
+                "name": "Git",
+                "portfolio": false
+            },
+            {
+                "name": "Github",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Frameworks & Libraries",
+        "description": "Frameworks and libraries I use to build applications.",
+        "skills": [
+            {
+                "name": "Django",
+                "portfolio": true
+            },
+            {
+                "name": "Flask",
+                "portfolio": true
+            },
+            {
+                "name": "Streamlit",
+                "portfolio": true
+            },
+            {
+                "name": "Tkinter",
+                "portfolio": false
+            },
+            {
+                "name": "Flet",
+                "portfolio": true
+            },
+            {
+                "name": "Reflex",
+                "portfolio": false
+            },
+            {
+                "name": "Next.js",
+                "portfolio": true
+            },
+            {
+                "name": "Win UI 3",
+                "portfolio": true
+            }
+        ]
+    },
+    {
+        "category": "DevOps & CI/CD",
+        "description": "Tools for deployment and automation.",
+        "skills": [
+            {
+                "name": "Docker",
+                "portfolio": false
+            },
+            {
+                "name": "Vercel",
+                "portfolio": false
+            },
+            {
+                "name": "Render",
+                "portfolio": false
+            },
+            {
+                "name": "Azure",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Databases",
+        "description": "Database systems I work with.",
+        "skills": [
+            {
+                "name": "MySQL",
+                "portfolio": false
+            },
+            {
+                "name": "PostgreSQL",
+                "portfolio": false
+            },
+            {
+                "name": "SQLite",
+                "portfolio": false
+            },
+            {
+                "name": "Microsoft SQL Server",
+                "portfolio": false
+            },
+            {
+                "name": "Access",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "APIs & Integrations",
+        "description": "APIs and integration platforms I've used.",
+        "skills": [
+            {
+                "name": "OpenAI",
+                "portfolio": false
+            },
+            {
+                "name": "Discord",
+                "portfolio": false
+            },
+            {
+                "name": "WhatsApp",
+                "portfolio": false
+            },
+            {
+                "name": "Google",
+                "portfolio": false
+            },
+            {
+                "name": "Github",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Graphics & Design",
+        "description": "Tools for design and graphics.",
+        "skills": [
+            {
+                "name": "Adobe Illustrator",
+                "portfolio": false
+            },
+            {
+                "name": "Adobe Photoshop",
+                "portfolio": false
+            },
+            {
+                "name": "Adobe Premiere Pro",
+                "portfolio": false
+            },
+            {
+                "name": "Adobe After Effects",
+                "portfolio": false
+            },
+            {
+                "name": "Figma",
+                "portfolio": false
+            },
+            {
+                "name": "Spline",
+                "portfolio": false
+            },
+            {
+                "name": "Blender",
+                "portfolio": false
+            }
+        ]
+    },
+    {
+        "category": "Platforms & Operating Systems",
+        "description": "Operating systems and platforms I develop on.",
+        "skills": [
+            {
+                "name": "Windows",
+                "portfolio": false
+            },
+            {
+                "name": "Linux",
+                "portfolio": false
+            },
+            {
+                "name": "Android",
+                "portfolio": false
+            }
+        ]
+    }
+]

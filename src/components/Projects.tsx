@@ -8,6 +8,7 @@ import { Github, Globe, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Project } from "@/types/project";
 import {
   Carousel,
   CarouselContent,
@@ -34,20 +35,6 @@ const techColors: Record<string, string> = {
   "TSQL": "bg-blue-500",
   "Default": "bg-gray-500",
   "TypeScript": "bg-blue-500",
-};
-
-type Project = {
-  raw_name: string;
-  name: string;
-  description: string;
-  language: string | null;
-  html_url: string;
-  homepage: string | null;
-  created_at: string;
-  thumbnails: string[];
-  priority?: number;
-  isUniversityProject?: boolean;
-  workingOn?: boolean;
 };
 
 export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) => {
@@ -185,12 +172,12 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                               <CardContent className="p-0">
                                 <div className="aspect-video overflow-hidden relative">
                                   <Image
-                                    src={`https://opengraph.githubassets.com/1/${repoName}/${project.raw_name}`}
+                                    src={project.default_image_url}
                                     alt="Default Thumbnail"
                                     width={400}
                                     height={300}
                                     className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
-                                    onClick={() => openImageDialog(projectIndex, project.name, true)}
+                                    onClick={() => openImageDialog(projectIndex, project.title, true)}
                                   />
                                 </div>
                               </CardContent>
@@ -229,7 +216,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                                         onError={() =>
                                           handleImageError(projectIndex, imageIndex)
                                         }
-                                        onClick={() => openImageDialog(projectIndex, project.name)}
+                                        onClick={() => openImageDialog(projectIndex, project.title)}
                                       />
                                     </div>
                                   </CardContent>
@@ -243,10 +230,10 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                   </Carousel>
                   <div className="flex justify-between items-start mb-1">
                     <Link
-                      href={project.html_url}
+                      href={project.repo.html_url}
                       className="font-semibold text-primary hover:underline"
                     >
-                      {project.name}
+                      {project.title}
                       {project.priority === 0 && (
                         <span className="text-yellow-500 ml-2" title="Featured Project">★</span>
                       )}
@@ -266,25 +253,25 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1 mb-4">
-                    {project.description}
+                    {project.repo.description}
                   </p>
                   <div className="mt-auto flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div
                         className={cn(
                           "size-4 rounded-full",
-                          project.language ? techColors[project.language] : techColors.Default ||
+                          project.repo.language ? techColors[project.repo.language] : techColors.Default ||
                             techColors.Default
                         )}
                       />
                       <span className="text-xs font-medium text-muted-foreground">
-                        {project.language}
+                        {project.repo.language}
                       </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      {project.homepage && (
+                      {project.repo.homepage && (
                         <Link
-                          href={project.homepage}
+                          href={project.repo.homepage}
                           className="flex items-center gap-1 text-sm text-primary hover:underline"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -294,7 +281,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                         </Link>
                       )}
                       <Link
-                        href={project.html_url}
+                        href={project.repo.html_url}
                         className="flex items-center gap-1 text-sm text-primary hover:underline"
                       >
                         <Github className="size-4" />
@@ -344,7 +331,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                   {failedImages[selectedProjectIndex]?.has(-1) && (
                     <CarouselItem className="flex items-center justify-center">
                       <Image
-                        src={`https://opengraph.githubassets.com/1/${repoName}/${projects[selectedProjectIndex].raw_name}`}
+                        src={projects[selectedProjectIndex].default_image_url}
                         alt={selectedName || "Default Thumbnail"}
                         width={1920}
                         height={1080}

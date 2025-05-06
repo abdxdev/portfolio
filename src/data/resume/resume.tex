@@ -19,7 +19,7 @@
 \usepackage{fontawesome5} % for using icons
 \usepackage{amsmath} % for math
 \usepackage[
-    pdftitle={Abdul Rahman - Resume},
+    pdftitle={Abdul Rahman (abdxdev) - Resume},
     pdfauthor={Abdul Rahman},
     pdfcreator={Abdul Rahman},
     colorlinks=true,
@@ -36,6 +36,7 @@
 \usepackage{iftex} % check if engine is pdflatex, xetex or luatex
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage[normalem]{ulem} % for better underlines
 
 % Ensure that generate pdf is machine readable/ATS parsable:
 \ifPDFTeX
@@ -102,9 +103,9 @@
 
 \newenvironment{onecolentry}{
     \begin{adjustwidth}{
-        0.2 cm + 0.00001 cm
+        0.2 cm
     }{
-        0.2 cm + 0.00001 cm
+        0.2 cm
     }
 }{
     \end{adjustwidth}
@@ -126,8 +127,8 @@
     \par\kern\topsep
 } % new environment for the header
 
-\newcommand{\createpointblock}[5]{%
-    \begin{twocolentry}{%
+\newcommand{\createpointblock}[5]{
+    \begin{twocolentry}{
         \textit{#2}
 
         \textit{#4}}
@@ -159,7 +160,8 @@
 \let\hrefWithoutArrow\href
 
 % new command for external links:
-\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{}{\textcolor{black}{\uline{#2}}\raisebox{.15ex}{}}}}
+% \renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
 
 \begin{document}
 \newcommand{\AND}{\unskip
@@ -176,25 +178,25 @@
 	\vspace{0.3 cm}
 
 	\normalsize
-	\mbox{\hrefWithoutArrow{https://www.google.com/maps/place/Lahore,+Pakistan}{\color{black}{\footnotesize\faMapMarker*}\hspace*{0.13cm}Lahore, Pakistan}}%
-	\kern 0.25 cm%
-	\AND%
-	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{mailto:abdulrahman.abd.dev@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}abdulrahman.abd.dev@gmail.com}}%
-	\kern 0.25 cm%
-	\AND%
-	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{tel:+92-320-1002771}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 320 1002771}}%
+	\mbox{\hrefWithoutArrow{https://www.google.com/maps/place/Lahore,+Pakistan}{\color{black}{\footnotesize\faMapMarker*}\hspace*{0.13cm}Lahore, Pakistan}}
+	\kern 0.25 cm
+	\AND
+	\kern 0.25 cm
+	\mbox{\hrefWithoutArrow{mailto:abdulrahman.abd.dev@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}abdulrahman.abd.dev@gmail.com}}
+	\kern 0.25 cm
+	\AND
+	\kern 0.25 cm
+	\mbox{\hrefWithoutArrow{tel:+92-320-1002771}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 320 1002771}}
     \\
-	\mbox{\hrefWithoutArrow{https://abd-dev.studio/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}abd-dev.studio}}%
-	\kern 0.25 cm%
-	\AND%
-	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}%
-	\kern 0.25 cm%
-	\AND%
-	\kern 0.25 cm%
-	\mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}%
+	\mbox{\hrefWithoutArrow{https://abd-dev.studio/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}abd-dev.studio}}
+	\kern 0.25 cm
+	\AND
+	\kern 0.25 cm
+	\mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}
+	\kern 0.25 cm
+	\AND
+	\kern 0.25 cm
+	\mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}
 \end{header}
 
 % \section{About Me}
@@ -213,22 +215,29 @@
 
     \createpointblock{University of Engineering and Technology, Lahore}{Sept 2023 - Present}{BS in Computer Science}{}
     {%
-        \item CGPA: 3.6/4.0
+        \item CGPA: 3.55/4.0
         % \item \textbf{Coursework:} Data Structures, Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Artificial Intelligence, Machine Learning
     }
 
 \section{Technical Skills}
 
-    \renewcommand{\arraystretch}{} % Adjusts row spacing
-    \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
-    \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
-        \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                    \\
-        \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js, Tailwind CSS.   \\
-        \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.      \\
-        \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access. \\
-        % \textbf{UI/UX:}                    & Adobe Illustrator, Adobe Photoshop, Figma.               \\
-        \textbf{Markup and Style:}         & HTML, CSS, Markdown, LaTeX.                              \\
-    \end{tabularx}
+    % \renewcommand{\arraystretch}{} % Adjusts row spacing
+    % \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
+    % \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
+    %     \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                                      \\
+    %     \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js.                 \\
+    %     \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.                                    \\
+    %     \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access.                               \\
+    %     \textbf{Markup and Style:}         & HTML, CSS, Tailwind CSS, Markdown, LaTeX.                                              \\
+    % \end{tabularx}
+
+    \begin{itemize}
+        \item \textbf{Programming Languages:} Developed robust applications and scripts using Python, C++, C, JavaScript, TypeScript, SQL, and C\#, gaining strong problem-solving and algorithmic skills across multiple paradigms.
+        \item \textbf{Frameworks and Libraries:} Built scalable web and desktop solutions with Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, and Next.js, learning to architect full-stack systems and user interfaces.
+        \item \textbf{DevOps Tools:} Automated deployments and version control using Docker, Git, GitHub, GitLab, Vercel, Render, and Azure, which taught me best practices in CI/CD and collaborative development.
+        \item \textbf{Databases:} Designed and managed relational databases with PostgreSQL, MySQL, SQLite, Microsoft SQL Server, and Access, deepening my understanding of data modeling, querying, and optimization.
+        \item \textbf{Markup and Style:} Created responsive and visually appealing interfaces using HTML, CSS, Tailwind CSS, Markdown, and LaTeX, enhancing my skills in web design and technical documentation.
+    \end{itemize}
 
 \section{Experience}
 
@@ -249,9 +258,9 @@
 % VSCode Extensions
 \textbf{VSCode Extensions}
 \begin{highlights}
-    \item \textbf{AI Regex Search} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool. \href{https://github.com/abdxdev/ai-regex-search}{}
-    \item \textbf{10x Pretender} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging. \href{https://github.com/abdxdev/10x-Pretender}{}
-    \item \textbf{AI LaTeX Helper} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX. \href{https://github.com/abdxdev/AI-LaTeX-Helper}{}
+    \item \textbf{\href{https://github.com/abdxdev/ai-regex-search}{AI Regex Search}} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool.
+    \item \textbf{\href{https://github.com/abdxdev/10x-Pretender}{10x Pretender}} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging.
+    \item \textbf{\href{https://github.com/abdxdev/AI-LaTeX-Helper}{AI LaTeX Helper}} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX.
 \end{highlights}
 
 \vspace{0.2 cm}
@@ -259,9 +268,9 @@
 % Desktop Applications
 \textbf{Desktop Applications}
 \begin{highlights}
-    \item \textbf{Context Menu Plugin Manager} (Python, Flet): Developed a desktop app that allows users to manage and extend Windows context menus with custom Python plugins for enhanced directory actions. \href{https://github.com/abdxdev/Context-Menu-Plugin-Manager}{}
-    \item \textbf{AMOS} (C\#, WinUI 3): Designed a modern restaurant management system enabling seamless order processing and administration for customers, managers, and admins. \href{https://github.com/abdxdev/AMOS}{}
-    \item \textbf{Prize Bond Finder} (Python): Created a user-friendly desktop tool for efficiently managing, searching, and tracking prize bonds with a simple interface. \href{https://github.com/abdxdev/prize-bond-finder}{}
+    \item \textbf{\href{https://github.com/abdxdev/Context-Menu-Plugin-Manager}{Context Menu Plugin Manager}} (Python, Flet): Developed a desktop app that allows users to manage and extend Windows context menus with custom Python plugins for enhanced directory actions.
+    \item \textbf{\href{https://github.com/abdxdev/AMOS}{AMOS}} (C\#, WinUI 3): Designed a modern restaurant management system enabling seamless order processing and administration for customers, managers, and admins.
+    \item \textbf{\href{https://github.com/abdxdev/prize-bond-finder}{Prize Bond Finder}} (Python): Created a user-friendly desktop tool for efficiently managing, searching, and tracking prize bonds with a simple interface.
 \end{highlights}
 
 \vspace{0.2 cm}
@@ -269,18 +278,18 @@
 % Web Applications
 \textbf{Web Applications}
 \begin{highlights}
-    \item \textbf{Odoo Lens} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights. \href{https://github.com/abdxdev/odoo-lens}{}
-    \item \textbf{Markdown Badge Generator} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs. \href{https://github.com/abdxdev/Markdown-badge-generator}{}
-    \item \textbf{Recurrence Relation Solver} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation. \href{https://github.com/abdxdev/Recurrence-Relation-Solver}{}
+    \item \textbf{\href{https://github.com/abdxdev/odoo-lens}{Odoo Lens}} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights.
+    \item \textbf{\href{https://github.com/abdxdev/Markdown-badge-generator}{Markdown Badge Generator}} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs.
+    \item \textbf{\href{https://github.com/abdxdev/Recurrence-Relation-Solver}{Recurrence Relation Solver}} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation.
 \end{highlights}
 
-\vspace{0.2 cm}
+% \vspace{0.2 cm}
 
-% Utilities & Tools
-\textbf{Utilities \& Tools}
-\begin{highlights}
-    \item \textbf{Terminal Based Rich Text Editor} (C++): Engineered a fast terminal editor featuring autosuggestions, undo/redo, and customizable shortcuts for efficient text editing. \href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{}
-    \item \textbf{Console Utility} (C++): Developed a C++ library offering advanced console text formatting and cursor control utilities for terminal applications. \href{https://github.com/abdxdev/Console-Utility}{}
-\end{highlights}
+% % Utilities & Tools
+% \textbf{Utilities \& Tools}
+% \begin{highlights}
+%     \item \textbf{\href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{Terminal Based Rich Text Editor}} (C++): Engineered a fast terminal editor featuring autosuggestions, undo/redo, and customizable shortcuts for efficient text editing.
+%     \item \textbf{\href{https://github.com/abdxdev/Console-Utility}{Console Utility}} (C++): Developed a C++ library offering advanced console text formatting and cursor control utilities for terminal applications.
+% \end{highlights}
 
 \end{document}

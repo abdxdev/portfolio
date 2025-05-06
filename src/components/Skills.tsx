@@ -6,57 +6,13 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import skillsData from "@/data/skills.json";
 
-const skills = [
-  "Python",
-  "C/C++",
-  "C#",
-  "JavaScript",
-  "SQL",
-  "HTML",
-  // "XML",
-  // "Markdown",
-  "LaTeX",
-  "CSS",
-  // "VS Code",
-  // "Visual Studio",
-  // "Jupyter",
-  // "Git",
-  // "Github",
-  // "GitLab",
-  "Django",
-  "Flask",
-  "Streamlit",
-  "Tkinter",
-  "Flet",
-  "Reflex",
-  ".NET",
-  "Win UI 3",
-  // "Docker",
-  // "Vercel",
-  // "Render",
-  // "Azure",
-  // "MySQL",
-  // "PostgreSQL",
-  // "SQLite",
-  // "Microsoft SQL Server",
-  // "Access",
-  // "OpenAI",
-  // "Discord",
-  // "WhatsApp",
-  // "Google",
-  // "Adobe Illustrator",
-  // "Adobe Photoshop",
-  // "Adobe Premiere Pro",
-  // "Adobe After Effects",
-  // "Figma",
-  // "Spline",
-  // "Blender",
-  // "Windows",
-  // "Linux",
-  // "Android"
-]
-
+// Dynamically load skills with portfolio=true
+const skills = skillsData
+  .flatMap(category => category.skills)
+  .filter(skill => skill.portfolio)
+  .map(skill => skill.name);
 
 export const Skills = ({ id }: { id?: string }) => {
   return (
