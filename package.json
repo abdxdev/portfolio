@@ -2,12 +2,14 @@
   "name": "github-portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "knip": "knip"
+    "knip": "knip",
+    "generate-icon-schema": "node scripts/generate-icon-schema.js"
   },
   "dependencies": {
     "@next/third-parties": "^15.0.3",

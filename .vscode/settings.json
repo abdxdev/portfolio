@@ -1,0 +1,8 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["src/data/skills.json"],
+      "url": "./src/data/skills-schema.json"
+    }
+  ]
+}

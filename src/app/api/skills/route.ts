@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import skillsData from '@/data/skills.json';
-import simpleIconsData from '@/data/simple-icons.json';
+import skillsSchema from '@/data/skills-schema.json';
 
 const TITLE_TO_SLUG_REPLACEMENTS: { [key: string]: string } = {
   '+': 'plus', '.': 'dot', '&': 'and', đ: 'd', ħ: 'h', ı: 'i',
@@ -18,17 +18,37 @@ function titleToSlug(title: string): string {
     .replace(TITLE_TO_SLUG_RANGE_REGEX, '');
 }
 
+type OneOfEntry = {
+  properties: {
+    name: { const: string };
+    hex?: { const: string };
+    portfolio: { type: 'boolean' };
+  };
+};
+type SkillsSchema = {
+  items: {
+    properties: {
+      skills: { items: { oneOf: OneOfEntry[] } };
+    };
+  };
+};
+
 export async function GET() {
   const iconMap = new Map<string, string>();
-  simpleIconsData.forEach(item => {
-    const key = titleToSlug(item.title);
-    iconMap.set(key, item.hex);
+  const oneOf = (skillsSchema as unknown as SkillsSchema)
+    .items.properties.skills.items.oneOf;
+  oneOf.forEach(entry => {
+    const name = entry.properties.name.const;
+    const hexConst = entry.properties.hex?.const ?? null;
+    if (hexConst !== null) {
+      iconMap.set(name, hexConst);
+    }
   });
   const enriched = skillsData.map(category => ({
     ...category,
     skills: category.skills.map(skill => {
       const slug = titleToSlug(skill.name);
-      const hex = iconMap.get(slug) || null;
+      const hex = iconMap.get(skill.name) || null;
       const svg = hex ? `https://cdn.simpleicons.org/${slug}/${hex}` : null;
       return { ...skill, slug, hex, svg };
     })

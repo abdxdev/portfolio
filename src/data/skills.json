@@ -8,7 +8,11 @@
                 "portfolio": true
             },
             {
-                "name": "C/C++",
+                "name": "C",
+                "portfolio": true
+            },
+            {
+                "name": "C++",
                 "portfolio": true
             },
             {
@@ -20,12 +24,8 @@
                 "portfolio": true
             },
             {
-                "name": "Typescript",
+                "name": "TypeScript",
                 "portfolio": true
-            },
-            {
-                "name": "SQL",
-                "portfolio": false
             }
         ]
     },
@@ -34,7 +34,7 @@
         "description": "Languages for structuring content.",
         "skills": [
             {
-                "name": "HTML",
+                "name": "HTML5",
                 "portfolio": false
             },
             {
@@ -88,7 +88,7 @@
                 "portfolio": false
             },
             {
-                "name": "Github",
+                "name": "GitHub",
                 "portfolio": false
             }
         ]
@@ -200,7 +200,7 @@
                 "portfolio": false
             },
             {
-                "name": "Github",
+                "name": "GitHub",
                 "portfolio": false
             }
         ]
