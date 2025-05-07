@@ -50,5 +50,35 @@ export async function GET(request: NextRequest) {
   const { data } = await response.json();
   const collections = data?.MediaListCollection?.lists || [];
 
-  return NextResponse.json(collections);
+  interface AnimeEntry {
+    media: {
+      title: {
+        romaji: string;
+        english: string | null;
+      };
+      siteUrl: string;
+      coverImage: {
+        large: string;
+      };
+    };
+    status: string;
+  }
+
+  interface AnimeList {
+    entries: AnimeEntry[];
+  }
+
+  const anime = collections.flatMap((list: AnimeList) => {
+    return list.entries.map((entry: AnimeEntry) => {
+      const { media, status } = entry;
+      return {
+        title: media.title.english || media.title.romaji,
+        site_url: media.siteUrl,
+        cover_image: media.coverImage.large,
+        status,
+      };
+    });
+  });
+
+  return NextResponse.json(anime);
 }
