@@ -4,13 +4,11 @@ import path from 'path';
 
 export async function GET(request: NextRequest) {
   const dir = request.nextUrl.pathname;
-  console.debug('dir', dir);
-
   let basePath = path.join(process.cwd(), 'src', 'app', dir);
-  
+
   if (!fs.existsSync(basePath)) {
     basePath = path.join('.next', 'server', 'app', dir);
-    
+
     if (!fs.existsSync(basePath)) {
       console.error(`Directory not found: ${basePath}`);
       return NextResponse.json({ endpoints: [], error: 'Directory not found' }, { status: 404 });
@@ -24,8 +22,7 @@ export async function GET(request: NextRequest) {
     .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
     .map(dirent => dirent.name);
 
-  const endpoints = VALID_ENDPOINTS.map(name => (
-    `${dir}/${name}`
-  ));
+  const endpoints = VALID_ENDPOINTS.map(name => `${dir}/${name}`);
+  
   return NextResponse.json({ endpoints });
 }
