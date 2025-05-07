@@ -98,6 +98,14 @@
         "description": "Frameworks and libraries I use to build applications.",
         "skills": [
             {
+                "name": "Next.js",
+                "portfolio": true
+            },
+            {
+                "name": "React",
+                "portfolio": true
+            },
+            {
                 "name": "Django",
                 "portfolio": true
             },
@@ -120,10 +128,6 @@
             {
                 "name": "Reflex",
                 "portfolio": false
-            },
-            {
-                "name": "Next.js",
-                "portfolio": true
             },
             {
                 "name": "Win UI 3",
