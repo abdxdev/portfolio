@@ -3,19 +3,17 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+// Resolve runtime directory of this file to list sub-route folders
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export async function GET(request: NextRequest) {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-
-  const segments = request.nextUrl.pathname.split('/').filter(Boolean);
-  const dirPath = __dirname;
-
-  const VALID_ENDPOINTS = fs.readdirSync(
-    dirPath,
-    { withFileTypes: true }
-  )
+  // Discover sub-route directories dynamically at runtime
+  const VALID_ENDPOINTS = fs.readdirSync(__dirname, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
     .map(dirent => dirent.name);
+  const segments = request.nextUrl.pathname.split('/').filter(Boolean);
+
   const params = request.nextUrl.searchParams;
   const selectedEndpoints = [...params.keys()].length > 0
     ? VALID_ENDPOINTS.filter(name => params.get(name) === 'true')
