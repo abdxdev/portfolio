@@ -1,22 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { Project, GitHubRepo } from "@/types/project";
-import { parse } from "@/lib/utils";
-
-
-const snakeToTitle = (str: string) => {
-  str = str.replaceAll("-", " ").replaceAll("_", " ");
-  return str
-    .split(" ")
-    .map((word) => word.replace(word[0], word[0].toUpperCase()))
-    .join(" ");
-};
-
-const camelToTitle = (str: string) => {
-  if (str.includes("LaTeX")) {
-    return str;
-  }
-  return str.replace(/([a-z])([A-Z])/g, "$1 $2");
-};
+import { parse, camelToTitle, snakeToTitle } from "@/lib/utils";
 
 async function getGithubProjects(username: string): Promise<Project[]> {
   const response = await fetch(
@@ -43,7 +27,6 @@ async function getGithubProjects(username: string): Promise<Project[]> {
       const isUniversityProject = parsedDesc.m === true;
       const workingOn = parsedDesc.w === true;
 
-
       return {
         title: camelToTitle(snakeToTitle(repo.name)),
         repo: repo,
@@ -62,25 +45,17 @@ async function getGithubProjects(username: string): Promise<Project[]> {
   return filteredProjects;
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const source = searchParams.get('source') || 'github';
-    const username = searchParams.get('username');
+    const { searchParams } = request.nextUrl;
+    const username = searchParams.get('username') || process.env.GITHUB_USERNAME;
 
     if (!username) {
       return NextResponse.json({ error: 'Username is required' }, { status: 400 });
     }
 
     let projects: Project[] = [];
-
-    switch (source) {
-      case 'github':
-        projects = await getGithubProjects(username);
-        break;
-      default:
-        return NextResponse.json({ error: 'Invalid source' }, { status: 400 });
-    }
+    projects = await getGithubProjects(username);
 
     projects.sort((a, b) => {
       if (a.priority !== undefined && b.priority !== undefined) {

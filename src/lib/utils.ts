@@ -87,3 +87,18 @@ export function parse(string: string): {
 
   return result;
 }
+
+export const snakeToTitle = (str: string) => {
+  str = str.replaceAll("-", " ").replaceAll("_", " ");
+  return str
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
+};
+
+export const camelToTitle = (str: string) => {
+  if (str.includes("LaTeX")) {
+    return str;
+  }
+  return str.replace(/([a-z])([A-Z])/g, "$1 $2");
+};
