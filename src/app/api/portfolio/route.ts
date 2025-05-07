@@ -3,12 +3,10 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Resolve runtime directory of this file to list sub-route folders
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export async function GET(request: NextRequest) {
-  // Discover sub-route directories dynamically at runtime
   const VALID_ENDPOINTS = fs.readdirSync(__dirname, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
     .map(dirent => dirent.name);

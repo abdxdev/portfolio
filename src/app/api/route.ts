@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const dir = request.nextUrl.pathname;
 
   const VALID_ENDPOINTS = fs.readdirSync(
-    path.join(process.cwd(), 'src', 'app', dir),
+    path.join('src', 'app', dir),
     { withFileTypes: true }
   )
     .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
