@@ -70,7 +70,7 @@
         "description": "Tools for writing and debugging code.",
         "skills": [
             {
-                "name": "VS Code",
+                "name": "Visual Studio Code",
                 "portfolio": false
             },
             {
@@ -130,7 +130,7 @@
                 "portfolio": false
             },
             {
-                "name": "Win UI 3",
+                "name": "WinUI 3",
                 "portfolio": true
             }
         ]
@@ -152,7 +152,7 @@
                 "portfolio": false
             },
             {
-                "name": "Azure",
+                "name": "Microsoft Azure",
                 "portfolio": false
             }
         ]
@@ -214,19 +214,19 @@
         "description": "Tools for design and graphics.",
         "skills": [
             {
-                "name": "Adobe Illustrator",
+                "name": "Illustrator",
                 "portfolio": false
             },
             {
-                "name": "Adobe Photoshop",
+                "name": "Photoshop",
                 "portfolio": false
             },
             {
-                "name": "Adobe Premiere Pro",
+                "name": "Premiere",
                 "portfolio": false
             },
             {
-                "name": "Adobe After Effects",
+                "name": "After Effects",
                 "portfolio": false
             },
             {
