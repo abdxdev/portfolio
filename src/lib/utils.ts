@@ -110,7 +110,7 @@ export const camelToTitle = (str: string) => {
  * @param field Key in each item to match against query keys (default 'name')
  * @returns Array of matched items (original array if no filters)
  */
-export function filterItemsByQuery<T extends Record<string, any>>(
+export function filterItemsByQuery<T extends Record<string, unknown>>(
   items: T[],
   searchParams: URLSearchParams,
   field: keyof T = 'name'
