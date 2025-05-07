@@ -89,9 +89,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `/api/projects?source=github&username=${repoName}`
-        );
+        const response = await fetch("/api/portfolio/projects");
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
