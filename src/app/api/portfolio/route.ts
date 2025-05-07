@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
-import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 export async function GET(request: NextRequest) {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
   const segments = request.nextUrl.pathname.split('/').filter(Boolean);
-  const dirPath = path.join(process.cwd(), 'src', 'app', ...segments);
+  const dirPath = __dirname;
 
   const VALID_ENDPOINTS = fs.readdirSync(
     dirPath,
