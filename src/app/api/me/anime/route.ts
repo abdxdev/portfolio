@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { filterItemsByQuery } from '@/lib/utils';
+import socials from '@/data/socials.json';
 
 const GRAPHQL_URL = 'https://graphql.anilist.co';
 const QUERY = `
@@ -20,9 +22,16 @@ query ($username: String) {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const username = searchParams.get('username') || process.env.ANILIST_USERNAME;
+  let username = searchParams.get('username');
   if (!username) {
-    return NextResponse.json({ error: 'Missing username parameter' }, { status: 400 });
+    const matched = filterItemsByQuery(socials, new URLSearchParams([['anilist', 'true']]), 'name');
+    if (matched.length === 0) {
+      return NextResponse.json({ error: 'AniList social not found' }, { status: 404 });
+    }
+    username = matched[0].username;
+  }
+  if (!username) {
+    return NextResponse.json({ error: 'Username is required' }, { status: 400 });
   }
 
   const response = await fetch(GRAPHQL_URL, {

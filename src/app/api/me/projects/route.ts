@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Project, GitHubRepo } from "@/types/project";
 import { parse, camelToTitle, snakeToTitle } from "@/lib/utils";
+import socials from '@/data/socials.json';
+import { filterItemsByQuery } from '@/lib/utils';
 
 async function getGithubProjects(username: string): Promise<Project[]> {
   const response = await fetch(
@@ -48,8 +50,14 @@ async function getGithubProjects(username: string): Promise<Project[]> {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
-    const username = searchParams.get('username') || process.env.GITHUB_USERNAME;
-
+    let username = searchParams.get('username');
+    if (!username) {
+      const matched = filterItemsByQuery(socials, new URLSearchParams([['github', 'true']]), 'name');
+      if (matched.length === 0) {
+        return NextResponse.json({ error: 'GitHub social not found' }, { status: 404 });
+      }
+      username = matched[0].username;
+    }
     if (!username) {
       return NextResponse.json({ error: 'Username is required' }, { status: 400 });
     }

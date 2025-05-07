@@ -102,3 +102,23 @@ export const camelToTitle = (str: string) => {
   }
   return str.replace(/([a-z])([A-Z])/g, "$1 $2");
 };
+
+/**
+ * Filters an array of items based on query parameters set to 'true'.
+ * @param items Array of objects to filter
+ * @param searchParams URLSearchParams instance containing flags
+ * @param field Key in each item to match against query keys (default 'name')
+ * @returns Array of matched items (original array if no filters)
+ */
+export function filterItemsByQuery<T extends Record<string, any>>(
+  items: T[],
+  searchParams: URLSearchParams,
+  field: keyof T = 'name'
+): T[] {
+  const filters = Array.from(searchParams.entries())
+    .filter(([, value]) => value === 'true')
+    .map(([key]) => key);
+  return filters.length > 0
+    ? items.filter(item => filters.includes(String(item[field])))
+    : items;
+}
