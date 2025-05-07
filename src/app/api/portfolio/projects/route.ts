@@ -26,21 +26,29 @@ async function getGithubProjects(username: string): Promise<Project[]> {
 
       const screenshotCount = typeof parsedDesc.s === 'number' ? parsedDesc.s : 0;
       const priority = typeof parsedDesc.p === 'number' ? parsedDesc.p : undefined;
-      const isUniversityProject = parsedDesc.m === true;
-      const workingOn = parsedDesc.w === true;
+      const is_university_project = parsedDesc.m === true;
+      const working_on = parsedDesc.w === true;
 
       return {
         title: camelToTitle(snakeToTitle(repo.name)),
-        repo: repo,
+        raw_name: repo.name,
+        description: parsedDesc.description,
+        raw_description: repo.description,
+        homepage: repo.homepage,
+        html_url: repo.html_url,
+        fork: repo.fork,
+        created_at: repo.created_at,
+        language: repo.language,
+        stargazers_count: repo.stargazers_count,
+        watchers_count: repo.watchers_count,
+        default_branch: repo.default_branch,
         priority,
-        isUniversityProject,
-        workingOn,
-        thumbnails: screenshotCount > 0
-          ? Array.from({ length: screenshotCount }, (_, i) =>
-            `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/screenshots/screenshot_${i + 1}.png`
-          )
-          : [],
-        default_image_url: `https://opengraph.githubassets.com/1/${username}/${repo.name}`
+        is_university_project,
+        working_on,
+        default_image_url: `https://opengraph.githubassets.com/1/${username}/${repo.name}`,
+        thumbnails: screenshotCount > 0 ? Array.from({ length: screenshotCount }, (_, i) =>
+          `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/screenshots/screenshot_${i + 1}.png`
+        ) : [],
       };
     });
 
@@ -68,13 +76,13 @@ export async function GET(request: NextRequest) {
     projects.sort((a, b) => {
       if (a.priority !== undefined && b.priority !== undefined) {
         if (a.priority === b.priority) {
-          return new Date(b.repo.created_at).getTime() - new Date(a.repo.created_at).getTime();
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         }
         return a.priority - b.priority;
       }
       if (a.priority !== undefined) return -1;
       if (b.priority !== undefined) return 1;
-      return new Date(b.repo.created_at).getTime() - new Date(a.repo.created_at).getTime();
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
 
     return NextResponse.json(projects);

@@ -5,7 +5,6 @@ import path from 'path';
 export async function GET(request: NextRequest) {
   const dir = request.nextUrl.pathname;
   let basePath = path.join(process.cwd(), 'src', 'app', dir);
-  console.log(process.cwd());
 
   if (!fs.existsSync(basePath)) {
     basePath = path.join('.next', 'server', 'app', dir);

@@ -230,7 +230,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                   </Carousel>
                   <div className="flex justify-between items-start mb-1">
                     <Link
-                      href={project.repo.html_url}
+                      href={project.html_url}
                       className="font-semibold text-primary hover:underline"
                     >
                       {project.title}
@@ -240,12 +240,12 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                     </Link>
 
                     <div className="flex gap-1.5 items-center">
-                      {project.workingOn && (
+                      {project.working_on && (
                         <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30">
                           Active
                         </Badge>
                       )}
-                      {project.isUniversityProject && (
+                      {project.is_university_project && (
                         <Badge className="bg-blue-500/20 dark:bg-blue-600/30 text-blue-700 dark:text-blue-400 hover:bg-blue-500/30">
                           University
                         </Badge>
@@ -253,25 +253,25 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1 mb-4">
-                    {project.repo.description}
+                    {project.description}
                   </p>
                   <div className="mt-auto flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div
                         className={cn(
                           "size-4 rounded-full",
-                          project.repo.language ? techColors[project.repo.language] : techColors.Default ||
+                          project.language ? techColors[project.language] : techColors.Default ||
                             techColors.Default
                         )}
                       />
                       <span className="text-xs font-medium text-muted-foreground">
-                        {project.repo.language}
+                        {project.language}
                       </span>
                     </div>
                     <div className="flex items-center gap-4">
-                      {project.repo.homepage && (
+                      {project.homepage && (
                         <Link
-                          href={project.repo.homepage}
+                          href={project.homepage}
                           className="flex items-center gap-1 text-sm text-primary hover:underline"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -281,7 +281,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                         </Link>
                       )}
                       <Link
-                        href={project.repo.html_url}
+                        href={project.html_url}
                         className="flex items-center gap-1 text-sm text-primary hover:underline"
                       >
                         <Github className="size-4" />

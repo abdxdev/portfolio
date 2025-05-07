@@ -5,6 +5,12 @@ import socials from '@/data/socials.json';
 interface Game {
   background_image_cropped: string;
   status: string;
+  background_image: string;
+  name: string;
+  slug: string;
+  rawg_link: string;
+  released: string;
+  rating: number;
 }
 
 const STATUSES = [
@@ -48,11 +54,15 @@ export async function GET(request: NextRequest) {
 
       const data = await res.json();
       for (const game of data.results) {
-        const background_image_cropped = `https://media.rawg.io/media/crop/600/400/${game.background_image.split('/').slice(-3).join('/')}`;
         allGames.push({
-          background_image_cropped,
+          name: game.name,
+          slug: game.slug,
+          background_image: game.background_image,
+          background_image_cropped: `https://media.rawg.io/media/crop/600/400/${game.background_image.split('/').slice(-3).join('/')}`,
+          rawg_link: `https://rawg.io/games/${game.slug}`,
+          released: game.released,
+          rating: game.rating,
           status: status,
-          ...game,
         });
       }
 
