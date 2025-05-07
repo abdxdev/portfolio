@@ -24,17 +24,21 @@ export async function GET(request: NextRequest) {
 
   const endpoints = VALID_ENDPOINTS.map(name => `${dir}/${name}`);
 
-  const dataResponses = await Promise.all(
-    endpoints.map(async endpoint => {
-      const res = await fetch(`${request.nextUrl.origin}${endpoint}`);
-      return res.json();
-    })
-  );
+  if (request.nextUrl.searchParams.get('fetch') === 'true') {
+    const dataResponses = await Promise.all(
+      endpoints.map(async endpoint => {
+        const res = await fetch(`${request.nextUrl.origin}${endpoint}`);
+        return res.json();
+      })
+    );
 
-  const combined = VALID_ENDPOINTS.reduce((acc, name, i) => {
-    acc[name] = dataResponses[i];
-    return acc;
-  }, {} as Record<string, unknown>);
+    const combined = VALID_ENDPOINTS.reduce((acc, name, i) => {
+      acc[name] = dataResponses[i];
+      return acc;
+    }, {} as Record<string, unknown>);
 
-  return NextResponse.json(combined);
+    return NextResponse.json(combined);
+  }
+
+  return NextResponse.json({ endpoints });
 }
