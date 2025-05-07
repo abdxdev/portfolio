@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
   if (matched.length === 0) {
     return NextResponse.json({ error: 'Social not found' }, { status: 404 });
   }
-  // return single object when only one match
   if (matched.length === 1) {
     return NextResponse.json(matched[0]);
   }
