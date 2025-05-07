@@ -186,15 +186,20 @@ export async function GET() {
       const slug = titleToSlug(skill.name);
       const hex = iconMap.get(skill.name) || null;
       let svg_url: string | null = null;
+      let source: string | null = null;
 
       if (hex) {
         svg_url = `https://cdn.simpleicons.org/${slug}/${hex}`;
+        source = 'simpleicons';
       } else {
         const customSvg = await findCustomLogo(skill.name);
+        
         if (customSvg) {
           svg_url = `/data/custom_logos/${slug}.svg`;
+          source = 'custom';
         } else {
           svg_url = await fetchSvglIcon(skill.name);
+          source = 'svgl';
         }
       }
 
@@ -202,7 +207,8 @@ export async function GET() {
         ...skill,
         slug,
         hex,
-        svg_url
+        svg_url,
+        source,
       };
     }))
   })));
