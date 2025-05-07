@@ -2,30 +2,32 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const VALID_ENDPOINTS = fs.readdirSync(
-  path.join(process.cwd(), 'src', 'app', 'api', 'me'),
-  { withFileTypes: true }
-)
-  .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
-  .map(dirent => dirent.name);
-
 export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
-  let endpointsList = VALID_ENDPOINTS.filter(ep => searchParams.get(ep) === 'true');
-  if (endpointsList.length === 0) endpointsList = VALID_ENDPOINTS;
-  const origin = new URL(request.url).origin;
-  const results = await Promise.all(
-    endpointsList.map(async endpoint => {
-      const res = await fetch(`${origin}/api/me/${endpoint}`);
-      if (!res.ok) {
-        throw new Error(`Failed to fetch ${endpoint}: ${res.status}`);
-      }
+  const segments = request.nextUrl.pathname.split('/').filter(Boolean);
+  const dirPath = path.join(process.cwd(), 'src', 'app', ...segments);
+
+  const VALID_ENDPOINTS = fs.readdirSync(
+    dirPath,
+    { withFileTypes: true }
+  )
+    .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('['))
+    .map(dirent => dirent.name);
+  const params = request.nextUrl.searchParams;
+  const selectedEndpoints = [...params.keys()].length > 0
+    ? VALID_ENDPOINTS.filter(name => params.get(name) === 'true')
+    : VALID_ENDPOINTS;
+
+  const basePath = `/${segments.join('/')}`;
+  const endpoints = selectedEndpoints.map(name => `${basePath}/${name}`);
+  const dataResponses = await Promise.all(
+    endpoints.map(async endpoint => {
+      const res = await fetch(`${request.nextUrl.origin}${endpoint}`);
       return res.json();
     })
   );
-
-  const responseData = Object.fromEntries(
-    endpointsList.map((ep, i) => [ep, results[i]])
-  );
-  return NextResponse.json(responseData);
+  const combined = selectedEndpoints.reduce((acc, name, i) => {
+    acc[name] = dataResponses[i];
+    return acc;
+  }, {} as Record<string, unknown>);
+  return NextResponse.json(combined);
 }
