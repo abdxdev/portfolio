@@ -4,6 +4,7 @@ import path from 'path';
 
 export async function GET(request: NextRequest) {
   const dir = request.nextUrl.pathname;
+  console.debug('dir', dir);
 
   const VALID_ENDPOINTS = fs.readdirSync(
     path.join('src', 'app', dir),
