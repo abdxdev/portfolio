@@ -95,7 +95,12 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data: Project[] = await response.json();
+        data.sort((a, b) => {
+          const ap = a.priority ?? (a.working_on ? 0 : Infinity);
+          const bp = b.priority ?? (b.working_on ? 0 : Infinity);
+          return ap - bp || new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
         setProjects(data);
         setIsLoading(false);
       } catch (error) {
