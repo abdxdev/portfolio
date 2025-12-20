@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://abd-dev.studio/sitemap.xml
+Sitemap: https://abdxdev.vercel.app/sitemap.xml

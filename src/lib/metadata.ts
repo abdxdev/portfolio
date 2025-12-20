@@ -4,7 +4,7 @@ export function constructMetadata({
   title = 'Abdul Rahman | Software Developer & Designer Portfolio',
   description = "Software developer and designer specializing in Python, C/C++, Django, Flask, and UI/UX design. Creator of VS Code extensions and innovative software solutions.",
   image = '/thumbnail-abd.png',
-  icons = '/favicon.png', 
+  icons = '/favicon.png',
   noIndex = false,
   keywords = 'Python developer, C/C++ developer, Django, Flask, UI/UX design, VS Code extensions, software development, graphics design, abdxdev'
 }: {
@@ -34,7 +34,7 @@ export function constructMetadata({
       type: 'website',
       locale: 'en_US',
       siteName: 'Abdul Rahman - Developer Portfolio',
-      url: 'https://abd-dev.studio'
+      url: 'https://abdxdev.vercel.app'
     },
     twitter: {
       card: 'summary_large_image',
@@ -47,9 +47,9 @@ export function constructMetadata({
       creator: '@abdxdev'
     },
     icons,
-    metadataBase: new URL('https://abd-dev.studio'),
+    metadataBase: new URL('https://abdxdev.vercel.app'),
     alternates: {
-      canonical: 'https://abd-dev.studio',
+      canonical: 'https://abdxdev.vercel.app',
     },
     ...(noIndex && {
       robots: {

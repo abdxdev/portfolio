@@ -34,7 +34,6 @@
 \usepackage{paracol} % for two and three column entries
 \usepackage{ifthen} % for conditional statements
 \usepackage{needspace} % for avoiding page brake right after the section title
-\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage[normalem]{ulem} % for better underlines
@@ -167,40 +166,40 @@
 \begin{document}
 
 \newcommand{\AND}{\unskip
-	\cleaders\copy\ANDbox\hskip\wd\ANDbox
-	\ignorespaces
+    \cleaders\copy\ANDbox\hskip\wd\ANDbox
+    \ignorespaces
 }
 \newsavebox\ANDbox
 \sbox\ANDbox{}
 
 % \placelastupdatedtext
 \begin{header}
-	\textbf{\fontsize{24 pt}{24 pt}\selectfont Abdul Rahman}
+    \textbf{\fontsize{24 pt}{24 pt}\selectfont Abdul Rahman}
 
     \large\textit{Software Engineer}
 
-	\vspace{0.3 cm}
+    \vspace{0.3 cm}
 
-	\normalsize
-	\mbox{\hrefWithoutArrow{https://www.google.com/maps/place/Lahore,+Pakistan}{\color{black}{\footnotesize\faMapMarker*}\hspace*{0.13cm}Lahore, Pakistan}}
-	\kern 0.25 cm
-	\AND
-	\kern 0.25 cm
-	\mbox{\hrefWithoutArrow{mailto:abdulrahman.abd.dev@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}abdulrahman.abd.dev@gmail.com}}
-	\kern 0.25 cm
-	\AND
-	\kern 0.25 cm
-	\mbox{\hrefWithoutArrow{tel:+92-320-1002771}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 320 1002771}}
+    \normalsize
+    \mbox{\hrefWithoutArrow{https://www.google.com/maps/place/Lahore,+Pakistan}{\color{black}{\footnotesize\faMapMarker*}\hspace*{0.13cm}Lahore, Pakistan}}
+    \kern 0.25 cm
+    \AND
+    \kern 0.25 cm
+    \mbox{\hrefWithoutArrow{mailto:abdulrahman.abd.dev@gmail.com}{\color{black}{\footnotesize\faEnvelope}\hspace*{0.13cm}abdulrahman.abd.dev@gmail.com}}
+    \kern 0.25 cm
+    \AND
+    \kern 0.25 cm
+    \mbox{\hrefWithoutArrow{tel:+92-320-1002771}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+92 320 1002771}}
     \\
-	\mbox{\hrefWithoutArrow{https://abd-dev.studio/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}abd-dev.studio}}
-	\kern 0.25 cm
-	\AND
-	\kern 0.25 cm
-	\mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}
-	\kern 0.25 cm
-	\AND
-	\kern 0.25 cm
-	\mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}
+    \mbox{\hrefWithoutArrow{https://abdxdev.vercel.app/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}abdxdev.vercel.app}}
+    \kern 0.25 cm
+    \AND
+    \kern 0.25 cm
+    \mbox{\hrefWithoutArrow{https://github.com/abdxdev}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}github.com/abdxdev}}
+    \kern 0.25 cm
+    \AND
+    \kern 0.25 cm
+    \mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}
 \end{header}
 
 % \section{About Me}
@@ -217,65 +216,66 @@
 
 \section{Education}
 
-    \createpointblock{University of Engineering and Technology, Lahore}{Sept 2023 — April 2027 (Expected)}{BS in Computer Science}{}
-    {%
-        \item CGPA: 3.55/4.0
-        % \item \textbf{Coursework:} Data Structures, Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Artificial Intelligence, Machine Learning
-    }
+\createpointblock{University of Engineering and Technology, Lahore}{Sept 2023 — April 2027 (Expected)}{BS in Computer Science}{}
+{%
+    \item CGPA: 3.55/4.0
+    % \item \textbf{Coursework:} Data Structures, Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Artificial Intelligence, Machine Learning
+}
 
 \sloppy % Allows TeX to be more flexible with line breaks without hardcoded values
 
 \section{Technical Skills}
 
-    % \renewcommand{\arraystretch}{} % Adjusts row spacing
-    % \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
-    % \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
-    %     \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                                      \\
-    %     \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js.                 \\
-    %     \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.                                    \\
-    %     \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access.                               \\
-    %     \textbf{Markup and Style:}         & HTML, CSS, Tailwind CSS, Markdown, LaTeX.                                              \\
-    % \end{tabularx}
+% \renewcommand{\arraystretch}{} % Adjusts row spacing
+% \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
+% \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
+%     \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                                      \\
+%     \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js.                 \\
+%     \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.                                    \\
+%     \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access.                               \\
+%     \textbf{Markup and Style:}         & HTML, CSS, Tailwind CSS, Markdown, LaTeX.                                              \\
+% \end{tabularx}
 
-    % \begin{itemize}
-    %     \item \textbf{Programming Languages:} Developed robust applications and scripts using Python, C++, C, JavaScript, TypeScript, SQL, and C\#, gaining strong problem-solving and algorithmic skills across multiple paradigms.
-    %     \item \textbf{Frameworks and Libraries:} Built scalable web and desktop solutions with Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, and Next.js, learning to architect full-stack systems and user interfaces.
-    %     \item \textbf{DevOps Tools:} Automated deployments and version control using Docker, Git, GitHub, GitLab, Vercel, Render, and Azure, which taught me best practices in CI/CD and collaborative development.
-    %     \item \textbf{Databases:} Designed and managed relational databases with PostgreSQL, MySQL, SQLite, Microsoft SQL Server, and Access, deepening my understanding of data modeling, querying, and optimization.
-    %     \item \textbf{Markup and Style:} Created responsive and visually appealing interfaces using HTML, CSS, Tailwind CSS, Markdown, and LaTeX, enhancing my skills in web design and technical documentation.
-    % \end{itemize}
+% \begin{itemize}
+%     \item \textbf{Programming Languages:} Developed robust applications and scripts using Python, C++, C, JavaScript, TypeScript, SQL, and C\#, gaining strong problem-solving and algorithmic skills across multiple paradigms.
+%     \item \textbf{Frameworks and Libraries:} Built scalable web and desktop solutions with Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, and Next.js, learning to architect full-stack systems and user interfaces.
+%     \item \textbf{DevOps Tools:} Automated deployments and version control using Docker, Git, GitHub, GitLab, Vercel, Render, and Azure, which taught me best practices in CI/CD and collaborative development.
+%     \item \textbf{Databases:} Designed and managed relational databases with PostgreSQL, MySQL, SQLite, Microsoft SQL Server, and Access, deepening my understanding of data modeling, querying, and optimization.
+%     \item \textbf{Markup and Style:} Created responsive and visually appealing interfaces using HTML, CSS, Tailwind CSS, Markdown, and LaTeX, enhancing my skills in web design and technical documentation.
+% \end{itemize}
 
 % \section{Skills}
 
-    \begin{itemize}[itemsep=-1pt]
-        \item \textbf{Programming Languages:} Python, C++, C, JavaScript, TypeScript, C\#
-        \item \textbf{Frameworks \& Tools:} Django, Flask, Streamlit, Flet, WinUI 3, Next.js, Docker, Git
-        \item \textbf{Soft Skills:} Effective Communication, Problem Solving, Collaborative Teamwork, Self-Directed Work Ethic, Leadership
-    \end{itemize}
+\begin{itemize}[itemsep=-1pt]
+    \item \textbf{Programming Languages:} Python, C++, C, JavaScript, TypeScript, C\#
+    \item \textbf{Frameworks \& Tools:} Django, Flask, Streamlit, Flet, WinUI 3, Next.js, Docker, Git
+    \item \textbf{Soft Skills:} Effective Communication, Problem Solving, Collaborative Teamwork, Self-Directed Work Ethic, Leadership
+\end{itemize}
 
 
 \section{Experience}
 
-    \createpointblock{Backend Developer}{2023 — Present}{Freelance (Self Employed)}{}
-    {%
+\createpointblock{Backend Developer}{2023 — Present}{Freelance (Self Employed)}{}
+{%
     \item Developed backend systems for clients using Django, Flask, and .NET, including REST APIs, web applications, and automation scripts.
-    }
-    
-    \vspace{0.2 cm}
-    
-    \createpointblock{Graphic Designer}{2021 — 2023}{Freelance (Self Employed)}{}
-    {%
-        \item Directed and designed marketing materials for clients, including UI/UX design, branding, and social media content.
-    }
-    
+}
+
+\vspace{0.2 cm}
+
+\createpointblock{Graphic Designer}{2021 — 2023}{Freelance (Self Employed)}{}
+{%
+    \item Directed and designed marketing materials for clients, including UI/UX design, branding, and social media content.
+}
+
 \section{Projects}
 
 % VSCode Extensions
-\textbf{VSCode Extensions}
+\textbf{VSCode Extensions \& Integrations}
 \begin{highlights}
     \item \textbf{\href{https://github.com/abdxdev/ai-regex-search}{AI Regex Search}} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool.
     \item \textbf{\href{https://github.com/abdxdev/10x-Pretender}{10x Pretender}} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging.
     \item \textbf{\href{https://github.com/abdxdev/AI-LaTeX-Helper}{AI LaTeX Helper}} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX.
+    \item \textbf{\href{https://github.com/abdxdev/notes-maker}{Notes Maker}} (Python, LaTeX): Built a Markdown-to-LaTeX PDF tool supporting diagrams, live code execution, custom syntax, and easy VSCode integration, producing publication-quality documents and academic notes.
 \end{highlights}
 
 \vspace{0.2 cm}
@@ -293,18 +293,41 @@
 % Web Applications
 \textbf{Web Applications}
 \begin{highlights}
+    \item \textbf{\href{https://github.com/abdxdev/screenshoots}{Screenshoots}} (JavaScript, Next.js): Built a tool to preview websites in device frames and generate styled screenshots and isometric galleries for polished portfolio and marketing assets.
     \item \textbf{\href{https://github.com/abdxdev/odoo-lens}{Odoo Lens}} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights.
-    \item \textbf{\href{https://github.com/abdxdev/Markdown-badge-generator}{Markdown Badge Generator}} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs.
-    \item \textbf{\href{https://github.com/abdxdev/Recurrence-Relation-Solver}{Recurrence Relation Solver}} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation.
+    % \item \textbf{\href{https://github.com/abdxdev/Markdown-badge-generator}{Markdown Badge Generator}} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs.
+    % \item \textbf{\href{https://github.com/abdxdev/Recurrence-Relation-Solver}{Recurrence Relation Solver}} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation.
+    \item \textbf{\href{https://github.com/abdxdev/virtual-student}{Virtual Student}} (TypeScript, Next.js): Developed a prototype SaaS featuring an intelligent agent that planned study schedules, summarized material, and automated learning tasks to boost productivity.
+    % \item \textbf{\href{https://github.com/abdxdev/hianime-to-myanimelist}{HiAnime → MyAnimeList}} (JavaScript): Developed a utility to migrate and normalize anime lists between HiAnime.to and MyAnimeList, automating list transfer and saving users hours of manual effort.
+    % \item \textbf{\href{https://github.com/abdxdev/Whatsapp_API}{Whatsapp API}} (Python, Django): Developed a Django-based API to enable automated WhatsApp messaging with plugin support and GPT integration for conversational automation.
+    % \item \textbf{\href{https://github.com/abdxdev/abd_utils_server}{abd_utils_server}} (Python, Django): Built a personal utilities server exposing lightweight APIs and scheduled jobs to automate day-to-day development workflows.
+    % \item \textbf{\href{https://github.com/abdxdev/automated-index-recommender}{Automated Index Recommender}} (Python): Built a tool to analyze MongoDB queries and recommend targeted indexes, improving query performance and reducing latency.
+    % \item \textbf{\href{https://github.com/abdxdev/game-recommendation-system}{Game Recommendation System}} (Python): Implemented content- and behavior-based recommendation models to suggest personalized game recommendations.
+    % \item \textbf{\href{https://github.com/abdxdev/Google_Classroom_API}{Google Classroom API}} (Python, Django): Built an integration project that monitored Google Classroom activity and sent notifications to automate classroom workflows.
 \end{highlights}
 
-\vspace{0.2 cm}
+% \vspace{0.2 cm}
 
-% Utilities & Tools
-\textbf{Utilities \& Tools}
-\begin{highlights}
-    \item \textbf{\href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{Terminal Based Rich Text Editor}} (C++): Engineered a fast terminal editor featuring autosuggestions, undo/redo, and customizable shortcuts for efficient text editing.
-    \item \textbf{\href{https://github.com/abdxdev/Console-Utility}{Console Utility}} (C++): Developed a C++ library offering advanced console text formatting and cursor control utilities for terminal applications.
-\end{highlights}
+% % Utilities & Tools
+% \textbf{Utilities \& Tools}
+% \begin{highlights}
+%     \item \textbf{\href{https://github.com/abdxdev/Terminal-Based-Rich-Text-Editor}{Terminal Based Rich Text Editor}} (C++): Engineered a fast terminal editor featuring autosuggestions, undo/redo, and customizable shortcuts for efficient text editing.
+%     \item \textbf{\href{https://github.com/abdxdev/Console-Utility}{Console Utility}} (C++): Developed a C++ library offering advanced console text formatting and cursor control utilities for terminal applications.
+% \end{highlights}
+
+% \vspace{0.2 cm}
+
+% % Other Projects
+% \textbf{Other Projects}
+% \begin{highlights}
+    % \item \textbf{\href{https://github.com/abdxdev/prize-bond-finder}{Prize Bond Finder}} (Python): Built a desktop tool to manage and search prize bond results, simplifying verification and record-keeping for collectors.
+    % \item \textbf{\href{https://github.com/abdxdev/Car-Rental-Management-System}{Car Rental Management System}} (C++): Implemented a car rental management system with reservation, vehicle, and customer modules for small rental businesses.
+    % \item \textbf{\href{https://github.com/abdxdev/2048-Game}{2048 Game}} (Assembly): Implemented the classic 2048 game in Assembly to showcase low-level programming and optimization techniques.
+    % \item \textbf{\href{https://github.com/abdxdev/minecraft-hotkey-map}{Minecraft Hotkey Map}} (Python): Developed a utility for mapping and managing Minecraft hotkeys to streamline gameplay and control setup.
+    % \item \textbf{\href{https://github.com/abdxdev/Source-Control-System}{Source Control System}} (TSQL): Designed a database-focused project modeling core source-control features and schema designs for educational purposes.
+    % \item \textbf{\href{https://github.com/abdxdev/Sorting-Algorithm-Performance-Visualization}{Sorting Algorithm Performance Visualization}} (C++): Developed a visualization suite to compare sorting algorithm performance across inputs and demonstrate algorithmic complexity with benchmarks.
+    % \item \textbf{\href{https://github.com/abdxdev/Harverd-CS50P-projects}{Harverd CS50P Projects}} (Python): Completed a collection of mini-projects from Harvard's CS50P course demonstrating fundamental Python concepts and applied problem solving.
+    % \item \textbf{\href{https://github.com/abdxdev/abdxdev}{abdxdev}} (Python): Maintained a personal repository of tooling, scripts, and examples used for daily development and demonstrations.
+% \end{highlights}
 
 \end{document}

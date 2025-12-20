@@ -13,21 +13,21 @@ import {
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-    title: '404 - Page Not Found',
+  title: '404 - Page Not Found',
+  description: 'Sorry, the page you are looking for does not exist on Abdul Rahman\'s portfolio website.',
+  openGraph: {
+    title: '404 - Page Not Found | Abdul Rahman\'s Portfolio',
     description: 'Sorry, the page you are looking for does not exist on Abdul Rahman\'s portfolio website.',
-    openGraph: {
-      title: '404 - Page Not Found | Abdul Rahman\'s Portfolio',
-      description: 'Sorry, the page you are looking for does not exist on Abdul Rahman\'s portfolio website.',
-      images: ['/thumbnail.png'],
-      type: 'website',
-      url: 'https://abd-dev.studio/404'
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: '404 - Page Not Found | Abdul Rahman\'s Portfolio',
-      description: 'Sorry, the page you are looking for does not exist on Abdul Rahman\'s portfolio website.',
-      images: ['/thumbnail.png'],
-    }
+    images: ['/thumbnail.png'],
+    type: 'website',
+    url: 'https://abdxdev.vercel.app/404'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '404 - Page Not Found | Abdul Rahman\'s Portfolio',
+    description: 'Sorry, the page you are looking for does not exist on Abdul Rahman\'s portfolio website.',
+    images: ['/thumbnail.png'],
+  }
 }
 
 export default function NotFound() {

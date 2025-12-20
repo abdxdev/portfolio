@@ -1,0 +1,2 @@
+tlmgr option repository https://mirror.ctan.org/systems/texlive/tlnet
+tlmgr install enumitem fontawesome5 eso-pic lastpage changepage paracol needspace

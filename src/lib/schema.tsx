@@ -10,7 +10,7 @@ export function PersonSchema() {
           '@type': 'Person',
           name: 'Abdul Rahman',
           alternateName: 'abdxdev',
-          url: 'https://abd-dev.studio',
+          url: 'https://abdxdev.vercel.app',
           jobTitle: 'Software Developer & UI/UX Designer',
           sameAs: [
             'https://github.com/abdxdev',
@@ -50,7 +50,7 @@ export function WebsiteSchema() {
         __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          url: 'https://abd-dev.studio',
+          url: 'https://abdxdev.vercel.app',
           name: 'Abdul Rahman - Software Developer Portfolio',
           description: "Portfolio of Abdul Rahman (abd), a software developer and UI/UX designer specializing in Python, C/C++, Django, and innovative software solutions",
           author: {
