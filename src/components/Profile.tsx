@@ -18,6 +18,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+// Configuration: Set to true to show profile picture, false for spinning logo
+const USE_PROFILE_PICTURE = true;
+const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
+const PROFILE_PICTURE_DARK = '/pfp-dark.png';
+
 const socials = [
   {
     name: "Github",
@@ -116,47 +121,74 @@ export const Profile = () => {
         <div className="flex flex-col items-start gap-2 ">
           <div className="flex flex-row md:flex-col w-full">
             <div className="flex-none mr-4 md:mr-0 md:mb-4">
-              <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
-                <PopoverTrigger asChild>
-                  <div className="relative">
-                    <Image
-                      src={lightGifSrc}
-                      id="light-profile-pic"
-                      alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
-                      width={150}
-                      height={150}
-                      unoptimized={true}
-                      loading="eager"
-                      className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                      onClick={() => reloadGif(true)}
-                    />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-2 text-center" side="top">
-                  {easterEggMessage}
-                </PopoverContent>
-              </Popover>
+              {USE_PROFILE_PICTURE ? (
+                /* Static Profile Picture Mode */
+                <>
+                  <Image
+                    src={PROFILE_PICTURE_LIGHT}
+                    id="profile-pic-light"
+                    alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                    width={150}
+                    height={150}
+                    loading="eager"
+                    className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden"
+                  />
+                  <Image
+                    src={PROFILE_PICTURE_DARK}
+                    id="profile-pic-dark"
+                    alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                    width={150}
+                    height={150}
+                    loading="eager"
+                    className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block"
+                  />
+                </>
+              ) : (
+                /* Spinning Logo Mode */
+                <>
+                  <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative">
+                        <Image
+                          src={lightGifSrc}
+                          id="light-profile-pic"
+                          alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                          width={150}
+                          height={150}
+                          unoptimized={true}
+                          loading="eager"
+                          className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                          onClick={() => reloadGif(true)}
+                        />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-2 text-center" side="top">
+                      {easterEggMessage}
+                    </PopoverContent>
+                  </Popover>
 
-              <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
-                <PopoverTrigger asChild>
-                  <div className="relative">
-                    <Image
-                      src={darkGifSrc}
-                      id="dark-profile-pic"
-                      alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
-                      width={150}
-                      height={150}
-                      unoptimized={true}
-                      loading="eager"
-                      className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                      onClick={() => reloadGif(false)}
-                    />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-2 text-center" side="top">
-                  {easterEggMessage}
-                </PopoverContent>
-              </Popover>
+                  <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative">
+                        <Image
+                          src={darkGifSrc}
+                          id="dark-profile-pic"
+                          alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                          width={150}
+                          height={150}
+                          unoptimized={true}
+                          loading="eager"
+                          className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                          onClick={() => reloadGif(false)}
+                        />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-2 text-center" side="top">
+                      {easterEggMessage}
+                    </PopoverContent>
+                  </Popover>
+                </>
+              )}
             </div>
 
             {/* Text content */}

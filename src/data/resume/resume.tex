@@ -3,10 +3,10 @@
 % Packages:
 \usepackage[
     ignoreheadfoot, % set margins without considering header and footer
-    top=1.5 cm, % seperation between body and page edge from the top
-    bottom=1.5 cm, % seperation between body and page edge from the bottom
-    left=1.5 cm, % seperation between body and page edge from the left
-    right=1.5 cm, % seperation between body and page edge from the right
+    top=1 cm, % seperation between body and page edge from the top
+    bottom=1 cm, % seperation between body and page edge from the bottom
+    left=1 cm, % seperation between body and page edge from the left
+    right=1 cm, % seperation between body and page edge from the right
     footskip=1.0 cm, % seperation between body and footer
     % showframe % for debugging
 ]{geometry} % for adjusting page geometry
@@ -202,11 +202,11 @@
     \mbox{\hrefWithoutArrow{https://linkedin.com/in/abdxdev}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}linkedin.com/in/abdxdev}}
 \end{header}
 
-% \section{About Me}
+\section{Summary}
 
-%     \begin{onecolentry}
-%         I am a software developer and designer with expertise in building efficient, user-friendly applications across different platforms. With a focus on problem-solving and creative design, I enjoy crafting innovative solutions that make a difference.
-%     \end{onecolentry}
+\begin{onecolentry}
+    Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.
+\end{onecolentry}
 
 %     \vspace{0.2 cm}
 
@@ -218,7 +218,7 @@
 
 \createpointblock{University of Engineering and Technology, Lahore}{Sept 2023 — April 2027 (Expected)}{BS in Computer Science}{}
 {%
-    \item CGPA: 3.55/4.0
+    \item CGPA\: 3.51/4.0
     % \item \textbf{Coursework:} Data Structures, Algorithms, Operating Systems, Computer Networks, Database Systems, Software Engineering, Artificial Intelligence, Machine Learning
 }
 
@@ -226,15 +226,16 @@
 
 \section{Technical Skills}
 
-% \renewcommand{\arraystretch}{} % Adjusts row spacing
-% \setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
-% \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
-%     \textbf{Programming Languages:}    & Python, C++, C, JavaScript, TypeScript, SQL, C\#.                                      \\
-%     \textbf{Frameworks and Libraries:} & Django, Flask, Streamlit, .NET, Tkinter, Reflex, Flet, React, Next.js.                 \\
-%     \textbf{DevOps Tools:}             & Docker, Git, GitHub, GitLab, Vercel, Render, Azure.                                    \\
-%     \textbf{Databases:}                & PostgreSQL, MySQL, SQLite, Microsoft SQL Server, Access.                               \\
-%     \textbf{Markup and Style:}         & HTML, CSS, Tailwind CSS, Markdown, LaTeX.                                              \\
-% \end{tabularx}
+\renewcommand{\arraystretch}{} % Adjusts row spacing
+\setlength{\extrarowheight}{0.11 cm} % Adds extra height between rows
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}X}
+    \textbf{Programming Languages:}    & Python, JavaScript, TypeScript, C, C++, SQL, C\#.              \\
+    \textbf{Frameworks and Libraries:} & Django, Flask, Next.js, React, Node.js, Express, Flet, .NET.   \\
+    \textbf{DevOps and Tools:}         & Docker, Git, GitHub, CI/CD, Vercel, Azure, REST APIs.          \\
+    \textbf{Databases:}                & PostgreSQL, MySQL, MongoDB, SQLite, Microsoft SQL Server.      \\
+    \textbf{Web Technologies:}         & HTML, CSS, Tailwind CSS, WebSockets.                           \\
+    \textbf{Soft Skills:}              & Leadership, Observation, Creative Thinking, Focused Work Ethic \\
+\end{tabularx}
 
 % \begin{itemize}
 %     \item \textbf{Programming Languages:} Developed robust applications and scripts using Python, C++, C, JavaScript, TypeScript, SQL, and C\#, gaining strong problem-solving and algorithmic skills across multiple paradigms.
@@ -246,11 +247,11 @@
 
 % \section{Skills}
 
-\begin{itemize}[itemsep=-1pt]
-    \item \textbf{Programming Languages:} Python, C++, C, JavaScript, TypeScript, C\#
-    \item \textbf{Frameworks \& Tools:} Django, Flask, Streamlit, Flet, WinUI 3, Next.js, Docker, Git
-    \item \textbf{Soft Skills:} Effective Communication, Problem Solving, Collaborative Teamwork, Self-Directed Work Ethic, Leadership
-\end{itemize}
+% \begin{itemize}[itemsep=-1pt]
+%     \item \textbf{Programming Languages:} Python, C++, C, JavaScript, TypeScript, C\#
+%     \item \textbf{Frameworks \& Tools:} Django, Flask, Streamlit, Flet, WinUI 3, Next.js, Docker, Git
+%     \item \textbf{Soft Skills:} Effective Communication, Problem Solving, Collaborative Teamwork, Self-Directed Work Ethic, Leadership
+% \end{itemize}
 
 
 \section{Experience}
@@ -272,10 +273,11 @@
 % VSCode Extensions
 \textbf{VSCode Extensions \& Integrations}
 \begin{highlights}
-    \item \textbf{\href{https://github.com/abdxdev/ai-regex-search}{AI Regex Search}} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool.
-    \item \textbf{\href{https://github.com/abdxdev/10x-Pretender}{10x Pretender}} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging.
-    \item \textbf{\href{https://github.com/abdxdev/AI-LaTeX-Helper}{AI LaTeX Helper}} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX.
+    \item \textbf{\href{https://github.com/abdxdev/katex-python-solver}{KaTeX Python Solver}} (Python, pip): Built a pip-installable package that embeds Python inside LaTeX equations, enabling live computation, parameterized templates, and symbolic solving for model training docs and technical reports.
     \item \textbf{\href{https://github.com/abdxdev/notes-maker}{Notes Maker}} (Python, LaTeX): Built a Markdown-to-LaTeX PDF tool supporting diagrams, live code execution, custom syntax, and easy VSCode integration, producing publication-quality documents and academic notes.
+    \item \textbf{\href{https://github.com/abdxdev/ai-regex-search}{AI Regex Search}} (TypeScript, VSCode API, Gemini): Built a VS Code extension that lets users generate regular expressions from natural language and insert them directly into the search tool.
+    % \item \textbf{\href{https://github.com/abdxdev/10x-Pretender}{10x Pretender}} (TypeScript, VSCode API): Developed a VS Code extension that simulates realistic typing from clipboard or AI-generated code, making code demos and presentations more engaging.
+    \item \textbf{\href{https://github.com/abdxdev/AI-LaTeX-Helper}{AI LaTeX Helper}} (TypeScript, VSCode API, Gemini): Created an extension that converts plain English descriptions into LaTeX equations, simplifying the process of writing math in LaTeX.
 \end{highlights}
 
 \vspace{0.2 cm}
@@ -293,8 +295,9 @@
 % Web Applications
 \textbf{Web Applications}
 \begin{highlights}
+    \item \textbf{\href{https://github.com/abdxdev/whatsapp-bot-framework}{WhatsApp Bot Framework}} (JavaScript, Next.js, Supabase): Built a multi-tenant SaaS WhatsApp bot framework featuring JSON-driven command definitions, role-based access control, interactive prompts, and pluggable service architecture for scalable chat automation.
     \item \textbf{\href{https://github.com/abdxdev/screenshoots}{Screenshoots}} (JavaScript, Next.js): Built a tool to preview websites in device frames and generate styled screenshots and isometric galleries for polished portfolio and marketing assets.
-    \item \textbf{\href{https://github.com/abdxdev/odoo-lens}{Odoo Lens}} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights.
+    % \item \textbf{\href{https://github.com/abdxdev/odoo-lens}{Odoo Lens}} (TypeScript, Next.js): Built a web app that augments Odoo ERP with advanced analytics, search, and management tools for business insights.
     % \item \textbf{\href{https://github.com/abdxdev/Markdown-badge-generator}{Markdown Badge Generator}} (Python, Streamlit): Developed a web tool for instantly generating and customizing markdown badges for project READMEs.
     % \item \textbf{\href{https://github.com/abdxdev/Recurrence-Relation-Solver}{Recurrence Relation Solver}} (Python, Streamlit, Sympy): Built a web tool for solving and visualizing mathematical recurrence relations using symbolic computation.
     \item \textbf{\href{https://github.com/abdxdev/virtual-student}{Virtual Student}} (TypeScript, Next.js): Developed a prototype SaaS featuring an intelligent agent that planned study schedules, summarized material, and automated learning tasks to boost productivity.
@@ -320,14 +323,14 @@
 % % Other Projects
 % \textbf{Other Projects}
 % \begin{highlights}
-    % \item \textbf{\href{https://github.com/abdxdev/prize-bond-finder}{Prize Bond Finder}} (Python): Built a desktop tool to manage and search prize bond results, simplifying verification and record-keeping for collectors.
-    % \item \textbf{\href{https://github.com/abdxdev/Car-Rental-Management-System}{Car Rental Management System}} (C++): Implemented a car rental management system with reservation, vehicle, and customer modules for small rental businesses.
-    % \item \textbf{\href{https://github.com/abdxdev/2048-Game}{2048 Game}} (Assembly): Implemented the classic 2048 game in Assembly to showcase low-level programming and optimization techniques.
-    % \item \textbf{\href{https://github.com/abdxdev/minecraft-hotkey-map}{Minecraft Hotkey Map}} (Python): Developed a utility for mapping and managing Minecraft hotkeys to streamline gameplay and control setup.
-    % \item \textbf{\href{https://github.com/abdxdev/Source-Control-System}{Source Control System}} (TSQL): Designed a database-focused project modeling core source-control features and schema designs for educational purposes.
-    % \item \textbf{\href{https://github.com/abdxdev/Sorting-Algorithm-Performance-Visualization}{Sorting Algorithm Performance Visualization}} (C++): Developed a visualization suite to compare sorting algorithm performance across inputs and demonstrate algorithmic complexity with benchmarks.
-    % \item \textbf{\href{https://github.com/abdxdev/Harverd-CS50P-projects}{Harverd CS50P Projects}} (Python): Completed a collection of mini-projects from Harvard's CS50P course demonstrating fundamental Python concepts and applied problem solving.
-    % \item \textbf{\href{https://github.com/abdxdev/abdxdev}{abdxdev}} (Python): Maintained a personal repository of tooling, scripts, and examples used for daily development and demonstrations.
+% \item \textbf{\href{https://github.com/abdxdev/prize-bond-finder}{Prize Bond Finder}} (Python): Built a desktop tool to manage and search prize bond results, simplifying verification and record-keeping for collectors.
+% \item \textbf{\href{https://github.com/abdxdev/Car-Rental-Management-System}{Car Rental Management System}} (C++): Implemented a car rental management system with reservation, vehicle, and customer modules for small rental businesses.
+% \item \textbf{\href{https://github.com/abdxdev/2048-Game}{2048 Game}} (Assembly): Implemented the classic 2048 game in Assembly to showcase low-level programming and optimization techniques.
+% \item \textbf{\href{https://github.com/abdxdev/minecraft-hotkey-map}{Minecraft Hotkey Map}} (Python): Developed a utility for mapping and managing Minecraft hotkeys to streamline gameplay and control setup.
+% \item \textbf{\href{https://github.com/abdxdev/Source-Control-System}{Source Control System}} (TSQL): Designed a database-focused project modeling core source-control features and schema designs for educational purposes.
+% \item \textbf{\href{https://github.com/abdxdev/Sorting-Algorithm-Performance-Visualization}{Sorting Algorithm Performance Visualization}} (C++): Developed a visualization suite to compare sorting algorithm performance across inputs and demonstrate algorithmic complexity with benchmarks.
+% \item \textbf{\href{https://github.com/abdxdev/Harverd-CS50P-projects}{Harverd CS50P Projects}} (Python): Completed a collection of mini-projects from Harvard's CS50P course demonstrating fundamental Python concepts and applied problem solving.
+% \item \textbf{\href{https://github.com/abdxdev/abdxdev}{abdxdev}} (Python): Maintained a personal repository of tooling, scripts, and examples used for daily development and demonstrations.
 % \end{highlights}
 
 \end{document}
