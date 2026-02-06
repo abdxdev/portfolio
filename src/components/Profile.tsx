@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "@/components/icons/AnilistIcon";
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import easterEggMessages from '@/data/easterEggMessages.json';
 import {
@@ -18,8 +18,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-// Configuration: Set to true to show profile picture, false for spinning logo
-const USE_PROFILE_PICTURE = true;
 const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.png';
 
@@ -50,26 +48,42 @@ export const Profile = () => {
   const lightGifPath = '/bfg-r1.gif';
   const darkGifPath = '/wfg-r1.gif';
 
-  // Placeholder static images
   const lightPlaceholder = '/bfg.png';
   const darkPlaceholder = '/wfg.png';
 
-  // Source states for the images
   const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
   const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
   const [onCooldown, setOnCooldown] = useState(false);
-
-  // Flag to prevent multiple rapid clicks
   const [isReloading, setIsReloading] = useState(false);
 
-  // Easter egg states - separate for light and dark mode
+  // Whether to show the spinning logo instead of pfp
+  const [showLogo, setShowLogo] = useState(false);
+  const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Easter egg states
   const [lightPopoverOpen, setLightPopoverOpen] = useState(false);
   const [darkPopoverOpen, setDarkPopoverOpen] = useState(false);
   const [easterEggMessage, setEasterEggMessage] = useState('');
 
+  // Reset the 5-second inactivity timer
+  const resetRevertTimer = useCallback(() => {
+    if (revertTimerRef.current) clearTimeout(revertTimerRef.current);
+    revertTimerRef.current = setTimeout(() => {
+      setShowLogo(false);
+    }, 5000);
+  }, []);
+
+  // Click on pfp → show spinning logo
+  const handlePfpClick = () => {
+    setShowLogo(true);
+    resetRevertTimer();
+  };
 
   const reloadGif = (isLight: boolean) => {
     if (isReloading || onCooldown) return;
+
+    // Reset the revert timer on each interaction
+    resetRevertTimer();
 
     setOnCooldown(true);
     setTimeout(() => {
@@ -93,7 +107,7 @@ export const Profile = () => {
 
     setSrc(placeholderSrc);
     setTimeout(() => {
-      setSrc(gifSrc);
+      setSrc(`${gifSrc}?t=${Date.now()}`);
       const randomMessage = easterEggMessages[Math.floor(Math.random() * easterEggMessages.length)];
       setEasterEggMessage(randomMessage);
 
@@ -120,75 +134,75 @@ export const Profile = () => {
       <CardContent className="pt-6">
         <div className="flex flex-col items-start gap-2 ">
           <div className="flex flex-row md:flex-col w-full">
-            <div className="flex-none mr-4 md:mr-0 md:mb-4">
-              {USE_PROFILE_PICTURE ? (
-                /* Static Profile Picture Mode */
-                <>
-                  <Image
-                    src={PROFILE_PICTURE_LIGHT}
-                    id="profile-pic-light"
-                    alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
-                    width={150}
-                    height={150}
-                    loading="eager"
-                    className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden"
-                  />
-                  <Image
-                    src={PROFILE_PICTURE_DARK}
-                    id="profile-pic-dark"
-                    alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
-                    width={150}
-                    height={150}
-                    loading="eager"
-                    className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block"
-                  />
-                </>
-              ) : (
-                /* Spinning Logo Mode */
-                <>
-                  <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
-                    <PopoverTrigger asChild>
-                      <div className="relative">
-                        <Image
-                          src={lightGifSrc}
-                          id="light-profile-pic"
-                          alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
-                          width={150}
-                          height={150}
-                          unoptimized={true}
-                          loading="eager"
-                          className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                          onClick={() => reloadGif(true)}
-                        />
-                      </div>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-2 text-center" side="top">
-                      {easterEggMessage}
-                    </PopoverContent>
-                  </Popover>
+            <div className="flex-none mr-4 md:mr-0 md:mb-4 relative">
+              {/* Profile Picture layer */}
+              <div className={`transition-opacity duration-500 ${showLogo ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                <Image
+                  src={PROFILE_PICTURE_LIGHT}
+                  id="profile-pic-light"
+                  alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                  width={150}
+                  height={150}
+                  loading="eager"
+                  className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                  onClick={handlePfpClick}
+                />
+                <Image
+                  src={PROFILE_PICTURE_DARK}
+                  id="profile-pic-dark"
+                  alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                  width={150}
+                  height={150}
+                  loading="eager"
+                  className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                  onClick={handlePfpClick}
+                />
+              </div>
 
-                  <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
-                    <PopoverTrigger asChild>
-                      <div className="relative">
-                        <Image
-                          src={darkGifSrc}
-                          id="dark-profile-pic"
-                          alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
-                          width={150}
-                          height={150}
-                          unoptimized={true}
-                          loading="eager"
-                          className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                          onClick={() => reloadGif(false)}
-                        />
-                      </div>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-2 text-center" side="top">
-                      {easterEggMessage}
-                    </PopoverContent>
-                  </Popover>
-                </>
-              )}
+              {/* Spinning Logo layer */}
+              <div className={`absolute inset-0 transition-opacity duration-500 ${showLogo ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <div className="relative">
+                      <Image
+                        src={lightGifSrc}
+                        id="light-profile-pic"
+                        alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                        width={150}
+                        height={150}
+                        unoptimized={true}
+                        loading="eager"
+                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                        onClick={() => reloadGif(true)}
+                      />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-2 text-center" side="top">
+                    {easterEggMessage}
+                  </PopoverContent>
+                </Popover>
+
+                <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
+                  <PopoverTrigger asChild>
+                    <div className="relative">
+                      <Image
+                        src={darkGifSrc}
+                        id="dark-profile-pic"
+                        alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                        width={150}
+                        height={150}
+                        unoptimized={true}
+                        loading="eager"
+                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                        onClick={() => reloadGif(false)}
+                      />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-2 text-center" side="top">
+                    {easterEggMessage}
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
 
             {/* Text content */}
