@@ -165,7 +165,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                         delay: 5000,
                       }),
                     ]}
-                    className="w-full max-w-xs pb-4"
+                    className="pb-4"
                   >
                     <CarouselContent>
                       {!hasValidImages || allImagesFailed ? (

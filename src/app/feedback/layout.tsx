@@ -4,9 +4,10 @@ export default function FeedbackLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="container mx-auto py-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">Feedback Dashboard</h1>
-      {children}
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-2xl px-4 py-12">
+        {children}
+      </div>
     </div>
   );
 }

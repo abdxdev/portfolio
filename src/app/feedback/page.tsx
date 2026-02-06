@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRouter } from 'next/navigation';
+import { ArrowBigUp, ArrowBigDown, MessageSquare } from 'lucide-react';
 
 interface FeedbackResponse {
   id: number;
@@ -26,7 +25,6 @@ export default function FeedbackResponses() {
         const response = await fetch(`/api/feedback?password=${password || ''}`);
 
         if (response.status === 401 || response.status === 403) {
-          // Redirect to home page if unauthorized
           router.replace('/');
           return;
         }
@@ -48,63 +46,54 @@ export default function FeedbackResponses() {
   }, [router]);
 
   if (error) {
-    return (
-      <div className="p-4">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-red-500">{error}</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <p className="text-sm text-red-500">{error}</p>;
   }
 
   if (loading) {
-    return (
-      <div className="p-4">
-        <Card>
-          <CardContent className="pt-6">
-            <p>Loading feedback...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <p className="text-sm text-muted-foreground animate-pulse">Loading feedback...</p>;
   }
 
   return (
-    <div className="p-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Feedback Responses</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[600px] pr-4">
-            {feedbacks.length === 0 ? (
-              <p className="text-muted-foreground">No feedback responses yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {feedbacks.map((feedback) => (
-                  <Card key={feedback.id}>
-                    <CardContent className="pt-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className={`text-sm font-medium ${
-                          feedback.sentiment === 'upvote' ? 'text-green-500' : 'text-red-500'
-                        }`}>
-                          {feedback.sentiment.toUpperCase()}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          {new Date(feedback.created_at).toLocaleString()}
-                        </span>
-                      </div>
-                      <p className="text-sm">{feedback.content}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+    <div>
+      <div className="flex items-center gap-2 mb-8">
+        <MessageSquare className="h-5 w-5 text-muted-foreground" />
+        <h1 className="text-xl font-semibold">Feedback</h1>
+        <span className="text-sm text-muted-foreground">({feedbacks.length})</span>
+      </div>
+
+      {feedbacks.length === 0 ? (
+        <p className="text-muted-foreground text-sm">No feedback yet.</p>
+      ) : (
+        <ul className="divide-y divide-border">
+          {feedbacks.map((feedback) => (
+            <li key={feedback.id} className="py-4 first:pt-0 last:pb-0">
+              <div className="flex gap-3">
+                <div className="pt-0.5">
+                  {feedback.sentiment === 'upvote' ? (
+                    <ArrowBigUp className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <ArrowBigDown className="h-5 w-5 text-red-500" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  {feedback.content && (
+                    <p className="text-sm text-foreground">{feedback.content}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {new Date(feedback.created_at).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </p>
+                </div>
               </div>
-            )}
-          </ScrollArea>
-        </CardContent>
-      </Card>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
