@@ -1,4 +1,3 @@
-import { ThemeToggler } from "@/components/ThemeToggler";
 import { Sidebar } from "@/components/Sidebar";
 import { AboutMe } from "@/components/AboutMe";
 import { Projects } from "@/components/Projects";
@@ -6,6 +5,8 @@ import { Experience } from "@/components/Experience";
 import { Glare } from "@/components/Glare";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { constructMetadata } from "@/lib/metadata";
+import { ModeToggle } from "@/components/ThemeToggle";
+import { ApiButton } from "@/components/ApiButton";
 
 // Per-page metadata for better SEO
 export const metadata = constructMetadata({
@@ -22,7 +23,11 @@ export default function Home() {
         <Glare />
         <div className="sticky top-0 right-0">
           {/* Theme Toggler */}
-          <ThemeToggler />
+          <div className="m-4 absolute right-0 top-0 gap-2 flex items-center">
+            <ApiButton />
+            <ModeToggle />
+          </div>
+
         </div>
         <div className="container max-w-screen-lg mx-auto px-4 py-8">
           <header className="sr-only">
