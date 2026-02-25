@@ -18,8 +18,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
-const PROFILE_PICTURE_DARK = '/pfp-dark.png';
+const PROFILE_PICTURE_LIGHT = '/pfp-light.jpeg';
+const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
 
 const socials = [
   {
