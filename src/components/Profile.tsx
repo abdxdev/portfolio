@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import AnilistIcon from "@/components/icons/AnilistIcon";
+import AnilistIcon from "./icons/anilist";
 import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import easterEggMessages from '@/data/easterEggMessages.json';
@@ -227,7 +227,7 @@ export const Profile = () => {
             </Link>
           </Button>
 
-          <Button variant={"outline"} className="w-full hover:bg-primary hover:text-primary-foreground"
+          <Button className="w-full bg-secondary text-primary hover:bg-primary hover:text-primary-foreground cursor-pointer" 
             onClick={() => {
               window.open('/resume', '_blank')
             }}>

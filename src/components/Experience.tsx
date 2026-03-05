@@ -1,7 +1,7 @@
 import { CalendarDays, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import BackendDeveloperIcon from "@/components/icons/BackendDeveloperIcon";
-import GraphicDesignerIcon from "@/components/icons/GraphicDesignerIcon";
+import BackendDeveloperIcon from "./icons/backend-developer";
+import GraphicDesignerIcon from "./icons/graphic-designer";
 
 const jobs = [
   {

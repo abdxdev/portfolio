@@ -63,7 +63,7 @@ export const Feedback = ({ id, adminToken }: { id?: string, adminToken?: string 
               <Button
                 variant={sentiment === "upvote" ? "default" : "outline"}
                 onClick={() => setSentiment(sentiment === "upvote" ? null : "upvote")}
-                className="w-full"
+                className="flex-1"
               >
                 <ArrowBigUp />
                 Upvote
@@ -71,7 +71,7 @@ export const Feedback = ({ id, adminToken }: { id?: string, adminToken?: string 
               <Button
                 variant={sentiment === "downvote" ? "default" : "outline"}
                 onClick={() => setSentiment(sentiment === "downvote" ? null : "downvote")}
-                className="w-full"
+                className="flex-1"
               >
                 <ArrowBigDown />
                 Downvote

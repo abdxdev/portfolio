@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
   images: {
     remotePatterns: [
       {
@@ -24,9 +25,6 @@ const nextConfig: NextConfig = {
         pathname: '**',
       },
     ],
-  },
-  env: {
-    NEXT_TELEMETRY_DISABLED: '1',
   },
 };
 

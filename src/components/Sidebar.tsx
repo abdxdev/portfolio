@@ -1,6 +1,6 @@
-import { Skills } from "./Skills";
-import { Profile } from "./Profile";
-import { Feedback } from "./Feedback";
+import { Skills } from "./skills";
+import { Profile } from "./profile";
+import { Feedback } from "./feedback";
 
 export const Sidebar = () => {
   return (

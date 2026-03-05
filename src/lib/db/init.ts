@@ -1,27 +1,46 @@
-import { Pool } from 'pg';
-import fs from 'fs';
-import path from 'path';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let pool: Pool | null = null;
-
-export const getPool = () => {
-  if (!pool) {
-    pool = new Pool({
-      connectionString: process.env.POSTGRES_URL
-    });
-  }
-  return pool;
+type Database = {
+  public: {
+    Tables: {
+      feedbacks: {
+        Row: {
+          id: number;
+          content: string;
+          sentiment: string;
+          created_at: string;
+          session_id: string;
+        };
+        Insert: {
+          content: string;
+          sentiment: string;
+          created_at: string;
+          session_id: string;
+        };
+        Update: Partial<{
+          content: string;
+          sentiment: string;
+          created_at: string;
+          session_id: string;
+        }>;
+        Relationships: [];
+      };
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
+  };
 };
 
-export async function initDatabase() {
-  try {
-    const createTableQuery = fs.readFileSync(path.resolve(process.cwd(), 'src/lib/db/schema.sql'), 'utf-8');
-    const pool = getPool();
-    await pool.query(createTableQuery);
-    console.log('Database initialized successfully');
-    return true;
-  } catch (error) {
-    console.error('Error initializing database:', error);
-    return false;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!;
+
+let client: SupabaseClient<Database> | null = null;
+
+export const getSupabase = () => {
+  if (!client) {
+    client = createClient<Database>(supabaseUrl, supabaseKey);
   }
-}
+  return client;
+};
