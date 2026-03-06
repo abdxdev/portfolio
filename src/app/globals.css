@@ -175,6 +175,65 @@
   }
 }
 
+/* ── Windows 10 Fluent Reveal Border Glow ── */
+[data-slot="card"] {
+  position: relative;
+}
+
+/* Border glow */
+[data-slot="card"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(0, 0, 0, 0.06),
+    transparent 60%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 3;
+}
+
+/* Surface highlight (subtle) */
+[data-slot="card"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 1;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(0, 0, 0, 0.012),
+    transparent 40%
+  );
+  z-index: 2;
+}
+
+.dark [data-slot="card"]::before {
+  background: radial-gradient(
+    300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.2),
+    transparent 60%
+  );
+}
+
+.dark [data-slot="card"]::after {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.025),
+    transparent 40%
+  );
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
