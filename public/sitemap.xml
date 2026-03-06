@@ -2,9 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://abdxdev.vercel.app/</loc>
-    <lastmod>2025-04-15</lastmod>
+    <lastmod>2026-03-1</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- additional URLs of more pages -->
+  <url>
+    <loc>https://abdxdev.vercel.app/docs</loc>
+    <lastmod>2026-03-1</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
 </urlset>
