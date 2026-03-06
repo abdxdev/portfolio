@@ -112,14 +112,19 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
     fetchProjects();
   }, [repoName]);
 
-  if (isLoading) {
-    return (
-      <section id={id}>
-        <h2 className="text-xl font-bold mb-4">Featured Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Array.from({ length: 4 }).map((_, index) => (
+  return (
+    <section id={id}>
+      <h2 className="flex">
+        Featured Projects
+        <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
+        </a>
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, index) => (
             <Card key={index} className="animate-pulse">
-              <CardContent className="pt-6 h-full">
+              <CardContent className="h-full">
                 <div className="flex flex-col h-full">
                   <Skeleton className="w-full aspect-video max-w-xs mb-4" />
                   <Skeleton className="h-6 w-3/4 mb-2" />
@@ -132,172 +137,160 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section id={id}>
-      <h2 className="text-xl font-bold mb-4 flex items-center group">
-        Featured Projects
-        <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
-        </a>
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {projects.slice(0, visibleCount).map((project, projectIndex) => {
-          const allImagesFailed = project.thumbnails.every(
-            (_, imageIndex) => failedImages[projectIndex]?.has(imageIndex)
-          );
-          const hasValidImages = project.thumbnails.some(
-            (_, imageIndex) => !failedImages[projectIndex]?.has(imageIndex)
-          );
-
-          return (
-            <Card key={projectIndex} className="transition-opacity duration-500 ease-in-out">
-              <CardContent className="pt-6 h-full">
-                <div className="flex flex-col h-full">
-                  <Carousel
-                    plugins={[
-                      Autoplay({
-                        delay: 5000,
-                      }),
-                    ]}
-                    className="pb-4"
-                  >
-                    <CarouselContent>
-                      {!hasValidImages || allImagesFailed ? (
-                        <CarouselItem>
-                          <div>
-                            <Card className="w-full h-full overflow-hidden">
-                              <CardContent className="p-0">
-                                <div className="aspect-video overflow-hidden relative">
-                                  <Image
-                                    src={project.default_image_url}
-                                    alt="Default Thumbnail"
-                                    width={400}
-                                    height={300}
-                                    className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
-                                    onClick={() => openImageDialog(projectIndex, project.title, true)}
-                                  />
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </div>
-                        </CarouselItem>
-                      ) : (
-                        project.thumbnails.map((thumb, imageIndex) => {
-                          if (failedImages[projectIndex]?.has(imageIndex)) {
-                            return null;
-                          }
-
-                          const isImageLoaded = loadedImages[projectIndex]?.has(imageIndex);
-
-                          return (
-                            <CarouselItem key={imageIndex}>
-                              <div>
-                                <Card className="w-full h-full overflow-hidden">
-                                  <CardContent className="p-0">
-                                    <div className="aspect-video overflow-hidden relative">
-                                      {!isImageLoaded && (
-                                        <div className="absolute inset-0 bg-accent animate-pulse" />
-                                      )}
-                                      <Image
-                                        src={thumb}
-                                        alt={`Screenshot ${imageIndex + 1}`}
-                                        width={400}
-                                        height={300}
-                                        className={cn(
-                                          "w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out",
-                                          isImageLoaded ? "opacity-100" : "opacity-0"
-                                        )}
-                                        onLoad={() => {
-                                          handleImageLoaded(projectIndex, imageIndex);
-                                        }}
-                                        onError={() =>
-                                          handleImageError(projectIndex, imageIndex)
-                                        }
-                                        onClick={() => openImageDialog(projectIndex, project.title)}
-                                      />
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              </div>
-                            </CarouselItem>
-                          );
-                        })
-                      )}
-                    </CarouselContent>
-                  </Carousel>
-                  <div className="flex justify-between items-start mb-1">
-                    <Link
-                      href={project.html_url}
-                      className="font-semibold text-primary hover:underline"
+          ))
+        ) : (
+          projects.slice(0, visibleCount).map((project, projectIndex) => {
+            const allImagesFailed = project.thumbnails.every(
+              (_, imageIndex) => failedImages[projectIndex]?.has(imageIndex)
+            );
+            const hasValidImages = project.thumbnails.some(
+              (_, imageIndex) => !failedImages[projectIndex]?.has(imageIndex)
+            );
+            return (
+              <Card key={projectIndex} className="transition-opacity duration-500 ease-in-out">
+                <CardContent className="h-full">
+                  <div className="flex flex-col h-full">
+                    <Carousel
+                      plugins={[
+                        Autoplay({
+                          delay: 5000,
+                        }),
+                      ]}
+                      className="pb-4"
                     >
-                      {project.title}
-                      {project.priority === 0 && (
-                        <span className="text-yellow-500 ml-2" title="Featured Project">★</span>
-                      )}
-                    </Link>
+                      <CarouselContent>
+                        {!hasValidImages || allImagesFailed ? (
+                          <CarouselItem>
+                            <div>
+                              <Card className="w-full h-full overflow-hidden py-0 rounded-md">
+                                <CardContent className="p-0">
+                                  <div className="aspect-video overflow-hidden relative">
+                                    <Image
+                                      src={project.default_image_url}
+                                      alt="Default Thumbnail"
+                                      width={400}
+                                      height={300}
+                                      className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
+                                      onClick={() => openImageDialog(projectIndex, project.title, true)}
+                                    />
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          </CarouselItem>
+                        ) : (
+                          project.thumbnails.map((thumb, imageIndex) => {
+                            if (failedImages[projectIndex]?.has(imageIndex)) {
+                              return null;
+                            }
 
-                    <div className="flex gap-1.5 items-center">
-                      {project.working_on && (
-                        <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30">
-                          Active
-                        </Badge>
-                      )}
-                      {project.is_university_project && (
-                        <Badge className="bg-blue-500/20 dark:bg-blue-600/30 text-blue-700 dark:text-blue-400 hover:bg-blue-500/30">
-                          University
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-1 mb-4">
-                    {project.description}
-                  </p>
-                  <div className="mt-auto flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className={cn(
-                          "size-4 rounded-full",
-                          project.language ? techColors[project.language] : techColors.Default ||
-                            techColors.Default
+                            const isImageLoaded = loadedImages[projectIndex]?.has(imageIndex);
+
+                            return (
+                              <CarouselItem key={imageIndex}>
+                                <div>
+                                  <Card className="w-full h-full overflow-hidden py-0 rounded-md">
+                                    <CardContent className="p-0">
+                                      <div className="aspect-video overflow-hidden relative">
+                                        {!isImageLoaded && (
+                                          <div className="absolute inset-0 bg-accent animate-pulse" />
+                                        )}
+                                        <Image
+                                          src={thumb}
+                                          alt={`Screenshot ${imageIndex + 1}`}
+                                          width={400}
+                                          height={300}
+                                          className={cn(
+                                            "w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out",
+                                            isImageLoaded ? "opacity-100" : "opacity-0"
+                                          )}
+                                          onLoad={() => {
+                                            handleImageLoaded(projectIndex, imageIndex);
+                                          }}
+                                          onError={() =>
+                                            handleImageError(projectIndex, imageIndex)
+                                          }
+                                          onClick={() => openImageDialog(projectIndex, project.title)}
+                                        />
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </div>
+                              </CarouselItem>
+                            );
+                          })
                         )}
-                      />
-                      <span className="text-xs font-medium text-muted-foreground">
-                        {project.language}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      {project.homepage && (
-                        <Link
-                          href={project.homepage}
-                          className="flex items-center gap-1 text-sm text-primary hover:underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Globe className="size-4" />
-                          <span>Site</span>
-                        </Link>
-                      )}
+                      </CarouselContent>
+                    </Carousel>
+                    <div className="flex justify-between items-start mb-1">
                       <Link
                         href={project.html_url}
-                        className="flex items-center gap-1 text-sm text-primary hover:underline"
+                        className="font-semibold text-primary hover:underline"
                       >
-                        <Github className="size-4" />
-                        <span>GitHub</span>
+                        {project.title}
+                        {project.priority === 0 && (
+                          <span className="text-yellow-500 ml-2" title="Featured Project">★</span>
+                        )}
                       </Link>
+
+                      <div className="flex gap-1.5 items-center">
+                        {project.working_on && (
+                          <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30">
+                            Active
+                          </Badge>
+                        )}
+                        {project.is_university_project && (
+                          <Badge className="bg-blue-500/20 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400">
+                            University
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1 mb-4">
+                      {project.description}
+                    </p>
+                    <div className="mt-auto flex flex-wrap gap-x-4 gap-y-2 items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className={cn(
+                            "size-4 rounded-full",
+                            project.language ? techColors[project.language] : techColors.Default ||
+                              techColors.Default
+                          )}
+                        />
+                        <span className="text-xs font-medium text-muted-foreground">
+                          {project.language}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        {project.homepage && (
+                          <Link
+                            href={project.homepage}
+                            className="flex items-center gap-1 text-sm text-primary hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Globe className="size-4" />
+                            <span>Site</span>
+                          </Link>
+                        )}
+                        <Link
+                          href={project.html_url}
+                          className="flex items-center gap-1 text-sm text-primary hover:underline"
+                        >
+                          <Github className="size-4" />
+                          <span>GitHub</span>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+                </CardContent>
+              </Card>
+            );
+          })
+        )}
       </div>
+
 
       {/* Load More Button */}
       {visibleCount < projects.length && (
@@ -313,15 +306,15 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
 
       {/* Image Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-screen-xl p-0 overflow-hidden bg-transparent border-0">
+        <DialogContent className="max-w-7xl p-0 overflow-hidden bg-transparent border-0">
           {selectedProjectIndex !== null && (
-            <div className="bg-black bg-opacity-20 backdrop-blur-sm p-2 rounded-lg">
+            <div className="bg-black bg-opacity-20 backdrop-blur-sm p-0 rounded-lg">
               <Carousel opts={{ align: "center" }} className="w-full max-w-7xl mx-auto">
                 <CarouselContent>
                   {projects[selectedProjectIndex].thumbnails
                     .filter((_, index) => !failedImages[selectedProjectIndex]?.has(index))
                     .map((image, index) => (
-                      <CarouselItem key={index} className="flex items-center justify-center">
+                      <CarouselItem key={index} className="flex items-center justify-center ">
                         <Image
                           src={image}
                           alt={selectedName || "Project Screenshot"}

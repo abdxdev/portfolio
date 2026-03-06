@@ -4,7 +4,8 @@ import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "./icons/anilist";
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 import easterEggMessages from '@/data/easterEggMessages.json';
 import {
@@ -17,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import ShinyText from "./ShinyText";
 
 const PROFILE_PICTURE_LIGHT = '/pfp-light.jpeg';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
@@ -51,30 +53,48 @@ export const Profile = () => {
   const lightPlaceholder = '/bfg.png';
   const darkPlaceholder = '/wfg.png';
 
-  const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
-  const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
+  const [lightGifSrc, setLightGifSrc] = useState(lightPlaceholder);
+  const [darkGifSrc, setDarkGifSrc] = useState(darkPlaceholder);
   const [onCooldown, setOnCooldown] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
 
   // Whether to show the spinning logo instead of pfp
-  const [showLogo, setShowLogo] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // On first load, delay the spin then revert to pfp
+  useEffect(() => {
+    const spinDelay = setTimeout(() => {
+      setLightGifSrc(`${lightGifPath}?t=${Date.now()}`);
+      setDarkGifSrc(`${darkGifPath}?t=${Date.now()}`);
+    }, 2000);
+
+    const revertTimer = setTimeout(() => {
+      setShowLogo(false);
+    }, 4000);
+
+    return () => {
+      clearTimeout(spinDelay);
+      clearTimeout(revertTimer);
+    };
+  }, []);
 
   // Easter egg states
   const [lightPopoverOpen, setLightPopoverOpen] = useState(false);
   const [darkPopoverOpen, setDarkPopoverOpen] = useState(false);
   const [easterEggMessage, setEasterEggMessage] = useState('');
 
-  // Reset the 5-second inactivity timer
   const resetRevertTimer = useCallback(() => {
     if (revertTimerRef.current) clearTimeout(revertTimerRef.current);
     revertTimerRef.current = setTimeout(() => {
       setShowLogo(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
-  // Click on pfp → show spinning logo
+  // Click on pfp → show spinning logo with fresh GIF
   const handlePfpClick = () => {
+    setLightGifSrc(`${lightGifPath}?t=${Date.now()}`);
+    setDarkGifSrc(`${darkGifPath}?t=${Date.now()}`);
     setShowLogo(true);
     resetRevertTimer();
   };
@@ -131,7 +151,7 @@ export const Profile = () => {
 
   return (
     <Card className="mb-6">
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="flex flex-col items-start gap-2 ">
           <div className="flex flex-row md:flex-col w-full">
             <div className="flex-none mr-4 md:mr-0 md:mb-4 relative">
@@ -206,17 +226,33 @@ export const Profile = () => {
             </div>
 
             {/* Text content */}
-            <div className="flex flex-col items-start justify-center">
-              <h1 className="font-bold md:mt-0 text-xl md:text-2xl">Abdul Rahman</h1>
-              <p className="text-sm md:text-base text-muted-foreground">
-                Software Developer & UI/UX Designer
-              </p>
-            </div>
+            <ShinyText
+              speed={1}
+              delay={0}
+              color="oklch(0.56 0 0)"
+              shineColor="#ffffff"
+              spread={120}
+              direction="left"
+              yoyo={false}
+              pauseOnHover={false}
+              disabled={false}
+            >
+              <div className="flex flex-col items-start justify-center">
+                <motion.h1 layoutId="name-heading" className="font-bold md:mt-0 text-xl md:text-2xl"
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                >Abdul Rahman</motion.h1>
+                <p className="text-sm md:text-base text-muted-foreground">
+                  Software Developer & UI/UX Designer
+                </p>
+              </div>
+            </ShinyText>
+
           </div>
 
           <p className="mt-2 text-start text-sm text-muted-foreground">
-            I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
+            I build things for the web, tinker with UI until it feels just right, and firmly believe every project needs "just one more feature."
           </p>
+
 
           <Button className="mt-2 w-full" asChild>
             <Link
@@ -227,7 +263,7 @@ export const Profile = () => {
             </Link>
           </Button>
 
-          <Button className="w-full bg-secondary text-primary hover:bg-primary hover:text-primary-foreground cursor-pointer" 
+          <Button className="w-full bg-secondary text-primary hover:bg-primary border hover:text-primary-foreground cursor-pointer"
             onClick={() => {
               window.open('/resume', '_blank')
             }}>

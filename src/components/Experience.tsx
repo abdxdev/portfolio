@@ -24,14 +24,14 @@ const jobs = [
 
 export const Experience = ({ id }: { id?: string }) => (
   <section id={id}>
-    <h2 className="text-xl font-bold mb-4 flex items-center group">
+    <h2 className="flex">
       Work Experience
       <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
       </a>
     </h2>
     <Card className="mb-6">
-      <CardContent className="pt-6">
+      <CardContent>
         <ul className="space-y-8">
           {jobs.map((j, i) => (
             <li key={i} className="border-b last:border-b-0 pb-8 last:pb-0">

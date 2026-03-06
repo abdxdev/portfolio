@@ -1,12 +1,23 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { geistSans, geistMono } from "./fonts/fonts";
-import { constructMetadata } from "@/lib/metadata";
-import { PersonSchema, WebsiteSchema, ProjectsSchema } from "@/lib/schema";
-import { Analytics } from "@/lib/analytics";
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
+import ClickSpark from "@/components/ClickSpark"
 
-export const metadata = constructMetadata();
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Abdul Rahman | Software Developer & UI/UX Designer",
+  description: "Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.",
+};
 
 export default function RootLayout({
   children,
@@ -15,18 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="google-site-verification" content="hCeXpe7cAWrD1ZYAH3YfCWT80G6rx6AqSkQbMYgmZ3U" />
-        <PersonSchema />
-        <WebsiteSchema />
-        <ProjectsSchema />
-      </head>
       <body
-        className={cn(
-          "antialiased",
-          geistSans.variable,
-          geistMono.variable,
-        )}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -34,8 +35,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>{children}</main>
-          <Analytics />
+          <ClickSpark>
+            {children}
+          </ClickSpark>
         </ThemeProvider>
       </body>
     </html>
