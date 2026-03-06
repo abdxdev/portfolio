@@ -114,7 +114,7 @@ export const Projects = ({ id }: { id?: string }) => {
 
   return (
     <section id={id}>
-      <h2 className="flex">
+      <h2 className="flex items-center group">
         Featured Projects
         <a href={`#${id}`} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
