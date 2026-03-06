@@ -3,7 +3,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 type Database = {
   public: {
     Tables: {
-      feedbacks: {
+      portfolio_feedbacks: {
         Row: {
           id: number;
           content: string;
