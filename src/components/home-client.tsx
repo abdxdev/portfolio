@@ -26,7 +26,7 @@ export const HomeClient = () => {
           <div className="absolute inset-0 z-1 pointer-events-none opacity-30">
             <LightRays />
           </div>
-          <div className="sticky top-0 right-0">
+          <div className="sticky top-0 right-0 z-50">
             {/* Theme Toggler */}
             <div className="m-4 absolute right-0 top-0 gap-2 flex items-center">
               <ApiButton />
@@ -37,7 +37,7 @@ export const HomeClient = () => {
             <header className="sr-only">
               <h1>Abdul Rahman - Software Developer & UI/UX Designer</h1>
             </header>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-6">
               {/* (Profile and Skills) Sidebar Section */}
               <Sidebar />
               {/* Main Section */}
@@ -47,7 +47,7 @@ export const HomeClient = () => {
                 {/* Experience Section */}
                 <Experience id="experience" />
                 {/* Projects Section */}
-                <Projects id="projects" repoName="abdxdev" />
+                <Projects id="projects" />
               </main>
             </div>
           </div>

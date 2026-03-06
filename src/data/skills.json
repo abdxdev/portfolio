@@ -5,7 +5,7 @@
         "skills": [
             {
                 "name": "Python",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "C",
@@ -17,15 +17,19 @@
             },
             {
                 "name": "C#",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "JavaScript",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "TypeScript",
-                "portfolio": true
+                "portfolio": false
+            },
+            {
+                "name": "SQL",
+                "portfolio": false
             }
         ]
     },
@@ -61,7 +65,7 @@
             },
             {
                 "name": "Tailwind CSS",
-                "portfolio": true
+                "portfolio": false
             }
         ]
     },
@@ -103,7 +107,7 @@
             },
             {
                 "name": "React",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "Django",
@@ -115,7 +119,7 @@
             },
             {
                 "name": "Streamlit",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "Tkinter",
@@ -123,7 +127,7 @@
             },
             {
                 "name": "Flet",
-                "portfolio": true
+                "portfolio": false
             },
             {
                 "name": "Reflex",
@@ -132,6 +136,22 @@
             {
                 "name": "WinUI 3",
                 "portfolio": true
+            },
+            {
+                "name": "Flutter",
+                "portfolio": true
+            },
+            {
+                "name": ".NET",
+                "portfolio": true
+            },
+            {
+                "name": "Node.js",
+                "portfolio": false
+            },
+            {
+                "name": "Express.js",
+                "portfolio": false
             }
         ]
     },
@@ -153,6 +173,14 @@
             },
             {
                 "name": "Microsoft Azure",
+                "portfolio": false
+            },
+            {
+                "name": "Supabase",
+                "portfolio": true
+            },
+            {
+                "name": "GitHub Workflows",
                 "portfolio": false
             }
         ]
@@ -179,6 +207,10 @@
             },
             {
                 "name": "Access",
+                "portfolio": false
+            },
+            {
+                "name": "MongoDB",
                 "portfolio": false
             }
         ]

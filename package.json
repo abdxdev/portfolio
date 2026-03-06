@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.98.0",
     "@types/mdx": "^2.0.13",
     "axios": "^1.13.6",
@@ -49,6 +50,10 @@
     "ignoredBuiltDependencies": [
       "sharp",
       "unrs-resolver"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
     ]
   }
 }

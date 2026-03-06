@@ -19,6 +19,9 @@ import {
 } from "@/components/ui/popover";
 import ShinyText from "./ShinyText";
 import { motion } from 'motion/react';
+import { RainbowButton } from "./ui/rainbow-button";
+import { ExternalLink } from "lucide-react";
+import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 
 const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
@@ -239,23 +242,21 @@ export const Profile = () => {
           </p>
 
 
-          <Button className="mt-2 w-full" asChild>
+          <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm" asChild>
             <Link
-              href="mailto:abdulrahman.abd.dev@gmail.com"
-              className="font-semibold w-full h-full"
+              href="https://mail.google.com/mail/?view=cm&to=abdulrahman.abd.dev@gmail.com&su=Hello%20Abdul%20Rahman&body=Hi%20Abdul%20Rahman%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect%20with%20you.%0A%0A"
+              target="_blank"
             >
               CONTACT ME
             </Link>
-          </Button>
+          </RainbowButton>
 
-          <Button className="w-full bg-secondary text-primary hover:bg-primary border hover:text-primary-foreground cursor-pointer"
+          <InteractiveHoverButton className="rounded-md w-full font-semibold text-sm"
             onClick={() => {
               window.open('/resume', '_blank')
             }}>
-            <p className="font-semibold w-full h-full">
               RESUME
-            </p>
-          </Button>
+          </InteractiveHoverButton>
 
           <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
             {socials.map((s, i) => {

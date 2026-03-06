@@ -37,7 +37,7 @@ const techColors: Record<string, string> = {
   "TypeScript": "bg-blue-500",
 };
 
-export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) => {
+export const Projects = ({ id }: { id?: string }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [visibleCount, setVisibleCount] = useState(4);
   const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
@@ -110,7 +110,7 @@ export const Projects = ({ id, repoName }: { id?: string, repoName?: string }) =
     };
 
     fetchProjects();
-  }, [repoName]);
+  }, []);
 
   return (
     <section id={id}>
