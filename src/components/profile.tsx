@@ -53,8 +53,8 @@ export const Profile = () => {
   const lightPlaceholder = '/bfg.png';
   const darkPlaceholder = '/wfg.png';
 
-  const [lightGifSrc, setLightGifSrc] = useState(lightPlaceholder);
-  const [darkGifSrc, setDarkGifSrc] = useState(darkPlaceholder);
+  const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
+  const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
   const [onCooldown, setOnCooldown] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
 
@@ -62,21 +62,12 @@ export const Profile = () => {
   const [showLogo, setShowLogo] = useState(true);
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // On first load, delay the spin then revert to pfp
+  // On first load, show logo then revert to pfp
   useEffect(() => {
-    const spinDelay = setTimeout(() => {
-      setLightGifSrc(`${lightGifPath}?t=${Date.now()}`);
-      setDarkGifSrc(`${darkGifPath}?t=${Date.now()}`);
-    }, 2000);
-
-    const revertTimer = setTimeout(() => {
+    const timer = setTimeout(() => {
       setShowLogo(false);
-    }, 4000);
-
-    return () => {
-      clearTimeout(spinDelay);
-      clearTimeout(revertTimer);
-    };
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   // Easter egg states
@@ -84,11 +75,12 @@ export const Profile = () => {
   const [darkPopoverOpen, setDarkPopoverOpen] = useState(false);
   const [easterEggMessage, setEasterEggMessage] = useState('');
 
+  // Reset the 5-second inactivity timer
   const resetRevertTimer = useCallback(() => {
     if (revertTimerRef.current) clearTimeout(revertTimerRef.current);
     revertTimerRef.current = setTimeout(() => {
       setShowLogo(false);
-    }, 3000);
+    }, 5000);
   }, []);
 
   // Click on pfp → show spinning logo with fresh GIF
@@ -161,8 +153,8 @@ export const Profile = () => {
                   src={PROFILE_PICTURE_LIGHT}
                   id="profile-pic-light"
                   alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
-                  width={150}
-                  height={150}
+                  width={500}
+                  height={500}
                   loading="eager"
                   className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
                   onClick={handlePfpClick}
@@ -171,8 +163,8 @@ export const Profile = () => {
                   src={PROFILE_PICTURE_DARK}
                   id="profile-pic-dark"
                   alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
-                  width={150}
-                  height={150}
+                  width={500}
+                  height={500}
                   loading="eager"
                   className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
                   onClick={handlePfpClick}
@@ -188,8 +180,8 @@ export const Profile = () => {
                         src={lightGifSrc}
                         id="light-profile-pic"
                         alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
-                        width={150}
-                        height={150}
+                        width={500}
+                        height={500}
                         unoptimized={true}
                         loading="eager"
                         className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
@@ -209,8 +201,8 @@ export const Profile = () => {
                         src={darkGifSrc}
                         id="dark-profile-pic"
                         alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
-                        width={150}
-                        height={150}
+                        width={500}
+                        height={500}
                         unoptimized={true}
                         loading="eager"
                         className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
@@ -250,7 +242,7 @@ export const Profile = () => {
           </div>
 
           <p className="mt-2 text-start text-sm text-muted-foreground">
-            I build things for the web, tinker with UI until it feels just right, and firmly believe every project needs "just one more feature."
+            I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
           </p>
 
 
