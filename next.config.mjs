@@ -1,6 +1,11 @@
-import type { NextConfig } from "next";
+import { createMDX } from 'fumadocs-mdx/next';
 
-const nextConfig: NextConfig = {
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
   reactCompiler: true,
   images: {
     remotePatterns: [
@@ -28,4 +33,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withMDX = createMDX({
+  // customise the config file path
+  // configPath: "source.config.ts"
+});
+
+
+export default withMDX(nextConfig);

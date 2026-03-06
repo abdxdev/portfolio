@@ -1,0 +1,483 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "abdxdev Portfolio API",
+    "description": "A public REST API powering abdxdev's personal portfolio. Exposes endpoints for projects, skills, social links, friends, anime watchlist, game library, and visitor feedback.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current deployment"
+    }
+  ],
+  "paths": {
+    "/api/portfolio/projects": {
+      "get": {
+        "operationId": "getProjects",
+        "summary": "List GitHub projects",
+        "description": "Returns a curated list of the portfolio owner's GitHub repositories. Only repositories with a recognised description format are included; results are ordered by display priority, then creation date.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "GitHub social not found in config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error fetching projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/skills": {
+      "get": {
+        "operationId": "getSkills",
+        "summary": "List skills",
+        "description": "Returns all skill categories, each containing the individual skills and their associated metadata such as icon and display colour.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of skill categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillCategory"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/socials": {
+      "get": {
+        "operationId": "getSocials",
+        "summary": "List social links",
+        "description": "Returns all configured social platform links.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of social links",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Social"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/friends": {
+      "get": {
+        "operationId": "getFriends",
+        "summary": "List friends",
+        "description": "Returns a list of friends, each enriched with their GitHub profile data, avatar URL, and LinkedIn profile link where available.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of friends",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Friend"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/anime": {
+      "get": {
+        "operationId": "getAnimeList",
+        "summary": "List anime watchlist",
+        "description": "Returns the portfolio owner's anime watchlist from AniList.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of anime",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Anime"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "AniList social not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio/games": {
+      "get": {
+        "operationId": "getGamesList",
+        "summary": "List game library",
+        "description": "Returns the portfolio owner's game library from RAWG, covering all status categories: beaten, playing, on hold, plan to play, dropped, and owned.",
+        "tags": [
+          "Portfolio"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of games",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "RAWG social not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Human-readable project title"
+          },
+          "raw_name": {
+            "type": "string",
+            "description": "Original GitHub repository name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Parsed project description"
+          },
+          "raw_description": {
+            "type": "string",
+            "description": "Original GitHub description"
+          },
+          "homepage": {
+            "type": "string",
+            "nullable": true,
+            "description": "Project homepage URL"
+          },
+          "html_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "GitHub repository URL"
+          },
+          "fork": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "language": {
+            "type": "string",
+            "description": "Primary programming language"
+          },
+          "stargazers_count": {
+            "type": "integer"
+          },
+          "watchers_count": {
+            "type": "integer"
+          },
+          "default_branch": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Display priority (lower = higher priority)"
+          },
+          "is_university_project": {
+            "type": "boolean"
+          },
+          "working_on": {
+            "type": "boolean",
+            "description": "Whether the project is currently being worked on"
+          },
+          "default_image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "OpenGraph image URL"
+          },
+          "thumbnails": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Screenshot URLs from the repository"
+          }
+        }
+      },
+      "SkillCategory": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Category name (e.g. Languages, Frameworks)"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Skill"
+            }
+          }
+        }
+      },
+      "Skill": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Skill name"
+          },
+          "portfolio": {
+            "type": "boolean",
+            "description": "Whether to display on the portfolio"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug"
+          },
+          "hex": {
+            "type": "string",
+            "nullable": true,
+            "description": "SimpleIcons hex color"
+          },
+          "svg_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL to the skill's SVG icon"
+          },
+          "source": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "simpleicons",
+              "svgl",
+              "custom"
+            ],
+            "description": "Icon source"
+          }
+        }
+      },
+      "Social": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Platform name (e.g. github, linkedin)"
+          },
+          "username": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "Friend": {
+        "type": "object",
+        "properties": {
+          "github_username": {
+            "type": "string"
+          },
+          "linkedin_username": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "uri",
+            "description": "DiceBear avatar URL"
+          },
+          "github_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "linkedin_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "github_name": {
+            "type": "string",
+            "description": "Display name from GitHub profile"
+          },
+          "github_avatar": {
+            "type": "string",
+            "format": "uri",
+            "description": "GitHub profile picture"
+          }
+        }
+      },
+      "Anime": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Anime title (English preferred, falls back to Romaji)"
+          },
+          "site_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "AniList page URL"
+          },
+          "cover_image": {
+            "type": "string",
+            "format": "uri",
+            "description": "Cover image URL"
+          },
+          "status": {
+            "type": "string",
+            "description": "Watch status (e.g. COMPLETED, CURRENT, PLANNING)"
+          }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "background_image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "background_image_cropped": {
+            "type": "string",
+            "format": "uri",
+            "description": "Cropped 600x400 image"
+          },
+          "rawg_link": {
+            "type": "string",
+            "format": "uri",
+            "description": "RAWG page URL"
+          },
+          "released": {
+            "type": "string",
+            "description": "Release date"
+          },
+          "rating": {
+            "type": "number",
+            "description": "RAWG rating"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "beaten",
+              "playing",
+              "yet",
+              "toplay",
+              "dropped",
+              "owned"
+            ]
+          }
+        }
+      },
+      "Feedback": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          },
+          "sentiment": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

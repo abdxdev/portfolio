@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/popover";
 import ShinyText from "./ShinyText";
 
-const PROFILE_PICTURE_LIGHT = '/pfp-light.jpeg';
+const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
 
 const socials = [

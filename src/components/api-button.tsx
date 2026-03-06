@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const ApiButton = () => {
   return (
-    <Link href="/api">
+    <Link href="/docs">
       <Button
         variant="ghost"
         size="icon"

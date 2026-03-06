@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { filterItemsByQuery } from '@/lib/utils';
 import socials from '@/data/socials.json';
 
@@ -20,20 +20,8 @@ query ($username: String) {
 }
 `;
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
-  let username = searchParams.get('username');
-  if (!username) {
-    const matched = filterItemsByQuery(socials, new URLSearchParams([['anilist', 'true']]), 'name');
-    if (matched.length === 0) {
-      return NextResponse.json({ error: 'AniList social not found' }, { status: 404 });
-    }
-    username = matched[0].username;
-  }
-  if (!username) {
-    return NextResponse.json({ error: 'Username is required' }, { status: 400 });
-  }
-
+export async function GET() {
+  const username = "abdxdev";
   const response = await fetch(GRAPHQL_URL, {
     method: 'POST',
     headers: {

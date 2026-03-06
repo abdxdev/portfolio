@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import ClickSpark from "@/components/ClickSpark"
+import { RootProvider } from 'fumadocs-ui/provider/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,9 +36,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClickSpark>
-            {children}
-          </ClickSpark>
+          <RootProvider>
+            <ClickSpark>
+              {children}
+            </ClickSpark>
+          </RootProvider>
         </ThemeProvider>
       </body>
     </html>

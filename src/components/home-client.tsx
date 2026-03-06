@@ -23,7 +23,7 @@ export const HomeClient = () => {
       <ScrollArea className="bg-background min-h-screen h-screen overflow-y-auto relative w-full p-0">
         <div className="relative w-full h-full">
           {/* Light Rays Effect */}
-          <div className="absolute inset-0 z-1 pointer-events-none">
+          <div className="absolute inset-0 z-1 pointer-events-none opacity-50">
             <LightRays />
           </div>
           <div className="sticky top-0 right-0">
