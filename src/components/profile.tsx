@@ -209,27 +209,28 @@ export const Profile = () => {
 
             {/* Text content */}
 
-            <ShinyText
-              speed={1}
-              delay={0}
-              color="oklch(0.56 0 0)"
-              shineColor="#ffffff"
-              spread={120}
-              direction="left"
-              yoyo={false}
-              pauseOnHover={false}
-              disabled={false}
-            >
-
-              <div className="flex flex-col items-start justify-center">
-                <motion.h1 layoutId="name-heading" className="font-bold md:mt-0 text-xl md:text-2xl"
-                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                >Abdul Rahman</motion.h1>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Software Developer & UI/UX Designer
-                </p>
-              </div>
-            </ShinyText>
+            <div className="flex flex-col items-start justify-center">
+              <motion.h1 layoutId="name-heading" className="font-bold md:mt-0 text-xl md:text-2xl"
+                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <ShinyText
+                  speed={1}
+                  delay={0}
+                  color="oklch(0.56 0 0)"
+                  shineColor="#ffffff"
+                  spread={120}
+                  direction="left"
+                  yoyo={false}
+                  pauseOnHover={false}
+                  disabled={false}
+                >
+                  Abdul Rahman
+                </ShinyText>
+              </motion.h1>
+              <p className="text-sm md:text-base text-muted-foreground">
+                Software Developer & UI/UX Designer
+              </p>
+            </div>
 
           </div>
 
