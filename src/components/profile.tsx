@@ -4,8 +4,7 @@ import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "./icons/anilist";
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import easterEggMessages from '@/data/easterEggMessages.json';
 import {
@@ -19,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import ShinyText from "./ShinyText";
+import { motion } from 'motion/react';
 
 const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
@@ -59,16 +59,8 @@ export const Profile = () => {
   const [isReloading, setIsReloading] = useState(false);
 
   // Whether to show the spinning logo instead of pfp
-  const [showLogo, setShowLogo] = useState(true);
+  const [showLogo, setShowLogo] = useState(false);
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // On first load, show logo then revert to pfp
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLogo(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Easter egg states
   const [lightPopoverOpen, setLightPopoverOpen] = useState(false);
@@ -83,10 +75,8 @@ export const Profile = () => {
     }, 5000);
   }, []);
 
-  // Click on pfp → show spinning logo with fresh GIF
+  // Click on pfp → show spinning logo
   const handlePfpClick = () => {
-    setLightGifSrc(`${lightGifPath}?t=${Date.now()}`);
-    setDarkGifSrc(`${darkGifPath}?t=${Date.now()}`);
     setShowLogo(true);
     resetRevertTimer();
   };
@@ -218,6 +208,7 @@ export const Profile = () => {
             </div>
 
             {/* Text content */}
+
             <ShinyText
               speed={1}
               delay={0}
@@ -229,6 +220,7 @@ export const Profile = () => {
               pauseOnHover={false}
               disabled={false}
             >
+
               <div className="flex flex-col items-start justify-center">
                 <motion.h1 layoutId="name-heading" className="font-bold md:mt-0 text-xl md:text-2xl"
                   transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
@@ -242,7 +234,7 @@ export const Profile = () => {
           </div>
 
           <p className="mt-2 text-start text-sm text-muted-foreground">
-            I&apos;m a software developer and designer who lives by two mottos: &quot;Work smarter, not harder&quot; and &quot;If it&apos;s not broken, add more features.&quot;
+            I build things for the web, tinker with UI until it feels just right, and firmly believe every project needs "just one more feature."
           </p>
 
 
