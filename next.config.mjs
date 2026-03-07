@@ -29,6 +29,16 @@ const nextConfig = {
         hostname: 'raw.githubusercontent.com',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.rawg.io',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's4.anilist.co',
+        pathname: '**',
+      },
     ],
   },
 };

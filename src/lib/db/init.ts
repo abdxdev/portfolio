@@ -3,25 +3,25 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 type Database = {
   public: {
     Tables: {
-      portfolio_feedbacks: {
+      portfolio_conversations: {
         Row: {
           id: number;
-          content: string;
-          sentiment: string;
-          created_at: string;
           session_id: string;
+          message: string;
+          is_admin: boolean;
+          created_at: string;
         };
         Insert: {
-          content: string;
-          sentiment: string;
-          created_at: string;
           session_id: string;
+          message: string;
+          is_admin?: boolean;
+          created_at: string;
         };
         Update: Partial<{
-          content: string;
-          sentiment: string;
-          created_at: string;
           session_id: string;
+          message: string;
+          is_admin: boolean;
+          created_at: string;
         }>;
         Relationships: [];
       };

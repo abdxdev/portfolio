@@ -1,6 +1,6 @@
 import { Skills } from "./skills";
 import { Profile } from "./profile";
-import { Feedback } from "./feedback";
+import { Conversation } from "./conversation";
 
 export const Sidebar = () => {
   return (
@@ -9,8 +9,8 @@ export const Sidebar = () => {
       <Profile />
       {/* Skills Section */}
       <Skills id="skills" />
-      {/* Feedback Section */}
-      <Feedback id="feedback" />
+      {/* Conversation Section */}
+      <Conversation id="conversation" />
     </aside>
   )
 }
