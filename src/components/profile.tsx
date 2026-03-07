@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/popover";
 import ShinyText from "./ShinyText";
 import { motion } from 'motion/react';
+import { useAnimationSettings } from "@/components/animation-settings";
 import { RainbowButton } from "./ui/rainbow-button";
 import { ExternalLink } from "lucide-react";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
@@ -63,6 +64,7 @@ export const Profile = () => {
 
   // Whether to show the spinning logo instead of pfp
   const [showLogo, setShowLogo] = useState(false);
+  const { settings } = useAnimationSettings();
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Easter egg states
@@ -213,19 +215,20 @@ export const Profile = () => {
             {/* Text content */}
 
             <div className="flex flex-col items-start justify-center">
-              <motion.h1 layoutId="name-heading" className="font-bold md:mt-0 text-xl md:text-2xl"
+              <motion.h1
+                layoutId={settings.introAnimation ? "name-heading" : undefined}
+                className="font-bold md:mt-0 text-xl md:text-2xl"
                 transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               >
                 <ShinyText
                   speed={1}
                   delay={0}
-                  color="oklch(0.56 0 0)"
-                  shineColor="#ffffff"
+                  className="text-foreground"
                   spread={120}
                   direction="left"
                   yoyo={false}
                   pauseOnHover={false}
-                  disabled={false}
+                  disabled={!settings.shinyText}
                 >
                   Abdul Rahman
                 </ShinyText>
@@ -255,7 +258,7 @@ export const Profile = () => {
             onClick={() => {
               window.open('/resume', '_blank')
             }}>
-              RESUME
+            RESUME
           </InteractiveHoverButton>
 
           <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">

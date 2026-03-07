@@ -21,10 +21,13 @@ export const Conversation = ({ id }: { id?: string }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [msgSearch, setMsgSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   };
 
   const fetchMessages = useCallback(async () => {
@@ -149,7 +152,7 @@ export const Conversation = ({ id }: { id?: string }) => {
                   <Search className="h-3 w-3 text-muted-foreground shrink-0" />
                   <input
                     type="text"
-                    placeholder="Search messages..."
+                    placeholder="Search messages"
                     value={msgSearch}
                     onChange={(e) => setMsgSearch(e.target.value)}
                     autoFocus
@@ -165,7 +168,7 @@ export const Conversation = ({ id }: { id?: string }) => {
                   )}
                 </div>
               )}
-              <div className="max-h-60 overflow-y-auto space-y-1.5 pr-1">
+              <div ref={messagesContainerRef} className="max-h-60 overflow-y-auto space-y-1.5 pr-1">
                 {messages
                   .filter((msg) => {
                     if (!msgSearch.trim()) return true;
@@ -175,46 +178,43 @@ export const Conversation = ({ id }: { id?: string }) => {
                     return msg.message.toLowerCase().includes(term);
                   })
                   .map((msg) => {
-                const rec = parseRecommendation(msg.message);
-                return (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.is_admin ? "justify-start" : "justify-end"}`}
-                >
-                  {rec ? (
-                    <div className="max-w-[85%]">
-                      <RecommendationCard rec={rec} />
-                      <p
-                        className={`text-[10px] mt-1 ${
-                          msg.is_admin ? "text-muted-foreground" : "text-muted-foreground text-right"
-                        }`}
+                    const rec = parseRecommendation(msg.message);
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`flex ${msg.is_admin ? "justify-start" : "justify-end"}`}
                       >
-                        {formatTime(msg.created_at)}
-                      </p>
-                    </div>
-                  ) : (
-                  <div
-                    className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${
-                      msg.is_admin
-                        ? "bg-muted text-foreground rounded-bl-sm"
-                        : "bg-primary text-primary-foreground rounded-br-sm"
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap wrap-break-word">{msg.message}</p>
-                    <p
-                      className={`text-[10px] mt-0.5 ${
-                        msg.is_admin
-                          ? "text-muted-foreground"
-                          : "text-primary-foreground/50"
-                      }`}
-                    >
-                      {formatTime(msg.created_at)}
-                    </p>
-                  </div>
-                  )}
-                </div>
-                );
-              })}
+                        {rec ? (
+                          <div className="max-w-[85%]">
+                            <RecommendationCard rec={rec} />
+                            <p
+                              className={`text-[10px] mt-1 ${msg.is_admin ? "text-muted-foreground" : "text-muted-foreground text-right"
+                                }`}
+                            >
+                              {formatTime(msg.created_at)}
+                            </p>
+                          </div>
+                        ) : (
+                          <div
+                            className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${msg.is_admin
+                                ? "bg-muted text-foreground rounded-bl-sm"
+                                : "bg-primary text-primary-foreground rounded-br-sm"
+                              }`}
+                          >
+                            <p className="whitespace-pre-wrap wrap-break-word">{msg.message}</p>
+                            <p
+                              className={`text-[10px] mt-0.5 ${msg.is_admin
+                                  ? "text-muted-foreground"
+                                  : "text-primary-foreground/50"
+                                }`}
+                            >
+                              {formatTime(msg.created_at)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 {messages.filter((msg) => {
                   if (!msgSearch.trim()) return true;
                   const term = msgSearch.toLowerCase();
@@ -222,13 +222,12 @@ export const Conversation = ({ id }: { id?: string }) => {
                   if (rec) return rec.title.toLowerCase().includes(term);
                   return msg.message.toLowerCase().includes(term);
                 }).length === 0 && (
-                  <p className="text-[11px] text-muted-foreground text-center py-2">No matches</p>
-                )}
-                <div ref={messagesEndRef} />
+                    <p className="text-[11px] text-muted-foreground text-center py-2">No matches</p>
+                  )}
               </div>
             </>
           ) : (
-            <p className="text-[13px] text-muted-foreground text-center py-3">
+            <p className="text-sm text-muted-foreground text-center py-3">
               Drop me a message — it&apos;s anonymous and I&apos;ll reply here.
             </p>
           )}
@@ -240,7 +239,7 @@ export const Conversation = ({ id }: { id?: string }) => {
             onMessageChange={setInput}
             onMessageSubmit={handleSubmit}
             isSubmitting={isSubmitting}
-            placeholder="Type a message..."
+            placeholder="Type a message"
             onKeyDown={handleKeyDown}
           />
           {error && <p className="text-xs text-destructive">{error}</p>}

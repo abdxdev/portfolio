@@ -5,6 +5,7 @@ import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
 
 import { cn } from "@/lib/utils"
+import { Button } from "./button"
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number
@@ -85,15 +86,16 @@ export const AnimatedThemeToggler = ({
   }, [isDark, duration])
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="icon"
       ref={buttonRef}
       onClick={toggleTheme}
       className={cn(className)}
       {...props}
     >
-      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      {isDark ? <Sun /> : <Moon />}
       <span className="sr-only">Toggle theme</span>
-    </button>
+    </Button>
   )
 }

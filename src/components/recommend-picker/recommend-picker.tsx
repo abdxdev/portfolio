@@ -1,11 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Loader2, Gamepad2, List, X, Send } from "lucide-react";
+import { Loader2, Gamepad2, ChevronDown, X, Send, List } from "lucide-react";
 import AnilistIcon from "@/components/icons/anilist";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
 
 import type {
   PickerMode,
@@ -15,7 +19,7 @@ import type {
   PortfolioAnime,
   PortfolioGame,
 } from "./types";
-import { statusLabel, encodeRecommendation, norm } from "./utils";
+import { statusLabel, allStatusLabels, encodeRecommendation, norm } from "./utils";
 import { searchGames, searchAnime } from "./search";
 import { ResultRow } from "./result-row";
 
@@ -36,7 +40,7 @@ export function RecommendPicker({
   onMessageChange,
   onMessageSubmit,
   isSubmitting,
-  placeholder = "Type a message...",
+  placeholder = "Type a message",
   onKeyDown,
 }: {
   onRecommend: (encoded: string) => void;
@@ -52,6 +56,7 @@ export function RecommendPicker({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [listFilter, setListFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -71,6 +76,7 @@ export function RecommendPicker({
     setOpen(false);
     setQuery("");
     setListFilter("");
+    setStatusFilter(null);
     setResults([]);
     setView("search");
   }, []);
@@ -194,13 +200,13 @@ export function RecommendPicker({
     if (open) fetchPortfolioLists();
   }, [open, fetchPortfolioLists]);
 
-  // Reset search on mode change
+  // Reset search/filter text on mode change (preserve current view)
   useEffect(() => {
     if (open) {
       setQuery("");
       setListFilter("");
+      setStatusFilter(null);
       setResults([]);
-      setView("search");
       setTimeout(() => textareaRef.current?.focus(), 50);
     }
   }, [open, mode]);
@@ -218,11 +224,19 @@ export function RecommendPicker({
   };
 
   const fullList = portfolioAsResults();
-  const filteredList = listFilter.trim()
-    ? fullList.filter((r) =>
-        r.title.toLowerCase().includes(listFilter.toLowerCase())
-      )
-    : fullList;
+
+  // Derive available categories from the current list
+  const availableCategories = Array.from(
+    new Set(fullList.map((r) => r.listStatus).filter(Boolean))
+  ) as string[];
+
+  const filteredList = fullList.filter((r) => {
+    const matchesText = listFilter.trim()
+      ? r.title.toLowerCase().includes(listFilter.toLowerCase())
+      : true;
+    const matchesStatus = statusFilter ? r.listStatus === statusFilter : true;
+    return matchesText && matchesStatus;
+  });
 
   // ── Toggle a mode icon ──────────────────────────────────────────
   const toggleMode = (m: PickerMode) => {
@@ -243,10 +257,10 @@ export function RecommendPicker({
 
   const displayPlaceholder = open
     ? view === "list"
-      ? "Filter list..."
+      ? "Filter list"
       : mode === "game"
-        ? "Search games..."
-        : "Search anime..."
+        ? "Search games"
+        : "Search anime"
     : placeholder;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -277,92 +291,76 @@ export function RecommendPicker({
 
   return (
     <div
-      className={`rounded-lg border overflow-hidden transition-shadow ${
-        open ? modeRing[mode] : ""
-      }`}
+      className={`rounded-lg border overflow-hidden transition-shadow ${open ? modeRing[mode] : ""}`}
     >
       {/* ── Input row ─────────────────────────────────────────── */}
-      <div className="relative">
-        <Textarea
+      <InputGroup className="rounded-none border-0 shadow-none">
+        {/* Left icons */}
+        <InputGroupAddon align="inline-start" className="gap-0">
+          <InputGroupButton
+            type="button"
+            size="icon-sm"
+            className={`${open && mode === "game" ? modeIcon.game : "text-muted-foreground hover:text-foreground"}`}
+            title="Recommend a game"
+            onClick={() => toggleMode("game")}
+          >
+            <Gamepad2 className="h-4 w-4" />
+          </InputGroupButton>
+          <InputGroupButton
+            type="button"
+            size="icon-sm"
+            className={`${open && mode === "anime" ? modeIcon.anime : "text-muted-foreground hover:text-foreground"}`}
+            title="Recommend an anime"
+            onClick={() => toggleMode("anime")}
+          >
+            <AnilistIcon className="h-4 w-4 fill-current" />
+          </InputGroupButton>
+        </InputGroupAddon>
+
+        <InputGroupTextarea
           ref={textareaRef}
           value={displayValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={displayPlaceholder}
           rows={1}
-          className="pr-12 pl-18 resize-none text-[13px] min-h-10 border-0 shadow-none focus-visible:ring-0"
+          className="text-sm min-h-0 py-2.5"
         />
 
-        {/* Left icons — always visible, highlight active mode */}
-        <div className="absolute left-1.5 bottom-1.5 flex items-center gap-0.5">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className={`h-7 w-7 ${
-              open && mode === "game"
-                ? modeIcon.game
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            title="Recommend a game"
-            onClick={() => toggleMode("game")}
-          >
-            <Gamepad2 className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className={`h-7 w-7 ${
-              open && mode === "anime"
-                ? modeIcon.anime
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            title="Recommend an anime"
-            onClick={() => toggleMode("anime")}
-          >
-            <AnilistIcon className="h-4 w-4 fill-current" />
-          </Button>
-        </div>
-
         {/* Right controls */}
-        <div className="absolute right-1.5 bottom-1.5 flex items-center gap-0.5">
+        <InputGroupAddon align="inline-end" className="gap-0">
           {open ? (
             <>
-              <Button
+              <InputGroupButton
                 type="button"
-                variant="ghost"
-                size="icon"
-                className={`h-7 w-7 ${
-                  view === "list" ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                }`}
+                size="icon-sm"
+                className={view === "list" ? "text-primary" : "text-muted-foreground hover:text-foreground"}
                 title={view === "list" ? "Back to search" : "View my list"}
                 onClick={() => {
                   setView(view === "list" ? "search" : "list");
                   setListFilter("");
+                  setStatusFilter(null);
                   setQuery("");
                   setResults([]);
                 }}
               >
-                <List className="h-3.5 w-3.5" />
-              </Button>
-              <Button
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${view === "list" ? "rotate-180" : ""}`} />
+              </InputGroupButton>
+              <InputGroupButton
                 type="button"
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                size="icon-sm"
+                className="text-muted-foreground hover:text-foreground"
                 title="Close picker"
                 onClick={dismiss}
               >
                 <X className="h-3.5 w-3.5" />
-              </Button>
+              </InputGroupButton>
             </>
           ) : (
-            <Button
+            <InputGroupButton
               type="button"
-              size="icon"
-              variant="ghost"
-              className="h-7 w-7 text-muted-foreground hover:text-primary disabled:opacity-30"
+              size="icon-sm"
+              className="text-muted-foreground hover:text-primary disabled:opacity-30"
               onClick={onMessageSubmit}
               disabled={isSubmitting || !messageValue.trim()}
             >
@@ -371,10 +369,60 @@ export function RecommendPicker({
               ) : (
                 <Send className="h-3.5 w-3.5" />
               )}
-            </Button>
+            </InputGroupButton>
+          )}
+        </InputGroupAddon>
+      </InputGroup>
+
+      {/* ── Action label ─────────────────────────────────────── */}
+      {open && (
+        <div className="flex items-center gap-1.5 px-3 py-1 border-t bg-muted/40 text-[11px] font-medium tracking-wide text-muted-foreground uppercase select-none">
+          {view === "list" ? (
+            <>
+              <List className={`h-3 w-3 transition-transform duration-200 ${view === "list" ? "rotate-180" : ""}`} />
+              {mode === "anime" ? "Browsing My Anime List" : "Browsing My Game List"}
+            </>
+          ) : (
+            <>
+              {mode === "anime" ? (
+                <AnilistIcon className="h-3 w-3 fill-current" />
+              ) : (
+                <Gamepad2 className="h-3 w-3" />
+              )}
+              {mode === "anime" ? "Recommend an Anime" : "Recommend a Game"}
+            </>
           )}
         </div>
-      </div>
+      )}
+
+      {/* ── Category filter chips ─────────────────────────────── */}
+      {open && view === "list" && availableCategories.length > 1 && (
+        <div className="flex items-center gap-1 px-2 py-1.5 border-t overflow-x-auto scrollbar-none">
+          <button
+            type="button"
+            onClick={() => setStatusFilter(null)}
+            className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === null
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted text-muted-foreground hover:text-foreground"
+              }`}
+          >
+            All
+          </button>
+          {availableCategories.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setStatusFilter(statusFilter === cat ? null : cat)}
+              className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === cat
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              {allStatusLabels(mode)[cat] || cat}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* ── Results panel ─────────────────────────────────────── */}
       {open && hasContent && (

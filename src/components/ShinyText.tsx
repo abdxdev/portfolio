@@ -16,19 +16,34 @@ interface ShinyTextProps {
   delay?: number;
 }
 
+function useDarkMode() {
+  const [isDark, setIsDark] = React.useState(false);
+  React.useEffect(() => {
+    const update = () => setIsDark(document.documentElement.classList.contains('dark'));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+  return isDark;
+}
+
 const ShinyText: React.FC<ShinyTextProps> = ({
   children,
   disabled = false,
   speed = 2,
   className = '',
-  color = '#b5b5b5',
-  shineColor = '#ffffff',
+  color,
+  shineColor,
   spread = 120,
   yoyo = false,
   pauseOnHover = false,
   direction = 'left',
   delay = 0
 }) => {
+  const isDark = useDarkMode();
+  const resolvedColor = color ?? (isDark ? '#b5b5b5' : '#1a1a1a');
+  const resolvedShine = shineColor ?? (isDark ? '#ffffff' : '#666666');
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
@@ -110,12 +125,20 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   }, [pauseOnHover]);
 
   const gradientStyle: React.CSSProperties = {
-    backgroundImage: `linear-gradient(${spread}deg, ${color} 0%, ${color} 35%, ${shineColor} 50%, ${color} 65%, ${color} 100%)`,
+    backgroundImage: `linear-gradient(${spread}deg, ${resolvedColor} 0%, ${resolvedColor} 35%, ${resolvedShine} 50%, ${resolvedColor} 65%, ${resolvedColor} 100%)`,
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
   };
+
+  if (disabled) {
+    return (
+      <span className={className}>
+        {children}
+      </span>
+    );
+  }
 
   return (
     <motion.span

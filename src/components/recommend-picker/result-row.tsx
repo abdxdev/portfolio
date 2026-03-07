@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { SlideText } from "./slide-text";
 import { statusLabel } from "./utils";
 import type { PickerMode, SearchResult } from "./types";
 
@@ -40,7 +39,7 @@ export function ResultRow({
         />
       )}
       <div className="min-w-0 flex-1 overflow-hidden">
-        <SlideText text={item.title} />
+        {item.title}
         <div className="flex items-center gap-1.5 min-w-0">
           {item.extra && (
             <p className="text-[11px] text-muted-foreground truncate">

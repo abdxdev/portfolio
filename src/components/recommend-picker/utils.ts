@@ -24,6 +24,10 @@ export function statusLabel(mode: PickerMode, status: string): string {
   return gameStatusLabel[status] || status;
 }
 
+export function allStatusLabels(mode: PickerMode): Record<string, string> {
+  return mode === "anime" ? animeStatusLabel : gameStatusLabel;
+}
+
 // ── Encode / decode recommendations ──────────────────────────────
 export function encodeRecommendation(rec: Recommendation): string {
   return `%%REC%%${JSON.stringify(rec)}%%REC%%`;

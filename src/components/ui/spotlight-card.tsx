@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useAnimationSettings } from "@/components/animation-settings";
 
 /**
  * Global provider that enables Windows 10 Fluent "Reveal Highlight" on every
@@ -11,7 +12,19 @@ import { useEffect } from "react";
  * cursor across the whole page — matching the Windows 10 Settings look.
  */
 export function SpotlightProvider({ children }: { children: React.ReactNode }) {
+  const { settings } = useAnimationSettings();
+
   useEffect(() => {
+    if (!settings.cardHover) {
+      // Clear any existing values when disabled
+      const cards = document.querySelectorAll<HTMLElement>('[data-slot="card"]');
+      cards.forEach((card) => {
+        card.style.removeProperty("--mouse-x");
+        card.style.removeProperty("--mouse-y");
+      });
+      return;
+    }
+
     let rafId: number | null = null;
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -50,7 +63,7 @@ export function SpotlightProvider({ children }: { children: React.ReactNode }) {
       );
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [settings.cardHover]);
 
   return <>{children}</>;
 }
