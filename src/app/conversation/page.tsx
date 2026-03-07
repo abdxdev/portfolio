@@ -119,7 +119,7 @@ export default function ConversationFullScreen() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)]">
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b mb-4">
         <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" asChild>
