@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Loader2, Gamepad2, ChevronDown, X, Send, List } from "lucide-react";
 import AnilistIcon from "@/components/svg/anilist";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   InputGroup,
   InputGroupAddon,
@@ -407,31 +407,34 @@ export function RecommendPicker({
 
         {/* ── Category filter chips ─────────────────────────────── */}
         {open && view === "list" && availableCategories.length > 1 && (
-          <div className="flex items-center gap-1 px-2 py-1.5 border-t overflow-x-auto scrollbar-none">
-            <button
-              type="button"
-              onClick={() => setStatusFilter(null)}
-              className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === null
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              All
-            </button>
-            {availableCategories.map((cat) => (
+          <ScrollArea className="border-t">
+            <div className="flex items-center gap-1 px-2 py-1.5">
               <button
-                key={cat}
                 type="button"
-                onClick={() => setStatusFilter(statusFilter === cat ? null : cat)}
-                className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === cat
+                onClick={() => setStatusFilter(null)}
+                className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === null
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-muted-foreground hover:text-foreground"
                   }`}
               >
-                {allStatusLabels(mode)[cat] || cat}
+                All
               </button>
-            ))}
-          </div>
+              {availableCategories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setStatusFilter(statusFilter === cat ? null : cat)}
+                  className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-medium transition-colors ${statusFilter === cat
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                    }`}
+                >
+                  {allStatusLabels(mode)[cat] || cat}
+                </button>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         )}
 
         {/* ── Results panel ─────────────────────────────────────── */}
