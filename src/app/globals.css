@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
-@import 'fumadocs-openapi/css/preset.css';
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -166,11 +166,11 @@
   --color-color-2: var(--color-2);
   --color-color-1: var(--color-1);
   @keyframes rainbow {
-  0% {
-    background-position: 0%;
+    0% {
+      background-position: 0%;
     }
-  100% {
-    background-position: 200%;
+    100% {
+      background-position: 200%;
     }
   }
 }
@@ -187,11 +187,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: radial-gradient(
-    300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-    rgba(0, 0, 0, 0.06),
-    transparent 60%
-  );
+  background: radial-gradient(300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.06), transparent 60%);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -210,28 +206,16 @@
   border-radius: inherit;
   pointer-events: none;
   opacity: 1;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-    rgba(0, 0, 0, 0.012),
-    transparent 40%
-  );
+  background: radial-gradient(600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.012), transparent 40%);
   z-index: 2;
 }
 
 .dark [data-slot="card"]::before {
-  background: radial-gradient(
-    300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-    rgba(255, 255, 255, 0.2),
-    transparent 60%
-  );
+  background: radial-gradient(300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.2), transparent 60%);
 }
 
 .dark [data-slot="card"]::after {
-  background: radial-gradient(
-    600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
-    rgba(255, 255, 255, 0.025),
-    transparent 40%
-  );
+  background: radial-gradient(600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.025), transparent 40%);
 }
 
 @layer base {
@@ -251,4 +235,9 @@
     background-color: lightgray;
     color: black;
   }
+}
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
 }

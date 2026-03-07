@@ -8,9 +8,10 @@ import { Experience } from "@/components/experience";
 import LightRays from "@/components/LightRays";
 import { Projects } from "@/components/projects";
 import { Sidebar } from "@/components/sidebar";
-import { ModeToggle } from "@/components/theme-toggle";
+// import { ModeToggle } from "@/components/theme-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntroOverlay } from "@/components/intro-overlay";
+import { AnimatedThemeToggler } from "./ui/animated-theme-toggler";
 
 export const HomeClient = () => {
   const [introComplete, setIntroComplete] = useState(false);
@@ -30,7 +31,8 @@ export const HomeClient = () => {
             {/* Theme Toggler */}
             <div className="m-4 absolute right-0 top-0 gap-2 flex items-center">
               <ApiButton />
-              <ModeToggle />
+              <AnimatedThemeToggler />
+              {/* <ModeToggle /> */}
             </div>
           </div>
           <div className="container max-w-5xl mx-auto px-4 py-8">
