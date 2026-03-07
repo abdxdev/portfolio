@@ -304,7 +304,7 @@ export function ChatView({
                   {!isDeleted && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="opacity-0 group-hover/msg:opacity-100 transition-opacity p-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted shrink-0">
+                        <button className="md:opacity-0 md:group-hover/msg:opacity-100 transition-opacity p-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted shrink-0">
                           <ChevronDown className="h-3 w-3" />
                         </button>
                       </DropdownMenuTrigger>
@@ -333,7 +333,7 @@ export function ChatView({
                   {isDeleted && isAdmin && onUndelete && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="opacity-0 group-hover/msg:opacity-100 transition-opacity p-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted shrink-0">
+                        <button className="md:opacity-0 md:group-hover/msg:opacity-100 transition-opacity p-1 rounded-full bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted shrink-0">
                           <ChevronDown className="h-3 w-3" />
                         </button>
                       </DropdownMenuTrigger>

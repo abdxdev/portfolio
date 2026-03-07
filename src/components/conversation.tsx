@@ -177,9 +177,9 @@ export const Conversation = ({ id }: { id?: string }) => {
             error={error}
             emptyMessage={
               <p className="text-sm text-muted-foreground text-center py-3">
-                Drop me a message — it&apos;s anonymous and I&apos;ll reply here. Or recommend a{" "}
+                Drop me a message — it's anonymous and I'll reply here. Or recommend a{" "}
                 <span className="text-green-500">game</span> or{" "}
-                <span className="text-violet-500">anime</span> you think I&apos;d like!
+                <span className="text-violet-500">anime</span> you think I'd like!
               </p>
             }
             messagesClassName="max-h-60"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Loader2, Gamepad2, ChevronDown, X, Send, List, Reply } from "lucide-react";
+import { Loader2, Gamepad2, X, Send, List, Reply } from "lucide-react";
 import AnilistIcon from "@/components/svg/anilist";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
@@ -266,8 +266,8 @@ export function RecommendPicker({
     ? view === "list"
       ? "Filter list"
       : mode === "game"
-        ? "Search games"
-        : "Search anime"
+        ? "Search" // Game
+        : "Search" // Anime
     : placeholder;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -358,10 +358,12 @@ export function RecommendPicker({
           <InputGroupAddon align="inline-end" className="gap-0">
             {open ? (
               <>
-                <InputGroupButton
+                <button
                   type="button"
-                  size="icon-sm"
-                  className={view === "list" ? "text-primary" : "text-muted-foreground hover:text-foreground"}
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors whitespace-nowrap ${view === "list"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                    }`}
                   title={view === "list" ? "Back to search" : "View my list"}
                   onClick={() => {
                     setView(view === "list" ? "search" : "list");
@@ -371,8 +373,8 @@ export function RecommendPicker({
                     setResults([]);
                   }}
                 >
-                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${view === "list" ? "rotate-180" : ""}`} />
-                </InputGroupButton>
+                  {view === "list" ? "My List" : "Global"}
+                </button>
                 <InputGroupButton
                   type="button"
                   size="icon-sm"
