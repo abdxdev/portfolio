@@ -30,6 +30,10 @@
             {
                 "name": "SQL",
                 "portfolio": false
+            },
+            {
+                "name": "TeX",
+                "portfolio": false
             }
         ]
     },
@@ -70,21 +74,7 @@
         ]
     },
     {
-        "category": "IDEs",
-        "description": "Tools for writing and debugging code.",
-        "skills": [
-            {
-                "name": "Visual Studio Code",
-                "portfolio": false
-            },
-            {
-                "name": "Visual Studio",
-                "portfolio": false
-            }
-        ]
-    },
-    {
-        "category": "Version Control",
+        "category": "Tools & Technologies",
         "description": "Tools for source code management.",
         "skills": [
             {
@@ -92,8 +82,8 @@
                 "portfolio": false
             },
             {
-                "name": "GitHub",
-                "portfolio": false
+                "name": "Supabase",
+                "portfolio": true
             }
         ]
     },
@@ -176,10 +166,6 @@
                 "portfolio": false
             },
             {
-                "name": "Supabase",
-                "portfolio": true
-            },
-            {
                 "name": "GitHub Workflows",
                 "portfolio": false
             }
@@ -216,33 +202,7 @@
         ]
     },
     {
-        "category": "APIs & Integrations",
-        "description": "APIs and integration platforms I've used.",
-        "skills": [
-            {
-                "name": "OpenAI",
-                "portfolio": false
-            },
-            {
-                "name": "Discord",
-                "portfolio": false
-            },
-            {
-                "name": "WhatsApp",
-                "portfolio": false
-            },
-            {
-                "name": "Google",
-                "portfolio": false
-            },
-            {
-                "name": "GitHub",
-                "portfolio": false
-            }
-        ]
-    },
-    {
-        "category": "Graphics & Design",
+        "category": "Design",
         "description": "Tools for design and graphics.",
         "skills": [
             {
@@ -254,11 +214,15 @@
                 "portfolio": false
             },
             {
-                "name": "Premiere",
+                "name": "Premiere Pro",
                 "portfolio": false
             },
             {
                 "name": "After Effects",
+                "portfolio": false
+            },
+            {
+                "name": "Davinci Resolve",
                 "portfolio": false
             },
             {
@@ -271,24 +235,6 @@
             },
             {
                 "name": "Blender",
-                "portfolio": false
-            }
-        ]
-    },
-    {
-        "category": "Platforms & Operating Systems",
-        "description": "Operating systems and platforms I develop on.",
-        "skills": [
-            {
-                "name": "Windows",
-                "portfolio": false
-            },
-            {
-                "name": "Linux",
-                "portfolio": false
-            },
-            {
-                "name": "Android",
                 "portfolio": false
             }
         ]
