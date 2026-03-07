@@ -6,15 +6,17 @@ import BlurText from "./BlurText";
 
 interface IntroOverlayProps {
   onComplete: () => void;
+  onBlurComplete?: () => void;
 }
 
-export const IntroOverlay = ({ onComplete }: IntroOverlayProps) => {
+export const IntroOverlay = ({ onComplete, onBlurComplete }: IntroOverlayProps) => {
   const [blurDone, setBlurDone] = useState(false);
   const [animationDone, setAnimationDone] = useState(false);
 
   const handleBlurComplete = () => {
     setTimeout(() => {
       setBlurDone(true);
+      onBlurComplete?.();
       setTimeout(() => {
         setAnimationDone(true);
       }, 100);

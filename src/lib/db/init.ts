@@ -10,18 +10,24 @@ type Database = {
           message: string;
           is_admin: boolean;
           created_at: string;
+          reply_to: number | null;
+          is_deleted: boolean;
         };
         Insert: {
           session_id: string;
           message: string;
           is_admin?: boolean;
           created_at: string;
+          reply_to?: number | null;
+          is_deleted?: boolean;
         };
         Update: Partial<{
           session_id: string;
           message: string;
           is_admin: boolean;
           created_at: string;
+          reply_to: number | null;
+          is_deleted: boolean;
         }>;
         Relationships: [];
       };

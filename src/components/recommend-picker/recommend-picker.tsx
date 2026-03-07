@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Loader2, Gamepad2, ChevronDown, X, Send, List } from "lucide-react";
+import { Loader2, Gamepad2, ChevronDown, X, Send, List, Reply } from "lucide-react";
 import AnilistIcon from "@/components/svg/anilist";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
@@ -44,6 +44,8 @@ export function RecommendPicker({
   placeholder = "Type a message",
   onKeyDown,
   showDoodle = false,
+  replyPreview,
+  onCancelReply,
 }: {
   onRecommend: (encoded: string) => void;
   messageValue: string;
@@ -53,6 +55,8 @@ export function RecommendPicker({
   placeholder?: string;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   showDoodle?: boolean;
+  replyPreview?: string | null;
+  onCancelReply?: () => void;
 }) {
   const [mode, setMode] = useState<PickerMode>("game");
   const [view, setView] = useState<PickerView>("search");
@@ -303,6 +307,19 @@ export function RecommendPicker({
       <div
         className={`rounded-lg border overflow-hidden transition-shadow ${open ? modeRing[mode] : ""}`}
       >
+        {/* ── Reply indicator (inside the bordered container) ── */}
+        {replyPreview && (
+          <div className="flex items-center gap-2 px-3 py-1.5 border-b bg-muted/40 text-xs text-muted-foreground">
+            <Reply className="h-3 w-3 shrink-0" />
+            <span className="truncate flex-1">Replying to: {replyPreview}</span>
+            {onCancelReply && (
+              <button onClick={onCancelReply} className="text-muted-foreground hover:text-foreground shrink-0">
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+        )}
+
         {/* ── Input row ─────────────────────────────────────────── */}
         <InputGroup className="rounded-none border-0 shadow-none">
           {/* Left icons */}

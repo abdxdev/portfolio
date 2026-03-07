@@ -34,7 +34,7 @@ function getDefaults(): AnimationSettings {
   const isMd = getIsMd();
   return {
     cardHover: !isMd,
-    lightRays: !isMd,
+    lightRays: true,
     clickSparks: true,
     introAnimation: true,
     shinyText: true,

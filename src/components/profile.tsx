@@ -24,6 +24,7 @@ import { RainbowButton } from "./ui/rainbow-button";
 import { ExternalLink } from "lucide-react";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { NumberTicker } from "./ui/number-ticker";
+import { Skeleton } from "./ui/skeleton";
 
 const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
@@ -67,9 +68,9 @@ export const Profile = () => {
   const [showLogo, setShowLogo] = useState(false);
   const { settings } = useAnimationSettings();
 
-  const [repoCount, setRepoCount] = useState(0);
-  const [animeCount, setAnimeCount] = useState(0);
-  const [gameCount, setGameCount] = useState(0);
+  const [repoCount, setRepoCount] = useState<number | null>(null);
+  const [animeCount, setAnimeCount] = useState<number | null>(null);
+  const [gameCount, setGameCount] = useState<number | null>(null);
 
   useEffect(() => {
     fetch('https://api.github.com/users/abdxdev').then(r => r.json()).then(data => {
@@ -258,33 +259,31 @@ export const Profile = () => {
           </div>
 
           <div className="flex w-full items-center justify-between text-center py-3 gap-5">
-            <div className="flex flex-1 flex-col items-center">
+            <div className="flex flex-1 flex-col items-center gap-1">
               <span className="text-2xl font-bold text-foreground">
-                <NumberTicker value={repoCount} />
+                {repoCount !== null ? <NumberTicker value={repoCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
               <span className="text-xs text-muted-foreground">Repos Published</span>
             </div>
-            <div className="flex flex-1 flex-col items-center">
+            <div className="flex flex-1 flex-col items-center gap-1">
               <span className="text-2xl font-bold text-foreground">
-                <NumberTicker value={animeCount} />
+                {animeCount !== null ? <NumberTicker value={animeCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
               <span className="text-xs text-muted-foreground">Anime Watched</span>
             </div>
-            <div className="flex flex-1 flex-col items-center">
+            <div className="flex flex-1 flex-col items-center gap-1">
               <span className="text-2xl font-bold text-foreground">
-                <NumberTicker value={gameCount} />
+                {gameCount !== null ? <NumberTicker value={gameCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
               <span className="text-xs text-muted-foreground">Games Played</span>
             </div>
           </div>
 
-          <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm" asChild>
-            <Link
-              href="https://mail.google.com/mail/?view=cm&to=abdulrahman.abd.dev@gmail.com&su=Hello%20Abdul%20Rahman&body=Hi%20Abdul%20Rahman%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect%20with%20you.%0A%0A"
-              target="_blank"
-            >
-              CONTACT ME
-            </Link>
+          <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm"
+            onClick={() => {
+              window.open('https://mail.google.com/mail/?view=cm&to=abdulrahman.abd.dev@gmail.com&su=Hello%20Abdul%20Rahman&body=Hi%20Abdul%20Rahman%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect%20with%20you.%0A%0A', '_blank');
+            }}>
+            CONTACT ME
           </RainbowButton>
 
           <InteractiveHoverButton className="rounded-md w-full font-semibold text-sm"

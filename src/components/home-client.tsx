@@ -17,8 +17,12 @@ import ClickSpark from "@/components/ClickSpark";
 
 export const HomeClient = () => {
   const [introComplete, setIntroComplete] = useState(false);
+  const [blurPhaseComplete, setBlurPhaseComplete] = useState(false);
   const { settings } = useAnimationSettings();
   const [isDark, setIsDark] = useState(false);
+
+  // Skip blur phase gate when intro animation is disabled
+  const showContent = !settings.introAnimation || blurPhaseComplete;
 
   useEffect(() => {
     const update = () => setIsDark(document.documentElement.classList.contains('dark'));
@@ -31,14 +35,16 @@ export const HomeClient = () => {
   const content = (
     <LayoutGroup>
       {settings.introAnimation && !introComplete && (
-        <IntroOverlay onComplete={() => setIntroComplete(true)} />
+        <IntroOverlay
+          onComplete={() => setIntroComplete(true)}
+          onBlurComplete={() => setBlurPhaseComplete(true)}
+        />
       )}
-      {/* On md: (<=767px) use native scroll; on larger screens use custom ScrollArea */}
-      <div className="md:hidden bg-background min-h-screen overflow-y-auto relative w-full p-0">
-        <HomeContent settings={settings} />
-      </div>
-      <ScrollArea className="hidden md:block bg-background min-h-screen h-screen overflow-y-auto relative w-full p-0">
-        <HomeContent settings={settings} />
+      {/* Single HomeContent instance to avoid duplicate layoutId.
+          On mobile (no h-screen), the body scrolls natively.
+          On md+, h-screen constrains height so ScrollArea provides a custom scrollbar. */}
+      <ScrollArea className="bg-background min-h-screen md:h-screen relative w-full p-0">
+        {showContent && <HomeContent settings={settings} />}
       </ScrollArea>
     </LayoutGroup>
   );

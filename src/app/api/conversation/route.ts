@@ -5,7 +5,7 @@ import { getSupabase } from '@/lib/db/init';
 // POST: Send a message (anonymous user or admin reply)
 export async function POST(request: Request) {
   try {
-    const { message, sessionId: targetSessionId } = await request.json();
+    const { message, sessionId: targetSessionId, replyTo } = await request.json();
     const authHeader = request.headers.get('Authorization');
     const adminPassword = process.env.ADMIN_PASSWORD;
 
@@ -18,10 +18,8 @@ export async function POST(request: Request) {
     let sessionId: string;
 
     if (isAdmin && targetSessionId) {
-      // Admin replying to a specific session
       sessionId = targetSessionId;
     } else {
-      // Anonymous user - use/create session from cookie
       const cookieStore = await cookies();
       sessionId = cookieStore.get('conversation_session')?.value || crypto.randomUUID();
     }
@@ -32,6 +30,7 @@ export async function POST(request: Request) {
       message: message.trim(),
       is_admin: isAdmin,
       created_at: new Date().toISOString(),
+      reply_to: replyTo ? Number(replyTo) : null,
     });
 
     if (error) throw error;
@@ -89,10 +88,10 @@ export async function GET(request: Request) {
 
       if (error) throw error;
 
-      type ConvRow = { id: number; session_id: string; message: string; is_admin: boolean; created_at: string };
+      type ConvRow = { id: number; session_id: string; message: string; is_admin: boolean; created_at: string; reply_to: number | null; is_deleted: boolean };
       const rows = (data || []) as ConvRow[];
 
-      // Group by session_id
+      // Group by session_id — include all messages for counts, but track non-deleted for blue dot
       const sessions: Record<string, {
         sessionId: string;
         lastMessage: string;
@@ -114,9 +113,10 @@ export async function GET(request: Request) {
         sessions[msg.session_id].messageCount++;
       }
 
-      // Check if last message in each session is from user (unreplied)
+      // Check if last non-deleted message in each session is from user (unreplied)
       const sessionMessages: Record<string, ConvRow[]> = {};
       for (const msg of rows) {
+        if (msg.is_deleted) continue;
         if (!sessionMessages[msg.session_id]) {
           sessionMessages[msg.session_id] = [];
         }
@@ -153,22 +153,120 @@ export async function GET(request: Request) {
 
     if (error) throw error;
 
-    return NextResponse.json({ messages: data });
+    const filtered = (data || []).filter((msg: { is_deleted?: boolean }) => !msg.is_deleted);
+
+    return NextResponse.json({ messages: filtered });
   } catch (error) {
     console.error('Error fetching conversation:', error);
     return NextResponse.json({ error: 'Error fetching conversation' }, { status: 500 });
   }
 }
 
-// DELETE: Admin deletes a message by id
+// DELETE: Soft-delete a message by id, or all session messages with clearAll=true
 export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const password = searchParams.get('password');
+    const messageId = searchParams.get('id');
+    const clearAll = searchParams.get('clearAll') === 'true';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    const isAdmin = !!adminPassword && !!password && password === adminPassword;
+
+    const supabase = getSupabase();
+
+    // Clear all messages in a session
+    if (clearAll) {
+      const hardDelete = searchParams.get('hard') === 'true';
+      const targetSessionId = searchParams.get('sessionId');
+
+      if (isAdmin && targetSessionId) {
+        if (hardDelete) {
+          // Hard delete: permanently remove all messages in session
+          const { error } = await supabase
+            .from('portfolio_conversations')
+            .delete()
+            .eq('session_id', targetSessionId);
+
+          if (error) throw error;
+          return NextResponse.json({ message: 'Session permanently deleted' });
+        }
+
+        // Soft delete
+        const { error } = await supabase
+          .from('portfolio_conversations')
+          .update({ is_deleted: true })
+          .eq('session_id', targetSessionId);
+
+        if (error) throw error;
+        return NextResponse.json({ message: 'All messages cleared' });
+      }
+
+      // Anonymous user clears own session
+      const cookieStore = await cookies();
+      const sessionId = cookieStore.get('conversation_session')?.value;
+
+      if (!sessionId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const { error } = await supabase
+        .from('portfolio_conversations')
+        .update({ is_deleted: true })
+        .eq('session_id', sessionId);
+
+      if (error) throw error;
+      return NextResponse.json({ message: 'All messages cleared' });
+    }
+
+    if (!messageId) {
+      return NextResponse.json({ error: 'Message id is required' }, { status: 400 });
+    }
+
+    if (isAdmin) {
+      // Admin can delete any message
+      const { error } = await supabase
+        .from('portfolio_conversations')
+        .update({ is_deleted: true })
+        .eq('id', Number(messageId));
+
+      if (error) throw error;
+      return NextResponse.json({ message: 'Deleted' });
+    }
+
+    // Anonymous user: can only delete their own messages
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('conversation_session')?.value;
+
+    if (!sessionId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { error } = await supabase
+      .from('portfolio_conversations')
+      .update({ is_deleted: true })
+      .eq('id', Number(messageId))
+      .eq('session_id', sessionId)
+      .eq('is_admin', false);
+
+    if (error) throw error;
+
+    return NextResponse.json({ message: 'Deleted' });
+  } catch (error) {
+    console.error('Error deleting message:', error);
+    return NextResponse.json({ error: 'Error deleting message' }, { status: 500 });
+  }
+}
+
+// PATCH: Undelete a message (admin only)
+export async function PATCH(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const password = searchParams.get('password');
     const messageId = searchParams.get('id');
     const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (!adminPassword || !password || password !== adminPassword) {
+    if (!adminPassword || password !== adminPassword) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -179,14 +277,13 @@ export async function DELETE(request: Request) {
     const supabase = getSupabase();
     const { error } = await supabase
       .from('portfolio_conversations')
-      .delete()
+      .update({ is_deleted: false })
       .eq('id', Number(messageId));
 
     if (error) throw error;
-
-    return NextResponse.json({ message: 'Deleted' });
+    return NextResponse.json({ message: 'Restored' });
   } catch (error) {
-    console.error('Error deleting message:', error);
-    return NextResponse.json({ error: 'Error deleting message' }, { status: 500 });
+    console.error('Error restoring message:', error);
+    return NextResponse.json({ error: 'Error restoring message' }, { status: 500 });
   }
 }
