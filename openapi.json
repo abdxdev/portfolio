@@ -16,9 +16,25 @@
       "get": {
         "operationId": "getProjects",
         "summary": "List GitHub projects",
-        "description": "Returns a curated list of my GitHub repositories. Only repositories with a recognised description format are included; results are ordered by display priority, then creation date.",
+        "description": "Returns a curated list of my GitHub repositories. Only repositories with a recognised description format are included; results are ordered by display priority, then creation date. Use the `unfiltered` query parameter to return all public repositories without filtering.",
         "tags": [
           "Portfolio"
+        ],
+        "parameters": [
+          {
+            "name": "unfiltered",
+            "in": "query",
+            "required": false,
+            "description": "When set to `true`, returns all public GitHub repositories without filtering by description format. Useful for getting the total repo count.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "default": "false"
+            }
+          }
         ],
         "responses": {
           "200": {

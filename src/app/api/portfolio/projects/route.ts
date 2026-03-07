@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { Project, GitHubRepo } from "@/types/project";
 import { parse, camelToTitle, snakeToTitle } from "@/lib/utils";
 import socials from '@/data/socials.json';
@@ -55,9 +55,32 @@ async function getGithubProjects(username: string): Promise<Project[]> {
   return filteredProjects;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const username = "abdxdev";
+    const unfiltered = request.nextUrl.searchParams.get('unfiltered') === 'true';
+
+    if (unfiltered) {
+      const response = await fetch(
+        `https://api.github.com/users/${username}/repos?per_page=100`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: GitHubRepo[] = await response.json();
+      const repos = data.map((repo: GitHubRepo) => ({
+        title: camelToTitle(snakeToTitle(repo.name)),
+        raw_name: repo.name,
+        description: repo.description || '',
+        html_url: repo.html_url,
+        fork: repo.fork,
+        created_at: repo.created_at,
+        language: repo.language,
+        stargazers_count: repo.stargazers_count,
+        watchers_count: repo.watchers_count,
+      }));
+      return NextResponse.json(repos);
+    }
 
     let projects: Project[] = [];
     projects = await getGithubProjects(username);

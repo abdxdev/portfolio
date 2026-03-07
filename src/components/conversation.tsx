@@ -197,15 +197,15 @@ export const Conversation = ({ id }: { id?: string }) => {
                         ) : (
                           <div
                             className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${msg.is_admin
-                                ? "bg-muted text-foreground rounded-bl-sm"
-                                : "bg-primary text-primary-foreground rounded-br-sm"
+                              ? "bg-muted text-foreground rounded-bl-sm"
+                              : "bg-primary text-primary-foreground rounded-br-sm"
                               }`}
                           >
                             <p className="whitespace-pre-wrap wrap-break-word">{msg.message}</p>
                             <p
                               className={`text-[10px] mt-0.5 ${msg.is_admin
-                                  ? "text-muted-foreground"
-                                  : "text-primary-foreground/50"
+                                ? "text-muted-foreground"
+                                : "text-primary-foreground/50"
                                 }`}
                             >
                               {formatTime(msg.created_at)}
@@ -228,7 +228,7 @@ export const Conversation = ({ id }: { id?: string }) => {
             </>
           ) : (
             <p className="text-sm text-muted-foreground text-center py-3">
-              Drop me a message — it&apos;s anonymous and I&apos;ll reply here.
+              Drop me a message — it's anonymous and I'll reply here. Or recommend a <span className="text-green-500">game</span> or <span className="text-violet-500">anime</span> you think I'd like!
             </p>
           )}
 
@@ -241,6 +241,7 @@ export const Conversation = ({ id }: { id?: string }) => {
             isSubmitting={isSubmitting}
             placeholder="Type a message"
             onKeyDown={handleKeyDown}
+            showDoodle={!isLoading && messages.length === 0}
           />
           {error && <p className="text-xs text-destructive">{error}</p>}
         </CardContent>

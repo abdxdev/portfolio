@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import AnilistIcon from "./icons/anilist";
-import { useState, useRef, useCallback } from 'react';
+import AnilistIcon from "./svg/anilist";
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import easterEggMessages from '@/data/easterEggMessages.json';
 import {
@@ -23,6 +23,7 @@ import { useAnimationSettings } from "@/components/animation-settings";
 import { RainbowButton } from "./ui/rainbow-button";
 import { ExternalLink } from "lucide-react";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
+import { NumberTicker } from "./ui/number-ticker";
 
 const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
 const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
@@ -65,6 +66,22 @@ export const Profile = () => {
   // Whether to show the spinning logo instead of pfp
   const [showLogo, setShowLogo] = useState(false);
   const { settings } = useAnimationSettings();
+
+  const [repoCount, setRepoCount] = useState(0);
+  const [animeCount, setAnimeCount] = useState(0);
+  const [gameCount, setGameCount] = useState(0);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/abdxdev').then(r => r.json()).then(data => {
+      if (data?.public_repos) setRepoCount(data.public_repos);
+    }).catch(() => { });
+    fetch('/api/portfolio/anime').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setAnimeCount(data.length);
+    }).catch(() => { });
+    fetch('/api/portfolio/games').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setGameCount(data.length);
+    }).catch(() => { });
+  }, []);
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Easter egg states
@@ -240,10 +257,26 @@ export const Profile = () => {
 
           </div>
 
-          <p className="mt-2 text-start text-sm text-muted-foreground">
-            I build things for the web, tinker with UI until it feels just right, and firmly believe every project needs "just one more feature."
-          </p>
-
+          <div className="flex w-full items-center justify-between text-center py-3 gap-5">
+            <div className="flex flex-1 flex-col items-center">
+              <span className="text-2xl font-bold text-foreground">
+                <NumberTicker value={repoCount} />
+              </span>
+              <span className="text-xs text-muted-foreground">Repos Published</span>
+            </div>
+            <div className="flex flex-1 flex-col items-center">
+              <span className="text-2xl font-bold text-foreground">
+                <NumberTicker value={animeCount} />
+              </span>
+              <span className="text-xs text-muted-foreground">Anime Watched</span>
+            </div>
+            <div className="flex flex-1 flex-col items-center">
+              <span className="text-2xl font-bold text-foreground">
+                <NumberTicker value={gameCount} />
+              </span>
+              <span className="text-xs text-muted-foreground">Games Played</span>
+            </div>
+          </div>
 
           <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm" asChild>
             <Link
