@@ -32,18 +32,26 @@ async function requestAndGrant(
 ) {
   const w = window as any;
   if (!w.OneSignal) return false;
+
   await w.OneSignal.Notifications.requestPermission();
-  if (!w.OneSignal.User?.PushSubscription?.optedIn) {
-    await w.OneSignal.User?.PushSubscription?.optIn();
+
+  try {
+    await w.OneSignal.User.PushSubscription.optIn();
+  } catch { /* ignore if already opted in */ }
+
+  let optedIn = false;
+  for (let i = 0; i < 20; i++) {
+    if (w.OneSignal.User?.PushSubscription?.optedIn) { optedIn = true; break; }
+    await new Promise((r) => setTimeout(r, 250));
   }
-  if (!w.OneSignal.User?.PushSubscription?.optedIn) return false;
+  if (!optedIn) return false;
 
   localStorage.setItem(NOTIF_KEY, "granted");
   setEnabled(true);
   const maxId = messages.length > 0 ? Math.max(...messages.map((m) => m.id)) : 0;
   localStorage.setItem(LAST_SEEN_KEY, String(maxId));
 
-  saveSubscription(); // fire-and-forget, doesn't block UI
+  saveSubscription();
   return true;
 }
 
@@ -117,12 +125,12 @@ export function NotificationCheckboxItem({ enabled, onToggle }: { enabled: boole
 
 export function NotificationToggleRow({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
   return (
-    <label className="flex items-center justify-between py-1.5 rounded-md cursor-pointer group" onClick={onToggle}>
+    <div className="flex items-center justify-between py-1.5 rounded-md cursor-pointer group" onClick={onToggle}>
       <span className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
         <Bell className="h-3.5 w-3.5" />
-        Notifications
+        Reply notifications
       </span>
-      <Switch checked={enabled} className="pointer-events-none" />
-    </label>
+      <Switch checked={enabled} onCheckedChange={onToggle} onClick={(e) => e.stopPropagation()} />
+    </div>
   );
 }
