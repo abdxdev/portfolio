@@ -5,53 +5,46 @@ import { Bell } from "lucide-react";
 import { toast } from "sonner";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
+import OneSignal from "react-onesignal";
 
 const NOTIF_KEY = "conversation_notif";
 const LAST_SEEN_KEY = "conversation_last_seen_id";
 
-async function saveSubscription() {
-  const w = window as any;
-  // Poll briefly because the subscription id may not be set synchronously after optIn
-  for (let i = 0; i < 10; i++) {
-    const playerId = w.OneSignal?.User?.PushSubscription?.id;
-    if (playerId) {
-      await fetch("/api/push-subscription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ playerId }),
-      }).catch(() => { });
+function waitForOptIn(timeoutMs = 5000): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (OneSignal.User.PushSubscription.optedIn) {
+      resolve(true);
       return;
     }
-    await new Promise((r) => setTimeout(r, 500));
-  }
+    const timer = setTimeout(() => resolve(false), timeoutMs);
+    const handler = (event: any) => {
+      if (event?.current?.optedIn) {
+        clearTimeout(timer);
+        OneSignal.User.PushSubscription.removeEventListener("change", handler);
+        resolve(true);
+      }
+    };
+    OneSignal.User.PushSubscription.addEventListener("change", handler);
+  });
 }
 
 async function requestAndGrant(
   messages: { id: number }[],
   setEnabled: (v: boolean) => void
 ) {
-  const w = window as any;
-  if (!w.OneSignal) return false;
-
-  await w.OneSignal.Notifications.requestPermission();
+  await OneSignal.Notifications.requestPermission();
 
   try {
-    await w.OneSignal.User.PushSubscription.optIn();
+    await OneSignal.User.PushSubscription.optIn();
   } catch { /* ignore if already opted in */ }
 
-  let optedIn = false;
-  for (let i = 0; i < 20; i++) {
-    if (w.OneSignal.User?.PushSubscription?.optedIn) { optedIn = true; break; }
-    await new Promise((r) => setTimeout(r, 250));
-  }
+  const optedIn = await waitForOptIn();
   if (!optedIn) return false;
 
   localStorage.setItem(NOTIF_KEY, "granted");
   setEnabled(true);
   const maxId = messages.length > 0 ? Math.max(...messages.map((m) => m.id)) : 0;
   localStorage.setItem(LAST_SEEN_KEY, String(maxId));
-
-  saveSubscription();
   return true;
 }
 
@@ -111,7 +104,7 @@ export function useReplyNotifications(messages: { id: number; is_admin: boolean;
       setEnabled(false);
       localStorage.setItem(NOTIF_KEY, "denied");
       window.dispatchEvent(new Event(NOTIF_SYNC_EVENT));
-      (window as any).OneSignal?.User?.PushSubscription?.optOut();
+      OneSignal.User.PushSubscription.optOut();
     } else {
       await requestAndGrant(messages, setEnabled);
       window.dispatchEvent(new Event(NOTIF_SYNC_EVENT));
