@@ -120,6 +120,19 @@ export async function GET(request: Request) {
           .order('created_at', { ascending: true });
 
         if (error) throw error;
+
+        // Mark user messages as seen by admin
+        const unseenUserIds = (data || [] as any[]).filter(
+          (m: any) => !m.is_admin && !m.last_seen_at && !m.is_deleted
+        ).map((m: any) => m.id);
+        if (unseenUserIds.length > 0) {
+          supabase
+            .from('portfolio_conversations')
+            .update({ last_seen_at: new Date().toISOString() })
+            .in('id', unseenUserIds)
+            .then(() => { });
+        }
+
         return NextResponse.json({ messages: data });
       }
 
@@ -197,6 +210,18 @@ export async function GET(request: Request) {
     if (error) throw error;
 
     const filtered = (data || []).filter((msg: { is_deleted?: boolean }) => !msg.is_deleted);
+
+    // Mark admin messages as seen by the user
+    const unseenAdminIds = (data || [] as any[]).filter(
+      (m: any) => m.is_admin && !m.last_seen_at && !m.is_deleted
+    ).map((m: any) => m.id);
+    if (unseenAdminIds.length > 0) {
+      supabase
+        .from('portfolio_conversations')
+        .update({ last_seen_at: new Date().toISOString() })
+        .in('id', unseenAdminIds)
+        .then(() => { });
+    }
 
     return NextResponse.json({ messages: filtered });
   } catch (error) {

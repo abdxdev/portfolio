@@ -12,6 +12,7 @@ type Database = {
           created_at: string;
           reply_to: number | null;
           is_deleted: boolean;
+          last_seen_at: string | null;
         };
         Insert: {
           session_id: string;
@@ -20,6 +21,7 @@ type Database = {
           created_at: string;
           reply_to?: number | null;
           is_deleted?: boolean;
+          last_seen_at?: string | null;
         };
         Update: Partial<{
           session_id: string;
@@ -28,6 +30,7 @@ type Database = {
           created_at: string;
           reply_to: number | null;
           is_deleted: boolean;
+          last_seen_at: string | null;
         }>;
         Relationships: [];
       };

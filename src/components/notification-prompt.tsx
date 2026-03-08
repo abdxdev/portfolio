@@ -64,11 +64,9 @@ export function useReplyNotifications(messages: { id: number; is_admin: boolean;
 
   useEffect(() => {
     setEnabled(localStorage.getItem(NOTIF_KEY) === "granted");
-    // Sync across tabs
     const onStorage = (e: StorageEvent) => {
       if (e.key === NOTIF_KEY) setEnabled(e.newValue === "granted");
     };
-    // Sync within same tab (custom event)
     const onSync = () => setEnabled(localStorage.getItem(NOTIF_KEY) === "granted");
     window.addEventListener("storage", onStorage);
     window.addEventListener(NOTIF_SYNC_EVENT, onSync);

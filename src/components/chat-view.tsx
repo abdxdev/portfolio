@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2, Copy } from "lucide-react";
+import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2, Copy, CheckCheck } from "lucide-react";
 import {
   RecommendPicker,
   parseRecommendation,
@@ -23,6 +23,7 @@ export interface ChatMessage {
   created_at: string;
   reply_to: number | null;
   is_deleted: boolean;
+  last_seen_at: string | null;
 }
 
 // ── Props ─────────────────────────────────────────────────────────
@@ -275,10 +276,13 @@ export function ChatView({
                       <div>
                         <RecommendationCard rec={rec} />
                         <p
-                          className={`text-[10px] mt-1 text-muted-foreground ${self ? "text-right" : ""
+                          className={`text-[10px] mt-1 text-muted-foreground flex items-center gap-1 ${self ? "justify-end" : ""
                             }`}
                         >
                           {formatTime(msg.created_at)}
+                          {self && msg.last_seen_at && (
+                            <CheckCheck className="h-3 w-3 text-blue-500" />
+                          )}
                         </p>
                       </div>
                     ) : (
@@ -291,10 +295,13 @@ export function ChatView({
                       >
                         <p className="whitespace-pre-wrap wrap-break-word">{msg.message}</p>
                         <p
-                          className={`text-[10px] mt-0.5 ${self ? "text-primary-foreground/50" : "text-muted-foreground"
+                          className={`text-[10px] mt-0.5 flex items-center gap-1 ${self ? "text-primary-foreground/50 justify-end" : "text-muted-foreground"
                             }`}
                         >
                           {formatTime(msg.created_at)}
+                          {self && msg.last_seen_at && (
+                            <CheckCheck className="h-3 w-3 text-blue-500" />
+                          )}
                         </p>
                       </div>
                     )}
