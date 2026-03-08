@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2 } from "lucide-react";
+import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2, Copy } from "lucide-react";
 import {
   RecommendPicker,
   parseRecommendation,
@@ -310,19 +310,28 @@ export function ChatView({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align={self ? "end" : "start"}
-                        className="min-w-30"
+                        className="min-w-0"
                       >
-                        <DropdownMenuItem onClick={() => onSetReplyTo(msg)}>
-                          <Reply className="h-3.5 w-3.5 mr-2" />
-                          Reply
+                        <DropdownMenuItem onClick={() => onSetReplyTo(msg)} title="Reply">
+                          <Reply className="h-3.5 w-3.5" />
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          title="Copy"
+                          onClick={() => {
+                            const rec = parseRecommendation(msg.message);
+                            const text = rec ? rec.title : msg.message;
+                            navigator.clipboard.writeText(text);
+                          }}
+                        >
+                          <Copy className="h-3.5 w-3.5" />
                         </DropdownMenuItem>
                         {canDelete && (
                           <DropdownMenuItem
                             onClick={() => onDelete(msg.id)}
                             className="text-destructive focus:text-destructive"
+                            title="Delete"
                           >
-                            <Trash2 className="h-3.5 w-3.5 mr-2" />
-                            Delete
+                            <Trash2 className="h-3.5 w-3.5" />
                           </DropdownMenuItem>
                         )}
                       </DropdownMenuContent>
@@ -337,10 +346,9 @@ export function ChatView({
                           <ChevronDown className="h-3 w-3" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align={self ? "end" : "start"} className="min-w-30">
-                        <DropdownMenuItem onClick={() => onUndelete(msg.id)}>
-                          <Undo2 className="h-3.5 w-3.5 mr-2" />
-                          Restore
+                      <DropdownMenuContent align={self ? "end" : "start"} className="min-w-0">
+                        <DropdownMenuItem onClick={() => onUndelete(msg.id)} title="Restore">
+                          <Undo2 className="h-3.5 w-3.5" />
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

@@ -55,6 +55,8 @@ async function requestAndGrant(
   return true;
 }
 
+const NOTIF_SYNC_EVENT = "notif-sync";
+
 export function useReplyNotifications(messages: { id: number; is_admin: boolean; message: string }[]) {
   const [enabled, setEnabled] = useState(false);
   const prevCountRef = useRef<number>(0);
@@ -62,6 +64,18 @@ export function useReplyNotifications(messages: { id: number; is_admin: boolean;
 
   useEffect(() => {
     setEnabled(localStorage.getItem(NOTIF_KEY) === "granted");
+    // Sync across tabs
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === NOTIF_KEY) setEnabled(e.newValue === "granted");
+    };
+    // Sync within same tab (custom event)
+    const onSync = () => setEnabled(localStorage.getItem(NOTIF_KEY) === "granted");
+    window.addEventListener("storage", onStorage);
+    window.addEventListener(NOTIF_SYNC_EVENT, onSync);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(NOTIF_SYNC_EVENT, onSync);
+    };
   }, []);
 
   useEffect(() => {
@@ -98,9 +112,11 @@ export function useReplyNotifications(messages: { id: number; is_admin: boolean;
     if (enabled) {
       setEnabled(false);
       localStorage.setItem(NOTIF_KEY, "denied");
+      window.dispatchEvent(new Event(NOTIF_SYNC_EVENT));
       (window as any).OneSignal?.User?.PushSubscription?.optOut();
     } else {
       await requestAndGrant(messages, setEnabled);
+      window.dispatchEvent(new Event(NOTIF_SYNC_EVENT));
     }
   }, [enabled, messages]);
 

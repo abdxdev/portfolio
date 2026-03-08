@@ -12,7 +12,17 @@ async function sendPushToSession(sessionId: string, message: string) {
 
   if (!data?.player_id) return;
 
-  const body = message.length > 120 ? message.slice(0, 120) + '\u2026' : message;
+  // Parse recommendation messages so push content is readable
+  let body = message;
+  const recMatch = message.match(/^%%REC%%([\s\S]+)%%REC%%$/);
+  if (recMatch) {
+    try {
+      const rec = JSON.parse(recMatch[1]);
+      const emoji = rec.type === 'game' ? '🎮' : '📺';
+      body = `${emoji} Recommended: ${rec.title}`;
+    } catch { /* use raw message */ }
+  }
+  if (body.length > 120) body = body.slice(0, 120) + '\u2026';
   await fetch('https://api.onesignal.com/notifications', {
     method: 'POST',
     headers: {
