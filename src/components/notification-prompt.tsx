@@ -64,12 +64,7 @@ export function useReplyNotifications(messages: { id: number; is_admin: boolean;
   useEffect(() => {
     if (!enabled || messages.length === 0) return;
     const lastSeen = Number(localStorage.getItem(LAST_SEEN_KEY) || "0");
-    const newReplies = messages.filter((m) => m.is_admin && m.id > lastSeen);
-    if (newReplies.length > 0 && prevCountRef.current > 0) {
-      const latest = newReplies[newReplies.length - 1];
-      const body = latest.message.length > 120 ? latest.message.slice(0, 120) + "…" : latest.message;
-      new Notification("New reply", { body, icon: "/favicon.ico" });
-    }
+
     const maxId = Math.max(...messages.map((m) => m.id));
     localStorage.setItem(LAST_SEEN_KEY, String(maxId));
     prevCountRef.current = messages.length;

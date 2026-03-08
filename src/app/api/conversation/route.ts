@@ -2,6 +2,34 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSupabase } from '@/lib/db/init';
 
+async function sendPushToSession(sessionId: string, message: string) {
+  const supabase = getSupabase();
+  const { data } = await supabase
+    .from('conversation_push_subscriptions')
+    .select('player_id')
+    .eq('session_id', sessionId)
+    .single();
+
+  if (!data?.player_id) return;
+
+  const body = message.length > 120 ? message.slice(0, 120) + '\u2026' : message;
+  await fetch('https://api.onesignal.com/notifications', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Key ${process.env.ONESIGNAL_REST_API_KEY}`,
+    },
+    body: JSON.stringify({
+      app_id: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID,
+      target_channel: 'push',
+      include_subscription_ids: [data.player_id],
+      headings: { en: 'New reply' },
+      contents: { en: body },
+      url: 'https://abdxdev.vercel.app/conversation',
+    }),
+  });
+}
+
 // POST: Send a message (anonymous user or admin reply)
 export async function POST(request: Request) {
   try {
@@ -34,6 +62,11 @@ export async function POST(request: Request) {
     });
 
     if (error) throw error;
+
+    // If admin is replying, send a OneSignal push to the session's subscriber
+    if (isAdmin && sessionId) {
+      sendPushToSession(sessionId, message.trim()).catch(() => {});
+    }
 
     const response = NextResponse.json({ message: 'Message sent', sessionId }, { status: 201 });
 

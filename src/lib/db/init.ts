@@ -31,6 +31,23 @@ type Database = {
         }>;
         Relationships: [];
       };
+      conversation_push_subscriptions: {
+        Row: {
+          session_id: string;
+          player_id: string;
+          created_at: string;
+        };
+        Insert: {
+          session_id: string;
+          player_id: string;
+          created_at?: string;
+        };
+        Update: Partial<{
+          player_id: string;
+          created_at: string;
+        }>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
