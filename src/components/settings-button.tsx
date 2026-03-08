@@ -19,6 +19,10 @@ import {
   useAnimationSettings,
   type AnimationSettings,
 } from "@/components/animation-settings";
+import {
+  useReplyNotifications,
+  NotificationToggleRow,
+} from "@/components/notification-prompt";
 
 const items: {
   key: keyof AnimationSettings;
@@ -34,6 +38,7 @@ const items: {
 
 export function SettingsButton() {
   const { settings, toggle, setAll } = useAnimationSettings();
+  const { enabled: notifEnabled, toggle: toggleNotif } = useReplyNotifications([]);
   const allEnabled = Object.values(settings).every(Boolean);
   const noneEnabled = Object.values(settings).every((v) => !v);
 
@@ -75,6 +80,7 @@ export function SettingsButton() {
               />
             </label>
           ))}
+          <NotificationToggleRow enabled={notifEnabled} onToggle={toggleNotif} />
         </div>
       </PopoverContent>
     </Popover>

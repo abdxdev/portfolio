@@ -308,9 +308,8 @@ export default function ConversationAdmin() {
                     // Silently fail
                   }
                 }}
-                className="text-destructive focus:text-destructive"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <X className="h-4 w-4 mr-2" />
                 Delete Session
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -12,6 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  useReplyNotifications,
+  NotificationCheckboxItem,
+} from "@/components/notification-prompt";
 
 export const Conversation = ({ id }: { id?: string }) => {
   const [input, setInput] = useState("");
@@ -22,6 +26,9 @@ export const Conversation = ({ id }: { id?: string }) => {
   const [msgSearch, setMsgSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
+
+  const { enabled: notifEnabled, toggle: toggleNotifications } =
+    useReplyNotifications(messages);
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -151,6 +158,10 @@ export const Conversation = ({ id }: { id?: string }) => {
                       Full Screen
                     </Link>
                   </DropdownMenuItem>
+                  <NotificationCheckboxItem
+                    enabled={notifEnabled}
+                    onToggle={toggleNotifications}
+                  />
                   <DropdownMenuItem
                     onClick={handleClearChat}
                   >
