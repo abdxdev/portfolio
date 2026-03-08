@@ -14,6 +14,7 @@ import {
 import {
   useReplyNotifications,
   NotificationCheckboxItem,
+  NotificationPromptBanner,
 } from "@/components/notification-prompt";
 
 export default function ConversationFullScreen() {
@@ -26,7 +27,7 @@ export default function ConversationFullScreen() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
 
-  const { enabled: notifEnabled, toggle: toggleNotifications } =
+  const { enabled: notifEnabled, loading: notifLoading, toggle: toggleNotifications, showPrompt: notifShowPrompt, enableFromPrompt, dismissPrompt } =
     useReplyNotifications(messages);
 
   const fetchMessages = useCallback(async () => {
@@ -155,6 +156,7 @@ export default function ConversationFullScreen() {
               </DropdownMenuItem>
               <NotificationCheckboxItem
                 enabled={notifEnabled}
+                loading={notifLoading}
                 onToggle={toggleNotifications}
               />
               <DropdownMenuItem
@@ -195,6 +197,13 @@ export default function ConversationFullScreen() {
         onSearchChange={setMsgSearch}
         replyTo={replyTo}
         onSetReplyTo={setReplyTo}
+        afterMessages={notifShowPrompt && (
+          <NotificationPromptBanner
+            onEnable={enableFromPrompt}
+            onDismiss={dismissPrompt}
+            loading={notifLoading}
+          />
+        )}
       />
     </div>
   );

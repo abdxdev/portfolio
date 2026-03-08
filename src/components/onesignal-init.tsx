@@ -13,6 +13,8 @@ function onSubscriptionChange(event: any) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ playerId: id }),
     }).catch(() => { });
+  } else if (!event?.current?.optedIn) {
+    fetch("/api/push-subscription", { method: "DELETE" }).catch(() => { });
   }
 }
 

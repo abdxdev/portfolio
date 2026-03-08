@@ -22,3 +22,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+export async function DELETE() {
+  try {
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('conversation_session')?.value;
+    if (!sessionId) return NextResponse.json({ error: 'No session' }, { status: 400 });
+
+    const supabase = getSupabase();
+    await supabase
+      .from('conversation_push_subscriptions')
+      .delete()
+      .eq('session_id', sessionId);
+
+    return NextResponse.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}

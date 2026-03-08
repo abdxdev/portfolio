@@ -15,6 +15,7 @@ import {
 import {
   useReplyNotifications,
   NotificationCheckboxItem,
+  NotificationPromptBanner,
 } from "@/components/notification-prompt";
 
 export const Conversation = ({ id }: { id?: string }) => {
@@ -27,7 +28,7 @@ export const Conversation = ({ id }: { id?: string }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
 
-  const { enabled: notifEnabled, toggle: toggleNotifications } =
+  const { enabled: notifEnabled, loading: notifLoading, toggle: toggleNotifications, showPrompt: notifShowPrompt, enableFromPrompt, dismissPrompt } =
     useReplyNotifications(messages);
 
   const fetchMessages = useCallback(async () => {
@@ -160,6 +161,7 @@ export const Conversation = ({ id }: { id?: string }) => {
                   </DropdownMenuItem>
                   <NotificationCheckboxItem
                     enabled={notifEnabled}
+                    loading={notifLoading}
                     onToggle={toggleNotifications}
                   />
                   <DropdownMenuItem
@@ -199,6 +201,13 @@ export const Conversation = ({ id }: { id?: string }) => {
             onSearchChange={setMsgSearch}
             replyTo={replyTo}
             onSetReplyTo={setReplyTo}
+            afterMessages={notifShowPrompt && (
+              <NotificationPromptBanner
+                onEnable={enableFromPrompt}
+                onDismiss={dismissPrompt}
+                loading={notifLoading}
+              />
+            )}
           />
         </CardContent>
       </Card>

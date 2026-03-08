@@ -49,6 +49,7 @@ export interface ChatViewProps {
   onSearchChange: (v: string) => void;
   replyTo: ChatMessage | null;
   onSetReplyTo: (msg: ChatMessage | null) => void;
+  afterMessages?: React.ReactNode;
 }
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -83,6 +84,7 @@ export function ChatView({
   onSearchChange,
   replyTo,
   onSetReplyTo,
+  afterMessages,
 }: ChatViewProps) {
   const [highlightedId, setHighlightedId] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -369,6 +371,8 @@ export function ChatView({
           <p className="text-[11px] text-muted-foreground text-center py-2">No matches</p>
         )}
       </div>
+
+      {afterMessages}
 
       {/* Input */}
       <RecommendPicker

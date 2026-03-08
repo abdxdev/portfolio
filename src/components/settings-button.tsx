@@ -38,7 +38,7 @@ const items: {
 
 export function SettingsButton() {
   const { settings, toggle, setAll } = useAnimationSettings();
-  const { enabled: notifEnabled, toggle: toggleNotif } = useReplyNotifications([]);
+  const { enabled: notifEnabled, loading: notifLoading, toggle: toggleNotif } = useReplyNotifications([]);
   const allEnabled = Object.values(settings).every(Boolean);
   const noneEnabled = Object.values(settings).every((v) => !v);
 
@@ -51,7 +51,7 @@ export function SettingsButton() {
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-0">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b">
+        <div className="flex items-center justify-between px-4 pt-3 ">
           <span className="text-sm font-semibold">Animations</span>
           <Button
             variant="ghost"
@@ -83,10 +83,12 @@ export function SettingsButton() {
         </div>
 
         {/* Notifications section */}
-        <div className="border-t px-4 py-2">
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Notifications</span>
-          <div className="mt-1">
-            <NotificationToggleRow enabled={notifEnabled} onToggle={toggleNotif} />
+        <div className="border-t">
+          <div className="flex items-center justify-between px-4 pt-3 ">
+            <span className="text-sm font-semibold">Notifications</span>
+          </div>
+          <div className="px-4 py-2 space-y-1">
+            <NotificationToggleRow enabled={notifEnabled} loading={notifLoading} onToggle={toggleNotif} />
           </div>
         </div>
       </PopoverContent>
