@@ -9,25 +9,41 @@ import { Switch } from "@/components/ui/switch";
 const NOTIF_KEY = "conversation_notif";
 const LAST_SEEN_KEY = "conversation_last_seen_id";
 
+async function saveSubscription() {
+  const w = window as any;
+  // Poll briefly because the subscription id may not be set synchronously after optIn
+  for (let i = 0; i < 10; i++) {
+    const playerId = w.OneSignal?.User?.PushSubscription?.id;
+    if (playerId) {
+      await fetch("/api/push-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerId }),
+      }).catch(() => { });
+      return;
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+}
+
 async function requestAndGrant(
   messages: { id: number }[],
   setEnabled: (v: boolean) => void
 ) {
   const w = window as any;
-  if (w.OneSignal) {
-    await w.OneSignal.Notifications.requestPermission();
-    if (!w.OneSignal.User?.PushSubscription?.optedIn) {
-      await w.OneSignal.User?.PushSubscription?.optIn();
-    }
-    if (!w.OneSignal.User?.PushSubscription?.optedIn) return false;
-  } else {
-    const result = await Notification.requestPermission();
-    if (result !== "granted") return false;
+  if (!w.OneSignal) return false;
+  await w.OneSignal.Notifications.requestPermission();
+  if (!w.OneSignal.User?.PushSubscription?.optedIn) {
+    await w.OneSignal.User?.PushSubscription?.optIn();
   }
+  if (!w.OneSignal.User?.PushSubscription?.optedIn) return false;
+
   localStorage.setItem(NOTIF_KEY, "granted");
   setEnabled(true);
   const maxId = messages.length > 0 ? Math.max(...messages.map((m) => m.id)) : 0;
   localStorage.setItem(LAST_SEEN_KEY, String(maxId));
+
+  saveSubscription(); // fire-and-forget, doesn't block UI
   return true;
 }
 

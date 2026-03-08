@@ -65,7 +65,7 @@ export async function POST(request: Request) {
 
     // If admin is replying, send a OneSignal push to the session's subscriber
     if (isAdmin && sessionId) {
-      sendPushToSession(sessionId, message.trim()).catch(() => {});
+      sendPushToSession(sessionId, message.trim()).catch(() => { });
     }
 
     const response = NextResponse.json({ message: 'Message sent', sessionId }, { status: 201 });
