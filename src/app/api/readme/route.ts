@@ -326,13 +326,14 @@ export async function GET(request: NextRequest) {
   p(getGames(portfolio.games), { centered: false });
 
   p(mdImage("Meet my Code Buddies!", `${assets_url}/titles/friends.png`));
+  p("*The real ones*");
   p(getFriends(portfolio.friends));
 
-  p(mdImage("Support Me", `${assets_url}/titles/support_me.png`));
-  p(supportme);
-  p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
+  // p(mdImage("Support Me", `${assets_url}/titles/support_me.png`));
+  // p("Help me keep my work open source and free for everyone—because the world needs more free stuff (and less paywalls).");
+  // p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
   
-  const updateBadge = mdBadge({ label: "Update", message: `Last Updated: ${now}`, color: "080808" });
+  const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
   p(`[![Click to Update](${updateBadge})](${origin}/update-readme)`);
   p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
   p(mdImage("Footer", `${assets_url}/svg/footer.svg`));
