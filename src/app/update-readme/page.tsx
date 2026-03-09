@@ -33,7 +33,7 @@ function WorkflowContent() {
       <BlurText
         text="Updating GitHub Profile..."
         delay={200}
-        animateBy="letters"
+        animateBy="words"
         direction="top"
         className="text-4xl font-semibold tracking-tight text-foreground"
       />
