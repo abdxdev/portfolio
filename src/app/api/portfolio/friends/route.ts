@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
-import friends from '@/data/friends.json';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
 export async function GET() {
-  const enriched = await Promise.all(friends.map(async (friend) => {
+  const friends = JSON.parse(await readFile(path.join(process.cwd(), 'public/assets/json/friends.json'), 'utf-8'));
+
+  const enriched = await Promise.all(friends.map(async (friend: { github_username: any; linkedin_username: any; }) => {
     const res = await fetch(`https://api.github.com/users/${friend.github_username}`);
     let r;
     if (res.ok) {
@@ -20,5 +23,6 @@ export async function GET() {
       github_avatar: `https://github.com/${r.login}.png?size=150`,
     };
   }));
+
   return NextResponse.json(enriched);
 }

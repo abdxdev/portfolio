@@ -6,12 +6,10 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import AnilistIcon from "./svg/anilist";
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
-import easterEggMessages from '@/data/easterEggMessages.json';
 import {
   Card,
   CardContent
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -21,13 +19,12 @@ import ShinyText from "./ShinyText";
 import { motion } from 'motion/react';
 import { useAnimationSettings } from "@/components/animation-settings";
 import { RainbowButton } from "./ui/rainbow-button";
-import { ExternalLink } from "lucide-react";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { NumberTicker } from "./ui/number-ticker";
 import { Skeleton } from "./ui/skeleton";
 
-const PROFILE_PICTURE_LIGHT = '/pfp-light.png';
-const PROFILE_PICTURE_DARK = '/pfp-dark.jpeg';
+const PROFILE_PICTURE_LIGHT = '/pfp/light.png';
+const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
 
 const socials = [
   {
@@ -53,11 +50,11 @@ const socials = [
 ]
 
 export const Profile = () => {
-  const lightGifPath = '/bfg-r1.gif';
-  const darkGifPath = '/wfg-r1.gif';
+  const lightGifPath = '/logo/bfg-r1.gif';
+  const darkGifPath = '/logo/wfg-r1.gif';
 
-  const lightPlaceholder = '/bfg.png';
-  const darkPlaceholder = '/wfg.png';
+  const lightPlaceholder = '/logo/bfg.png';
+  const darkPlaceholder = '/logo/wfg.png';
 
   const [lightGifSrc, setLightGifSrc] = useState(lightGifPath);
   const [darkGifSrc, setDarkGifSrc] = useState(darkGifPath);
@@ -72,7 +69,12 @@ export const Profile = () => {
   const [animeCount, setAnimeCount] = useState<number | null>(null);
   const [gameCount, setGameCount] = useState<number | null>(null);
 
+  const [easterEggMessages, setEasterEggMessages] = useState<string[]>([]);
+
   useEffect(() => {
+    fetch('/assets/json/easterEggMessages.json')
+    .then(res => res.json())
+    .then(data => setEasterEggMessages(data));
     fetch('https://api.github.com/users/abdxdev').then(r => r.json()).then(data => {
       if (data?.public_repos) setRepoCount(data.public_repos);
     }).catch(() => { });

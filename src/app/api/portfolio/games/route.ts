@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { filterItemsByQuery } from '@/lib/utils';
-import socials from '@/data/socials.json';
 
 interface Game {
   background_image_cropped: string;

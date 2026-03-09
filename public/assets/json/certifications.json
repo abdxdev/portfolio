@@ -1,0 +1,31 @@
+[
+  {
+    "title": "5th place (as team) in the Electocon'24 Competitive Programming",
+    "issuer": "UET",
+    "type": "competition",
+    "position": 5,
+    "year": 2024
+  },
+  {
+    "title": "Python certificate",
+    "issuer": "Harvard's CS50 program",
+    "type": "certificate"
+  },
+  {
+    "title": "3rd place in the SciTech Competition",
+    "issuer": "COMSATS",
+    "type": "competition",
+    "position": 3
+  },
+  {
+    "title": "5th place in the 1st Inter-Colleges Mathematical Contest",
+    "issuer": "COMSATS",
+    "type": "competition",
+    "position": 5
+  },
+  {
+    "title": "Microsoft Office Specialist certification",
+    "issuer": "Microsoft",
+    "type": "certificate"
+  }
+]

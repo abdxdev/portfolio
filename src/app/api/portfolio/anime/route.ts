@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { filterItemsByQuery } from '@/lib/utils';
-import socials from '@/data/socials.json';
 
 const GRAPHQL_URL = 'https://graphql.anilist.co';
 const QUERY = `

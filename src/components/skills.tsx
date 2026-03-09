@@ -1,25 +1,32 @@
 "use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LinkIcon, ChevronDown, ChevronUp } from "lucide-react";
-import {
-  Card,
-  CardTitle,
-  CardHeader,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import skillsData from "@/data/skills.json";
 
-const portfolioSkills = skillsData
-  .flatMap(category => category.skills)
-  .filter(skill => skill.portfolio)
-  .map(skill => skill.name);
+type Skill = { name: string; portfolio?: boolean };
+type Category = { category: string; skills: Skill[] };
 
 export const Skills = ({ id }: { id?: string }) => {
   const [showAll, setShowAll] = useState(false);
+  const [skills, setSkills] = useState<Category[]>([]);
+  const [pSkills, setPSkills] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/assets/json/skills.json')
+      .then(res => res.json())
+      .then((data: Category[]) => {
+        setSkills(data);
+        setPSkills(
+          data
+            .flatMap(category => category.skills)
+            .filter(skill => skill.portfolio)
+            .map(skill => skill.name)
+        );
+      });
+  }, []);
 
   return (
     <section id={id}>
@@ -36,16 +43,14 @@ export const Skills = ({ id }: { id?: string }) => {
           {showAll ? (
             <ScrollArea className="h-64">
               <div className="space-y-4 pr-4">
-                {skillsData.map((category, ci) => (
+                {skills.map((category, ci) => (
                   <div key={ci}>
                     <h3 className="text-sm font-medium text-muted-foreground mb-2">
                       {category.category}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {category.skills.map((skill, si) => (
-                        <Badge key={si} variant="secondary">
-                          {skill.name}
-                        </Badge>
+                        <Badge key={si} variant="secondary">{skill.name}</Badge>
                       ))}
                     </div>
                   </div>
@@ -54,10 +59,8 @@ export const Skills = ({ id }: { id?: string }) => {
             </ScrollArea>
           ) : (
             <div className="flex flex-wrap gap-2">
-              {portfolioSkills.map((s, i) => (
-                <Badge key={i} variant="secondary">
-                  {s}
-                </Badge>
+              {pSkills.map((s, i) => (
+                <Badge key={i} variant="secondary">{s}</Badge>
               ))}
             </div>
           )}
@@ -76,5 +79,5 @@ export const Skills = ({ id }: { id?: string }) => {
         </CardContent>
       </Card>
     </section>
-  )
-}
+  );
+};
