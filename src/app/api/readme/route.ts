@@ -285,7 +285,8 @@ async function fetchStaticAsset(url: string): Promise<string> {
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
   const BASE = `${origin}/assets/md/`;
-  const static_url = "https://raw.githubusercontent.com/abdxdev/portfolio/refs/heads/main/public/assets";
+  const assets_url = "https://raw.githubusercontent.com/abdxdev/portfolio/refs/heads/main/public/assets";
+  const metrics_url = "https://raw.githubusercontent.com/abdxdev/abdxdev/refs/heads/main/metrics";
 
   const [portfolio, description, githubStats, anilist, supportme, footer] = await Promise.all([
     fetch(`${origin}/api/portfolio?fetch=true`).then((r) => r.json()),
@@ -301,40 +302,40 @@ export async function GET(request: NextRequest) {
   const parts: string[] = [];
   const p = (text: string, opts?: Parameters<typeof write>[1]) => parts.push(write(text, opts));
 
-  p(mdLink(mdImage("Abd Dev", `${static_url}/gif/intro.gif`), origin));
+  p(mdLink(mdImage("Abd Dev", `${assets_url}/gif/intro.gif`), origin));
   p(description);
   p(`### **[${origin.replace("https://", "").replace("http://", "")}](${origin})**`);
 
-  p(mdImage("Languages & Tools", `${static_url}/titles/languages_and_tools.png`));
+  p(mdImage("Languages & Tools", `${assets_url}/titles/languages_and_tools.png`));
   p(getFeaturedSkills(portfolio.skills));
-  p(mdImage("GitHub Stats", `${static_url}/metrics/languages.svg`));
+  p(mdImage("GitHub Stats", `${metrics_url}/languages.svg`));
   p(getAllSkills(portfolio.skills), { centered: false, summary: "See more skills" });
 
-  p(mdImage("Featured Projects", `${static_url}/titles/featured_projects.png`));
+  p(mdImage("Featured Projects", `${assets_url}/titles/featured_projects.png`));
   p(getProjectsGallery(portfolio.projects));
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
-  p(mdImage("Anime List", `${static_url}/titles/anime_list.png`));
+  p(mdImage("Anime List", `${assets_url}/titles/anime_list.png`));
   p('*"Planning to watch" list == "Issues" tab*');
-  p(mdLink(mdImage("Anime Stats", `${static_url}/metrics/anime.svg`), portfolio.anilist_url));
-  p(`<img align='right' src='${static_url}/gif/anime_gif.gif' height='170'>`, { centered: false });
+  p(mdLink(mdImage("Anime Stats", `${metrics_url}/anime.svg`), portfolio.anilist_url));
+  p(`<img align='right' src='${assets_url}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
-  p(mdImage("Game List", `${static_url}/titles/game_list.png`));
+  p(mdImage("Game List", `${assets_url}/titles/game_list.png`));
   p("*a professional respawner*");
   p(getGames(portfolio.games), { centered: false });
 
-  p(mdImage("Meet my Code Buddies!", `${static_url}/titles/friends.png`));
+  p(mdImage("Meet my Code Buddies!", `${assets_url}/titles/friends.png`));
   p(getFriends(portfolio.friends));
 
-  p(mdImage("Support Me", `${static_url}/titles/support_me.png`));
+  p(mdImage("Support Me", `${assets_url}/titles/support_me.png`));
   p(supportme);
   p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
   
   const updateBadge = mdBadge({ label: "Update", message: `Last Updated: ${now}`, color: "080808" });
   p(`[![Click to Update](${updateBadge})](${origin}/update-readme)`);
   p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
-  p(mdImage("Footer", `${static_url}/svg/footer.svg`));
+  p(mdImage("Footer", `${assets_url}/svg/footer.svg`));
 
   return new NextResponse(parts.join("").trim(), {
     headers: {
