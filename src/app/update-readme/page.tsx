@@ -4,19 +4,25 @@ import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import BlurText from "@/components/BlurText";
 
-function TriggerWorkflowContent() {
+function WorkflowContent() {
   const searchParams = useSearchParams();
   const redirectUri =
     searchParams.get("redirect_uri") ?? "https://github.com/abdxdev";
 
-  const hasRedirected = useRef(false);
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
+    // Trigger the workflow in the background
+    fetch(`/api/workflow?redirect_uri=${encodeURIComponent(redirectUri)}`).catch(
+      () => {}
+    );
+
+    // Redirect to GitHub after 2.5s
     const timer = setTimeout(() => {
-      if (!hasRedirected.current) {
-        hasRedirected.current = true;
-        window.location.href = redirectUri;
-      }
+      window.location.href = redirectUri;
     }, 2500);
 
     return () => clearTimeout(timer);
@@ -41,11 +47,11 @@ function TriggerWorkflowContent() {
   );
 }
 
-export default function TriggerWorkflowPage() {
+export default function WorkflowPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background">
       <Suspense>
-        <TriggerWorkflowContent />
+        <WorkflowContent />
       </Suspense>
     </div>
   );
