@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect } from "react";
 import BlurText from "@/components/BlurText";
 import ShinyText from "@/components/ShinyText";
@@ -12,7 +13,7 @@ export default function WorkflowContent() {
   }, []);
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6">
       <BlurText
         text="Updating GitHub Profile..."
         className="text-4xl font-semibold tracking-tight text-foreground"
@@ -23,6 +24,6 @@ export default function WorkflowContent() {
       <ShinyText className="text-xs">
         Redirecting to GitHub...
       </ShinyText>
-    </>
+    </div>
   );
-}
+};
