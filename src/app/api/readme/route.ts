@@ -317,7 +317,7 @@ export async function GET(request: NextRequest) {
 
   p(mdImage("Anime List", `${assets_url}/titles/anime_list.png`));
   p('*"Planning to watch" list == "Issues" tab*');
-  p(mdLink(mdImage("Anime Stats", `${metrics_url}/anime.svg`), portfolio.anilist_url));
+  p(mdLink(mdImage("Anime Stats", `${metrics_url}/anilist.svg`), portfolio.anilist_url));
   p(`<img align='right' src='${assets_url}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
