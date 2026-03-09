@@ -1,13 +1,11 @@
 "use client";
 
 import { Suspense, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 import BlurText from "@/components/BlurText";
+import ShinyText from "@/components/ShinyText";
 
 function WorkflowContent() {
-  const searchParams = useSearchParams();
-  const redirectUri =
-    searchParams.get("redirect_uri") ?? "https://github.com/abdxdev";
+  const redirectUri = "https://github.com/abdxdev";
 
   const hasRun = useRef(false);
 
@@ -17,7 +15,7 @@ function WorkflowContent() {
 
     // Trigger the workflow in the background
     fetch(`/api/workflow?redirect_uri=${encodeURIComponent(redirectUri)}`).catch(
-      () => {}
+      () => { }
     );
 
     // Redirect to GitHub after 2.5s
@@ -40,9 +38,9 @@ function WorkflowContent() {
       <p className="text-sm text-muted-foreground">
         Changes will appear in ~15 seconds.
       </p>
-      <p className="text-xs text-muted-foreground animate-pulse">
-        Redirecting to GitHub…
-      </p>
+      <ShinyText className="text-xs">
+        Redirecting to GitHub...
+      </ShinyText>
     </>
   );
 }

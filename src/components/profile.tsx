@@ -241,13 +241,6 @@ export const Profile = () => {
                 transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               >
                 <ShinyText
-                  speed={1}
-                  delay={0}
-                  className="text-foreground"
-                  spread={120}
-                  direction="left"
-                  yoyo={false}
-                  pauseOnHover={false}
                   disabled={!settings.shinyText}
                 >
                   Abdul Rahman

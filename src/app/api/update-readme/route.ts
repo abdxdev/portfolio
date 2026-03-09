@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
  * - Query params:
  *   - `redirect_uri=...` → Override the final redirect target (default: https://github.com/abdxdev)
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   const url = "https://api.github.com/repos/abdxdev/abdxdev/dispatches";
   const response = await fetch(url, {
     method: "POST",
@@ -28,9 +28,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const redirectUri =
-    request.nextUrl.searchParams.get("redirect_uri") ??
-    "https://github.com/abdxdev";
+  const redirectUri = "https://github.com/abdxdev";
 
   return NextResponse.redirect(redirectUri);
 }

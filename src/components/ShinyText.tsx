@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
 import './ShinyText.css';
+import { cn } from '@/lib/utils';
 
 interface ShinyTextProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ function useDarkMode() {
 const ShinyText: React.FC<ShinyTextProps> = ({
   children,
   disabled = false,
-  speed = 2,
+  speed = 1,
   className = '',
   color,
   shineColor,
@@ -42,8 +43,8 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   delay = 0
 }) => {
   const isDark = useDarkMode();
-  const resolvedColor = color ?? (isDark ? '#b5b5b5' : '#1a1a1a');
-  const resolvedShine = shineColor ?? (isDark ? '#ffffff' : '#666666');
+  const resolvedColor = color ?? (isDark ? 'oklch(0.56 0 0)' : 'oklch(0.14 0 0)');
+  const resolvedShine = shineColor ?? (isDark ? 'oklch(1 0 0)' : 'oklch(0.6 0 0)');
   const [isPaused, setIsPaused] = useState(false);
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
@@ -142,7 +143,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
 
   return (
     <motion.span
-      className={`shiny-text ${className}`}
+      className={cn("shiny-text", className)}
       style={{ ...gradientStyle, backgroundPosition }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
