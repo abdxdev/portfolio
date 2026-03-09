@@ -7,6 +7,7 @@ import { AnimationSettingsProvider } from "@/components/animation-settings";
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Toaster } from '@/components/ui/sonner';
 import { OneSignalInit } from '@/components/onesignal-init';
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <OneSignalInit />
+        <Analytics />
       </body>
     </html>
   );
