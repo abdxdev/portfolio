@@ -39,7 +39,6 @@ export const IntroOverlay = ({ onComplete, onBlurComplete }: IntroOverlayProps) 
               text="Abdul Rahman"
               delay={50}
               animateBy="letters"
-              direction="top"
               className="text-4xl md:text-6xl font-bold text-foreground"
               onAnimationComplete={handleBlurComplete}
               stepDuration={0.4}
