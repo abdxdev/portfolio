@@ -1,3 +1,1 @@
-Software developer and designer specializing in Python, C/C++, Django, Flask, and UI/UX design. Creator of VS Code extensions and innovative software solutions. See my portfolio to know more about me.
-
-### **[abdxdev.vercel.app](https://abdxdev.vercel.app)**
+Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { LinkIcon } from "lucide-react";
 import {
   Card,
@@ -7,6 +8,14 @@ import {
 } from "@/components/ui/card";
 
 export const AboutMe = ({ id }: { id?: string }) => {
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    fetch("/assets/md/description.md")
+      .then((res) => res.text())
+      .then((text) => setDescription(text.trim()));
+  }, []);
+
   return (
     <section id={id} aria-labelledby="about-heading">
       <Card className="mb-6">
@@ -20,12 +29,10 @@ export const AboutMe = ({ id }: { id?: string }) => {
         </CardHeader>
         <CardContent>
           <div className="text-muted-foreground">
-            <p>
-              Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.
-            </p>
+            <p>{description}</p>
           </div>
         </CardContent>
       </Card>
     </section>
-  )
-}
+  );
+};
