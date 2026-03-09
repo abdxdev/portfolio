@@ -329,9 +329,11 @@ export async function GET(request: NextRequest) {
 
   p(mdImage("Support Me", `${static_url}/titles/support_me.png`));
   p(supportme);
+  p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
+  
   const updateBadge = mdBadge({ label: "Update", message: `Last Updated: ${now}`, color: "080808" });
   p(`[![Click to Update](${updateBadge})](${origin}/update-markdown)`);
-  p("> _This README is auto-generated. If you want to update it, click the button above._");
+  p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
   p(mdImage("Footer", `${static_url}/svg/footer.svg`));
 
   return new NextResponse(parts.join("").trim(), {

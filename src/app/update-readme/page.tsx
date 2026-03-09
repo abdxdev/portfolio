@@ -31,9 +31,9 @@ function WorkflowContent() {
   return (
     <>
       <BlurText
-        text="Updating README…"
+        text="Updating GitHub Profile..."
         delay={200}
-        animateBy="words"
+        animateBy="letters"
         direction="top"
         className="text-4xl font-semibold tracking-tight text-foreground"
       />
