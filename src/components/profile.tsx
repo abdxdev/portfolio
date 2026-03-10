@@ -73,8 +73,8 @@ export const Profile = () => {
 
   useEffect(() => {
     fetch('/assets/json/easterEggMessages.json')
-    .then(res => res.json())
-    .then(data => setEasterEggMessages(data));
+      .then(res => res.json())
+      .then(data => setEasterEggMessages(data));
     fetch('https://api.github.com/users/abdxdev').then(r => r.json()).then(data => {
       if (data?.public_repos) setRepoCount(data.public_repos);
     }).catch(() => { });
@@ -167,7 +167,7 @@ export const Profile = () => {
                 <Image
                   src={PROFILE_PICTURE_LIGHT}
                   id="profile-pic-light"
-                  alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                  alt="Abdul Rahman - Software Engineer Profile Picture (Light Mode)"
                   width={500}
                   height={500}
                   loading="eager"
@@ -177,7 +177,7 @@ export const Profile = () => {
                 <Image
                   src={PROFILE_PICTURE_DARK}
                   id="profile-pic-dark"
-                  alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                  alt="Abdul Rahman - Software Engineer Profile Picture (Dark Mode)"
                   width={500}
                   height={500}
                   loading="eager"
@@ -194,7 +194,7 @@ export const Profile = () => {
                       <Image
                         src={lightGifSrc}
                         id="light-profile-pic"
-                        alt="Abdul Rahman - Software Developer Profile Picture (Light Mode)"
+                        alt="Abdul Rahman - Software Engineer Profile Picture (Light Mode)"
                         width={500}
                         height={500}
                         unoptimized={true}
@@ -215,7 +215,7 @@ export const Profile = () => {
                       <Image
                         src={darkGifSrc}
                         id="dark-profile-pic"
-                        alt="Abdul Rahman - Software Developer Profile Picture (Dark Mode)"
+                        alt="Abdul Rahman - Software Engineer Profile Picture (Dark Mode)"
                         width={500}
                         height={500}
                         unoptimized={true}
@@ -247,7 +247,7 @@ export const Profile = () => {
                 </ShinyText>
               </motion.h1>
               <p className="text-sm md:text-base text-muted-foreground">
-                Software Developer & UI/UX Designer
+                Software Engineer & UI/UX Designer
               </p>
             </div>
 

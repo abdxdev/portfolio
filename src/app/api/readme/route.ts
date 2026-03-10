@@ -288,13 +288,9 @@ export async function GET(request: NextRequest) {
   const assets_url = "https://raw.githubusercontent.com/abdxdev/portfolio/refs/heads/main/public/assets";
   const metrics_url = "https://raw.githubusercontent.com/abdxdev/abdxdev/refs/heads/main/metrics";
 
-  const [portfolio, description, githubStats, anilist, supportme, footer] = await Promise.all([
+  const [portfolio, description] = await Promise.all([
     fetch(`${origin}/api/portfolio?fetch=true`).then((r) => r.json()),
     fetchStaticAsset(BASE + "description.md"),
-    fetchStaticAsset(BASE + "github_stats.md"),
-    fetchStaticAsset(BASE + "anilist.md"),
-    fetchStaticAsset(BASE + "supportme.md"),
-    fetchStaticAsset(BASE + "footer.md"),
   ]);
 
   const now = new Date().toISOString().replace("T", " ").split(".")[0] + " UTC";

@@ -20,16 +20,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Abdul Rahman | Software Developer & UI/UX Designer",
+  title: "Abdul Rahman | Software Engineer & UI/UX Designer",
   description: "Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.",
   openGraph: {
-    title: "Abdul Rahman | Software Developer & UI/UX Designer",
+    title: "Abdul Rahman | Software Engineer & UI/UX Designer",
     description: "Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.",
     images: [{ url: "/thumbnail-portfolio.png" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abdul Rahman | Software Developer & UI/UX Designer",
+    title: "Abdul Rahman | Software Engineer & UI/UX Designer",
     description: "Software engineer with hands-on experience building backend systems, desktop applications, and developer tools, passionate about automation, clean code, and creating solutions that improve productivity.",
     images: ["/thumbnail-portfolio.png"],
   },
