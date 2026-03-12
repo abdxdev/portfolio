@@ -162,7 +162,7 @@ export const Contact = ({ id }: { id?: string }) => {
                     </Label>
                     <Input
                       id="contact-first-name"
-                      placeholder="John"
+                      placeholder="Gabe"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       aria-invalid={!!errors.firstName}
@@ -178,7 +178,7 @@ export const Contact = ({ id }: { id?: string }) => {
                     </Label>
                     <Input
                       id="contact-last-name"
-                      placeholder="Doe"
+                      placeholder="Newell"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       className="h-9"
@@ -193,7 +193,7 @@ export const Contact = ({ id }: { id?: string }) => {
                   <Input
                     id="contact-email"
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="gabe@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={!!errors.email}

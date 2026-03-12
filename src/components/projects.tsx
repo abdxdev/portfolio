@@ -1,27 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Github, Globe, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Project } from "@/types/project";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ExpandableCard } from "@/components/ui/expandable-card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
 import Autoplay from "embla-carousel-autoplay";
+import MarkdownRenderer from "./markdown-renderer";
 
 const techColors: Record<string, string> = {
   "React": "bg-blue-500",
@@ -37,53 +34,173 @@ const techColors: Record<string, string> = {
   "TypeScript": "bg-blue-500",
 };
 
+function ProjectItem({ project }: { project: Project }) {
+  const [readmeContent, setReadmeContent] = useState<string | null>(null);
+  const [isLoadingReadme, setIsLoadingReadme] = useState(false);
+
+  useEffect(() => {
+    const fetchReadme = async () => {
+      setIsLoadingReadme(true);
+      try {
+        const res = await fetch(`https://raw.githubusercontent.com/abdxdev/${project.raw_name}/${project.default_branch || 'main'}/README.md`);
+        if (res.ok) {
+          const text = await res.text();
+          setReadmeContent(text);
+        } else {
+          setReadmeContent("No README available for this project.");
+        }
+      } catch (err) {
+        setReadmeContent("Failed to load README.");
+      } finally {
+        setIsLoadingReadme(false);
+      }
+    };
+
+    fetchReadme();
+  }, [project.raw_name, project.default_branch]);
+
+  const images = project.thumbnails && project.thumbnails.length > 0
+    ? project.thumbnails
+    : [project.default_image_url];
+
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap());
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const CarouselContentRender = (isExpanded: boolean) => (
+    <Carousel
+      opts={{ startIndex: isExpanded ? current : 0, align: "start" }}
+      plugins={!isExpanded ? [Autoplay({ delay: 5000 })] : undefined}
+      setApi={isExpanded ? undefined : setApi}
+      className="w-full h-full"
+    >
+      <CarouselContent className="h-full ml-0">
+        {images.map((src, index) => (
+          <CarouselItem key={index} className="pl-0 basis-full">
+            <div className="relative aspect-video w-full">
+              <img
+                src={src}
+                alt={`${project.title} screenshot ${index + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    </Carousel>
+  );
+
+  const BadgesNode = (project.working_on || project.is_university_project) ? (
+    <span className="flex gap-1.5 items-center">
+      {project.working_on && (
+        <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
+          Active
+        </Badge>
+      )}
+      {project.is_university_project && (
+        <Badge className="bg-blue-500/20 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 font-medium px-2 py-0">
+          University
+        </Badge>
+      )}
+    </span>
+  ) : null;
+
+  const LinksNode = (
+    <div className="flex items-center justify-between w-full">
+      <div className="flex items-center space-x-2 mr-4">
+        <div
+          className={cn(
+            "size-3.5 rounded-full",
+            project.language ? techColors[project.language] : techColors.Default ||
+              techColors.Default
+          )}
+        />
+        <span className="text-xs font-medium text-muted-foreground mr-2">
+          {project.language}
+        </span>
+      </div>
+      <div className="flex items-center gap-4">
+        {project.homepage && (
+          <a
+            href={project.homepage}
+            className="flex items-center gap-1 text-sm hover:underline z-20 relative pointer-events-auto"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Globe className="size-4" />
+            <span>Site</span>
+          </a>
+        )}
+        <a
+          href={project.html_url}
+          className="flex items-center gap-1 text-sm hover:underline z-20 relative pointer-events-auto"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Github className="size-4" />
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  );
+
+  const TitleNode = (
+    <span className="py-1">
+      {project.title}
+      {project.priority === 0 && (
+        <span className="text-yellow-500 text-2xl relative top-0.5 ml-2 inline" title="Featured Project">★</span>
+      )}
+      {BadgesNode && (
+        <span className="inline-flex gap-1.5 items-center ml-2 align-middle">
+          {project.working_on && (
+            <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
+              Active
+            </Badge>
+          )}
+          {project.is_university_project && (
+            <Badge className="bg-blue-500/20 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 font-medium px-2 py-0">
+              University
+            </Badge>
+          )}
+        </span>
+      )}
+    </span>
+  );
+
+  return (
+    <ExpandableCard
+      title={TitleNode}
+      src={images[0]}
+      customImageNode={CarouselContentRender}
+      links={LinksNode}
+      description={project.description}
+      classNameExpanded="[&_h4]:text-black dark:[&_h4]:text-white [&_h4]:font-medium"
+      className="h-full"
+    >
+      <div className="pb-8 min-w-0 overflow-hidden">
+        {isLoadingReadme ? (
+          <div className="whitespace-pre-wrap font-sans text-sm text-zinc-500">Loading README...</div>
+        ) : (
+          <MarkdownRenderer content={readmeContent || "No README available for this project."} />
+        )}
+      </div>
+    </ExpandableCard>
+  );
+}
+
 export const Projects = ({ id }: { id?: string }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [visibleCount, setVisibleCount] = useState(4);
-  const [failedImages, setFailedImages] = useState<Record<number, Set<number>>>({});
-  const [loadedImages, setLoadedImages] = useState<Record<number, Set<number>>>({});
-  const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const handleImageError = (projectIndex: number, imageIndex: number) => {
-    setFailedImages((prev) => {
-      const updated = { ...prev };
-      if (!updated[projectIndex]) {
-        updated[projectIndex] = new Set();
-      }
-      updated[projectIndex].add(imageIndex);
-      return updated;
-    });
-  };
-
-  const handleImageLoaded = (projectIndex: number, imageIndex: number) => {
-    setLoadedImages((prev) => {
-      const updated = { ...prev };
-      if (!updated[projectIndex]) {
-        updated[projectIndex] = new Set();
-      }
-      updated[projectIndex].add(imageIndex);
-      return updated;
-    });
-  };
-
-  const openImageDialog = (projectIndex: number, name: string | null, isDefaultThumbnail = false) => {
-    setSelectedProjectIndex(projectIndex);
-    setSelectedName(name);
-    setIsDialogOpen(true);
-    if (isDefaultThumbnail) {
-      setFailedImages((prev) => {
-        const updated = { ...prev };
-        if (!updated[projectIndex]) {
-          updated[projectIndex] = new Set();
-        }
-        updated[projectIndex].add(-1);
-        return updated;
-      });
-    }
-  };
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -123,176 +240,34 @@ export const Projects = ({ id }: { id?: string }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, index) => (
-            <Card key={index} className="animate-pulse">
-              <CardContent className="h-full">
-                <div className="flex flex-col h-full">
-                  <Skeleton className="w-full aspect-video max-w-xs mb-4" />
-                  <Skeleton className="h-6 w-3/4 mb-2" />
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-5/6 mb-4" />
-                  <div className="mt-auto flex items-center justify-between">
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-24" />
+            <Card key={index} className="overflow-hidden p-0">
+              <Skeleton className="w-full aspect-video rounded-none" />
+              <div className="p-4 px-5 pb-5 flex items-start justify-between">
+                <div className="flex flex-col flex-1 gap-2">
+                  <Skeleton className="h-3.5 w-1/3" />
+                  <Skeleton className="h-5 w-2/3" />
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="size-3.5 rounded-full" />
+                      <Skeleton className="h-3 w-12" />
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Skeleton className="h-3 w-10" />
+                      <Skeleton className="h-3 w-14" />
+                    </div>
                   </div>
                 </div>
-              </CardContent>
+                <Skeleton className="size-8 rounded-full ml-4 shrink-0" />
+              </div>
             </Card>
           ))
         ) : (
-          projects.slice(0, visibleCount).map((project, projectIndex) => {
-            const allImagesFailed = project.thumbnails.every(
-              (_, imageIndex) => failedImages[projectIndex]?.has(imageIndex)
-            );
-            const hasValidImages = project.thumbnails.some(
-              (_, imageIndex) => !failedImages[projectIndex]?.has(imageIndex)
-            );
-            return (
-              <Card key={projectIndex} className="transition-opacity duration-500 ease-in-out">
-                <CardContent className="h-full">
-                  <div className="flex flex-col h-full">
-                    <Carousel
-                      plugins={[
-                        Autoplay({
-                          delay: 5000,
-                        }),
-                      ]}
-                      className="pb-4"
-                    >
-                      <CarouselContent>
-                        {!hasValidImages || allImagesFailed ? (
-                          <CarouselItem>
-                            <div>
-                              <Card className="w-full h-full overflow-hidden py-0 rounded-md">
-                                <CardContent className="p-0">
-                                  <div className="aspect-video overflow-hidden relative">
-                                    <Image
-                                      src={project.default_image_url}
-                                      alt="Default Thumbnail"
-                                      width={400}
-                                      height={300}
-                                      className="w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out dark:invert"
-                                      onClick={() => openImageDialog(projectIndex, project.title, true)}
-                                    />
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            </div>
-                          </CarouselItem>
-                        ) : (
-                          project.thumbnails.map((thumb, imageIndex) => {
-                            if (failedImages[projectIndex]?.has(imageIndex)) {
-                              return null;
-                            }
-
-                            const isImageLoaded = loadedImages[projectIndex]?.has(imageIndex);
-
-                            return (
-                              <CarouselItem key={imageIndex}>
-                                <div>
-                                  <Card className="w-full h-full overflow-hidden py-0 rounded-md">
-                                    <CardContent className="p-0">
-                                      <div className="aspect-video overflow-hidden relative">
-                                        {!isImageLoaded && (
-                                          <div className="absolute inset-0 bg-accent animate-pulse" />
-                                        )}
-                                        <Image
-                                          src={thumb}
-                                          alt={`Screenshot ${imageIndex + 1}`}
-                                          width={400}
-                                          height={300}
-                                          className={cn(
-                                            "w-full h-full object-cover cursor-pointer transition-all duration-500 ease-in-out",
-                                            isImageLoaded ? "opacity-100" : "opacity-0"
-                                          )}
-                                          onLoad={() => {
-                                            handleImageLoaded(projectIndex, imageIndex);
-                                          }}
-                                          onError={() =>
-                                            handleImageError(projectIndex, imageIndex)
-                                          }
-                                          onClick={() => openImageDialog(projectIndex, project.title)}
-                                        />
-                                      </div>
-                                    </CardContent>
-                                  </Card>
-                                </div>
-                              </CarouselItem>
-                            );
-                          })
-                        )}
-                      </CarouselContent>
-                    </Carousel>
-                    <div className="flex justify-between items-start mb-1">
-                      <Link
-                        href={project.html_url}
-                        className="font-semibold text-primary hover:underline"
-                      >
-                        {project.title}
-                        {project.priority === 0 && (
-                          <span className="text-yellow-500 ml-2" title="Featured Project">★</span>
-                        )}
-                      </Link>
-
-                      <div className="flex gap-1.5 items-center">
-                        {project.working_on && (
-                          <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30">
-                            Active
-                          </Badge>
-                        )}
-                        {project.is_university_project && (
-                          <Badge className="bg-blue-500/20 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400">
-                            University
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1 mb-4">
-                      {project.description}
-                    </p>
-                    <div className="mt-auto flex flex-wrap gap-x-4 gap-y-2 items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div
-                          className={cn(
-                            "size-4 rounded-full",
-                            project.language ? techColors[project.language] : techColors.Default ||
-                              techColors.Default
-                          )}
-                        />
-                        <span className="text-xs font-medium text-muted-foreground">
-                          {project.language}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        {project.homepage && (
-                          <Link
-                            href={project.homepage}
-                            className="flex items-center gap-1 text-sm text-primary hover:underline"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Globe className="size-4" />
-                            <span>Site</span>
-                          </Link>
-                        )}
-                        <Link
-                          href={project.html_url}
-                          className="flex items-center gap-1 text-sm text-primary hover:underline"
-                        >
-                          <Github className="size-4" />
-                          <span>GitHub</span>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
+          projects.slice(0, visibleCount).map((project, projectIndex) => (
+            <ProjectItem key={projectIndex} project={project} />
+          ))
         )}
       </div>
 
-
-      {/* Load More Button */}
       {visibleCount < projects.length && (
         <div className="flex justify-end mt-4">
           <Button
@@ -303,46 +278,6 @@ export const Projects = ({ id }: { id?: string }) => {
           </Button>
         </div>
       )}
-
-      {/* Image Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-7xl p-0 overflow-hidden bg-transparent border-0">
-          {selectedProjectIndex !== null && (
-            <div className="bg-black bg-opacity-20 backdrop-blur-sm p-0 rounded-lg">
-              <Carousel opts={{ align: "center" }} className="w-full max-w-7xl mx-auto">
-                <CarouselContent>
-                  {projects[selectedProjectIndex].thumbnails
-                    .filter((_, index) => !failedImages[selectedProjectIndex]?.has(index))
-                    .map((image, index) => (
-                      <CarouselItem key={index} className="flex items-center justify-center ">
-                        <Image
-                          src={image}
-                          alt={selectedName || "Project Screenshot"}
-                          width={1920}
-                          height={1080}
-                          className="w-full h-auto max-h-[80vh] object-contain rounded"
-                        />
-                      </CarouselItem>
-                    ))}
-                  {failedImages[selectedProjectIndex]?.has(-1) && (
-                    <CarouselItem className="flex items-center justify-center">
-                      <Image
-                        src={projects[selectedProjectIndex].default_image_url}
-                        alt={selectedName || "Default Thumbnail"}
-                        width={1920}
-                        height={1080}
-                        className="w-full h-auto max-h-[80vh] object-contain rounded"
-                      />
-                    </CarouselItem>
-                  )}
-                </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
-              </Carousel>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };
