@@ -158,7 +158,7 @@ export const Contact = ({ id }: { id?: string }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1.5">
                     <Label htmlFor="contact-first-name" className="text-xs">
-                      First Name <span className="text-destructive">*</span>
+                      First Name
                     </Label>
                     <Input
                       id="contact-first-name"
@@ -188,7 +188,7 @@ export const Contact = ({ id }: { id?: string }) => {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="contact-email" className="text-xs">
-                    Email <span className="text-destructive">*</span>
+                    Email
                   </Label>
                   <Input
                     id="contact-email"
@@ -206,7 +206,7 @@ export const Contact = ({ id }: { id?: string }) => {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="contact-message" className="text-xs">
-                    Message <span className="text-destructive">*</span>
+                    Message
                   </Label>
                   <Textarea
                     id="contact-message"
