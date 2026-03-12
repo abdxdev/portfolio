@@ -7,6 +7,7 @@ import { ApiButton } from "@/components/api-button";
 import { Experience } from "@/components/experience";
 import LightRays from "@/components/LightRays";
 import { Projects } from "@/components/projects";
+import { Contact } from "@/components/contact";
 import { Sidebar } from "@/components/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntroOverlay } from "@/components/intro-overlay";
@@ -76,6 +77,7 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
           <AboutMe id="about-me" />
           <Experience id="experience" />
           <Projects id="projects" />
+          <Contact id="contact" />
         </main>
       </div>
     </div>

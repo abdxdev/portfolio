@@ -34,6 +34,31 @@ type Database = {
         }>;
         Relationships: [];
       };
+      contact_messages: {
+        Row: {
+          id: number;
+          email: string;
+          first_name: string;
+          last_name: string | null;
+          message: string;
+          created_at: string;
+        };
+        Insert: {
+          email: string;
+          first_name: string;
+          last_name?: string | null;
+          message: string;
+          created_at?: string;
+        };
+        Update: Partial<{
+          email: string;
+          first_name: string;
+          last_name: string | null;
+          message: string;
+          created_at: string;
+        }>;
+        Relationships: [];
+      };
       conversation_push_subscriptions: {
         Row: {
           session_id: string;

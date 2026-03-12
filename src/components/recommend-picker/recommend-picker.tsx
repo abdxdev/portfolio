@@ -325,6 +325,7 @@ export function RecommendPicker({
           {/* Left icons */}
           <InputGroupAddon align="inline-start" className="gap-0">
             <InputGroupButton
+              id="game-recommendation"
               type="button"
               size="icon-sm"
               className={`${open && mode === "game" ? modeIcon.game : "text-muted-foreground hover:text-foreground"}`}
@@ -334,6 +335,7 @@ export function RecommendPicker({
               <Gamepad2 className="h-4 w-4" />
             </InputGroupButton>
             <InputGroupButton
+              id="anime-recommendation"
               type="button"
               size="icon-sm"
               className={`${open && mode === "anime" ? modeIcon.anime : "text-muted-foreground hover:text-foreground"}`}

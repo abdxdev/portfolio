@@ -165,12 +165,30 @@
   --color-color-3: var(--color-3);
   --color-color-2: var(--color-2);
   --color-color-1: var(--color-1);
+
   @keyframes rainbow {
     0% {
       background-position: 0%;
     }
     100% {
       background-position: 200%;
+    }
+  }
+
+  --animate-highlight: highlight 2s ease-in-out;
+
+  @keyframes highlight {
+    0% {
+      box-shadow: 0 0 0 2px transparent;
+    }
+    25% {
+      box-shadow: 0 0 0 2px var(--highlight-color, #ff79c6);
+    }
+    75% {
+      box-shadow: 0 0 0 2px var(--highlight-color, #ff79c6);
+    }
+    100% {
+      box-shadow: 0 0 0 2px transparent;
     }
   }
 }

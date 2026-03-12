@@ -22,6 +22,7 @@ import { RainbowButton } from "./ui/rainbow-button";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { NumberTicker } from "./ui/number-ticker";
 import { Skeleton } from "./ui/skeleton";
+import { highlight } from "@/lib/highlight";
 
 const PROFILE_PICTURE_LIGHT = '/pfp/light.png';
 const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
@@ -124,13 +125,7 @@ export const Profile = () => {
     const placeholderSrc = isLight ? lightPlaceholder : darkPlaceholder;
     const gifSrc = isLight ? lightGifPath : darkGifPath;
 
-    const imageElement = document.querySelector(selector);
-    if (imageElement) {
-      imageElement.classList.add('border-[#ff79c6]', 'transition-all', 'ease-in-out', 'duration-1000');
-      setTimeout(() => {
-        imageElement.classList.remove('border-[#ff79c6]');
-      }, 1000);
-    }
+    highlight(isLight ? "light-profile-pic" : "dark-profile-pic");
 
     setSrc(placeholderSrc);
     setTimeout(() => {
@@ -276,7 +271,10 @@ export const Profile = () => {
 
           <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm"
             onClick={() => {
-              window.open('https://mail.google.com/mail/?view=cm&to=abdulrahman.abd.dev@gmail.com&su=Hello%20Abdul%20Rahman&body=Hi%20Abdul%20Rahman%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect%20with%20you.%0A%0A', '_blank');
+              const section = document.getElementById("contact");
+              section?.scrollIntoView({ behavior: "smooth", block: "center" });
+              const card = section?.querySelector('[data-slot="card"]') as HTMLElement | null;
+              if (card) highlight(card);
             }}>
             CONTACT ME
           </RainbowButton>

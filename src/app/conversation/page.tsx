@@ -16,6 +16,7 @@ import {
   NotificationCheckboxItem,
   NotificationPromptBanner,
 } from "@/components/notification-prompt";
+import { highlight } from "@/lib/highlight";
 
 export default function ConversationFullScreen() {
   const [input, setInput] = useState("");
@@ -185,10 +186,21 @@ export default function ConversationFullScreen() {
         error={error}
         emptyMessage={
           <p className="text-sm text-muted-foreground text-center py-3">
-            Drop me a message — it&apos;s anonymous and I&apos;ll reply here. Or
-            recommend a <span className="text-green-500">game</span> or{" "}
-            <span className="text-violet-500">anime</span> you think I&apos;d
-            like!
+            Drop me a message — it's anonymous and I'll reply here. Or recommend a{" "}
+            <Button variant="link" className="text-green-500 p-0 h-auto"
+              onClick={() => {
+                highlight("game-recommendation", "#00C950");
+              }}>
+              game
+            </Button>
+            {" "}or{" "}
+            <Button variant="link" className="text-violet-500 p-0 h-auto"
+              onClick={() => {
+                highlight("anime-recommendation", "#8E51FF");
+              }}>
+              anime
+            </Button>
+            {" "}you think I'd like!
           </p>
         }
         messagesClassName="flex-1 min-h-0"

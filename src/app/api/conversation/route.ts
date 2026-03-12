@@ -1,6 +1,17 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSupabase } from '@/lib/db/init';
+import { Resend } from "resend";
+
+async function sendEmailNotification(message: string, sessionId: string) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  await resend.emails.send({
+    from: "Portfolio <onboarding@resend.dev>",
+    to: "abdulrahman.abd.dev@gmail.com",
+    subject: "New anonymous message on your portfolio",
+    text: `Session: ${sessionId}\n\nMessage:\n${message}\n\nReply at: https://abdxdev.vercel.app/conversation`,
+  });
+}
 
 async function sendPushToSession(sessionId: string, message: string) {
   const supabase = getSupabase();
@@ -81,6 +92,7 @@ export async function POST(request: Request) {
     const response = NextResponse.json({ message: 'Message sent', sessionId }, { status: 201 });
 
     if (!isAdmin) {
+      sendEmailNotification(message.trim(), sessionId).catch(() => { });
       response.cookies.set('conversation_session', sessionId, {
         httpOnly: false,
         secure: process.env.NODE_ENV === 'production',
