@@ -21,7 +21,7 @@ interface Session {
   hasUnreplied: boolean;
 }
 
-export default function ConversationAdmin() {
+export default function ConversationsPage() {
   const [password, setPassword] = useState<string | null>(null);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
@@ -386,7 +386,13 @@ export default function ConversationAdmin() {
           {filteredSessions.map((session) => (
             <button
               key={session.sessionId}
-              onClick={() => { setSelectedSession(session.sessionId); setReplyTo(null); }}
+              onClick={() => {
+                // Navigate to conversation detail route including admin password
+                if (password) {
+                  router.push(`/conversation/${session.sessionId}?password=${encodeURIComponent(password)}`);
+                }
+                setReplyTo(null);
+              }}
               className="w-full flex items-center gap-3 px-3 py-3 text-left hover:bg-muted/50 rounded-lg transition-colors"
             >
               {/* Unread dot */}

@@ -9,7 +9,7 @@ async function sendEmailNotification(message: string, sessionId: string) {
     from: "Portfolio <onboarding@resend.dev>",
     to: "abdulrahman.abd.dev@gmail.com",
     subject: "New anonymous message on your portfolio",
-    text: `Session: ${sessionId}\n\nMessage:\n${message}\n\nReply at: https://abdxdev.vercel.app/conversation`,
+    text: `Session: ${sessionId}\n\nMessage:\n${message}\n\nOpen: https://abdxdev.vercel.app/conversation/${encodeURIComponent(sessionId)}?password=${encodeURIComponent(String(process.env.ADMIN_PASSWORD))}`,
   });
 }
 
