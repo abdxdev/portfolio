@@ -301,7 +301,7 @@ export function RecommendPicker({
       {/* Doodle circle over the two icon buttons when conversation hasn't started */}
       {showDoodle && !open && (
         <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none select-none" style={{ width: 80, height: 52 }} aria-hidden>
-          <DoodleCircle className="text-foreground/50" />
+          <DoodleCircle className="text-foreground" />
         </div>
       )}
       <div
