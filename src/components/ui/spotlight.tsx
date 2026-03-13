@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useAnimationSettings } from "@/components/animation-settings";
+import "./spotlight.css";
 
 const REVEAL_ATTR = "data-reveal";
 
