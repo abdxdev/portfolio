@@ -111,6 +111,30 @@ export default function ConversationSessionPage() {
     }
   };
 
+  const handleUndelete = async (messageId: number) => {
+    if (!password) return;
+    try {
+      const url = `/api/conversation?password=${encodeURIComponent(String(password))}&id=${messageId}`;
+      const response = await fetch(url, { method: "PATCH" });
+      if (response.ok) await fetchMessages();
+    } catch {
+      // Silently fail
+    }
+  };
+
+  const handleDeleteSession = async () => {
+    if (!password || !sessionId) return;
+    try {
+      const url = `/api/conversation?password=${encodeURIComponent(String(password))}&clearAll=true&hard=true&sessionId=${encodeURIComponent(String(sessionId))}`;
+      const response = await fetch(url, { method: "DELETE" });
+      if (response.ok) {
+        router.push(`/conversations?password=${encodeURIComponent(String(password))}`);
+      }
+    } catch {
+      // Silently fail
+    }
+  };
+
   const handleSubmit = async () => {
     if (!input.trim() || isSubmitting) return;
     setError(null);
@@ -192,6 +216,14 @@ export default function ConversationSessionPage() {
                 <Trash2 className="h-4 w-4 mr-2" />
                 Clear Chat
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  await handleDeleteSession();
+                }}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Session
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
@@ -205,6 +237,8 @@ export default function ConversationSessionPage() {
         onSubmit={handleSubmit}
         onRecommend={handleRecommend}
         onDelete={handleDelete}
+        onUndelete={handleUndelete}
+        isAdmin={!!password}
         isSubmitting={isSubmitting}
         isLoading={isLoading}
         placeholder="Type a message"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2, Copy, CheckCheck } from "lucide-react";
+import { Loader2, Search, X, ChevronDown, Reply, Trash2, Undo2, Copy, CheckCheck, ArchiveRestore } from "lucide-react";
 import {
   RecommendPicker,
   parseRecommendation,
@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { FaTrashRestore } from "react-icons/fa";
 
 // ── Shared message type ───────────────────────────────────────────
 export interface ChatMessage {
@@ -357,7 +358,7 @@ export function ChatView({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align={self ? "end" : "start"} className="min-w-0">
                         <DropdownMenuItem onClick={() => onUndelete(msg.id)} title="Restore">
-                          <Undo2 className="h-3.5 w-3.5" />
+                          <ArchiveRestore className="h-3.5 w-3.5" />
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
