@@ -1,0 +1,10 @@
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+export const SITE_DOMAIN = SITE_URL.replace(/^https?:\/\//, '') || 'localhost';
+export const SITE_NAME = "abdxdev";
+
+export const FROM_ADDRESS = "onboarding@resend.dev";
+export const FROM_DISPLAY = "Abdul Rahman";
+export const MY_EMAIL = "abdulrahman.abd.dev@gmail.com";
+export const FROM_FULL = `${FROM_DISPLAY} <${FROM_ADDRESS}>`;;
+ 
+export const ADMIN_EMAIL = "abdulrahman.abd.dev@gmail.com";

@@ -11,10 +11,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ConfettiButton, type ConfettiButtonRef } from "@/components/ui/confetti";
-import { LinkIcon, Mail, Send, MessageCircle, ArrowRight } from "lucide-react";
+import { LinkIcon, Mail, Send, MessageCircle, ArrowRight, CalendarCheck, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { highlight } from "@/lib/highlight";
+import CalendarAppointment from "./schedule-appointment";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const socials = [
   {
@@ -40,6 +46,11 @@ const socials = [
   }
 ];
 
+interface ScheduledMeeting {
+  date: Date;
+  time: string;
+}
+
 export const Contact = ({ id }: { id?: string }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -48,6 +59,8 @@ export const Contact = ({ id }: { id?: string }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
+  const [scheduledMeeting, setScheduledMeeting] = useState<ScheduledMeeting | null>(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const confettiRef = useRef<ConfettiButtonRef>(null);
 
   const validate = () => {
@@ -59,6 +72,16 @@ export const Contact = ({ id }: { id?: string }) => {
     if (!message.trim()) e.message = "Message is required";
     setErrors(e);
     return Object.keys(e).length === 0;
+  };
+
+  /** Combines a local-midnight Date with a 12-hr time string into a UTC ISO datetime. */
+  const buildMeetingDatetime = (date: Date, time: string): string => {
+    const m = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i)!;
+    const hour = (parseInt(m[1]) % 12) + (m[3].toUpperCase() === "PM" ? 12 : 0);
+    const minute = parseInt(m[2]);
+    const dt = new Date(date);
+    dt.setUTCHours(hour, minute, 0, 0);
+    return dt.toISOString();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,28 +98,46 @@ export const Contact = ({ id }: { id?: string }) => {
           firstName: firstName.trim(),
           lastName: lastName.trim() || null,
           message: message.trim(),
+          meeting: scheduledMeeting
+            ? { datetime: buildMeetingDatetime(scheduledMeeting.date, scheduledMeeting.time) }
+            : null,
         }),
       });
 
-      if (res.ok) {
-        setSent(true);
-        confettiRef.current?.fire();
-        setEmail("");
-        setFirstName("");
-        setLastName("");
-        setMessage("");
-        setErrors({});
-        setTimeout(() => setSent(false), 4000);
-      } else {
+      if (!res.ok) {
         const data = await res.json();
         toast.error(data.error || "Failed to send message");
+        return;
       }
+
+      setSent(true);
+      confettiRef.current?.fire();
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      setMessage("");
+      setScheduledMeeting(null);
+      setErrors({});
+      setTimeout(() => setSent(false), 4000);
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const handleMeetingConfirm = (date: Date, time: string) => {
+    setScheduledMeeting({ date, time });
+    setCalendarOpen(false);
+  };
+
+  const formattedMeeting = scheduledMeeting
+    ? `${scheduledMeeting.date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      })} at ${scheduledMeeting.time}`
+    : null;
 
   return (
     <section id={id} aria-labelledby="contact-heading">
@@ -221,6 +262,52 @@ export const Contact = ({ id }: { id?: string }) => {
                   )}
                 </div>
 
+                {/* ─── Schedule Meeting ─── */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="schedule-meeting" className="text-xs">
+                    Schedule Meeting{" "}
+                    <span className="text-muted-foreground font-normal">(optional)</span>
+                  </Label>
+
+                  {scheduledMeeting ? (
+                    // Prefilled state — full-width pill matching input height
+                    <div className="flex items-center gap-2 h-9 w-full rounded-md border border-border bg-muted/30 px-3 text-sm">
+                      <CalendarCheck className="size-4 shrink-0" />
+                      <span className="flex-1 font-medium truncate">{formattedMeeting}</span>
+                      <button
+                        type="button"
+                        onClick={() => setScheduledMeeting(null)}
+                        aria-label="Remove scheduled meeting"
+                        className="rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        <X className="size-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    // Picker trigger — full-width like every other field
+                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          id="schedule-meeting"
+                          type="button"
+                          variant="outline"
+                          className="w-full h-9 justify-start gap-2 font-normal text-muted-foreground"
+                        >
+                          <CalendarCheck className="size-4" />
+                          Pick a date &amp; time…
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto p-0"
+                        align="start"
+                        sideOffset={8}
+                      >
+                        <CalendarAppointment onConfirm={handleMeetingConfirm} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </div>
+
                 <ConfettiButton
                   ref={confettiRef}
                   manualstart={true}
@@ -251,14 +338,12 @@ export const Contact = ({ id }: { id?: string }) => {
             <div>
               <Button
                 variant="link"
-                onClick={
-                  () => {
-                    const section = document.getElementById("conversation");
-                    section?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    const card = section?.querySelector('[data-slot="card"]') as HTMLElement | null;
-                    if (card) highlight(card);
-                  }
-                }
+                onClick={() => {
+                  const section = document.getElementById("conversation");
+                  section?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  const card = section?.querySelector('[data-slot="card"]') as HTMLElement | null;
+                  if (card) highlight(card);
+                }}
                 className="hover:no-underline group/anon inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all duration-300"
               >
                 <MessageCircle className="size-4" />
