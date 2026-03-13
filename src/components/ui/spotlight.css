@@ -1,10 +1,6 @@
 /* ── Windows 10 Fluent Reveal Border Glow ── */
-[data-reveal] {
-  position: relative;
-}
 
-/* Full borders: large radius is fine — cursor is always inside the box
-   so it's naturally close to every edge. */
+/* Full borders */
 [data-reveal="full"]::before {
   content: "";
   position: absolute;
@@ -21,8 +17,7 @@
   z-index: 3;
 }
 
-/* Partial borders: tight radius so it only glows when the cursor is
-   actually near the edge — no ambient glow from across the element. */
+/* Partial borders */
 [data-reveal="partial"]::before {
   content: "";
   position: absolute;

@@ -101,7 +101,7 @@ export const Contact = ({ id }: { id?: string }) => {
   return (
     <section id={id} aria-labelledby="contact-heading">
       <h2 className="flex items-center group">
-        Contact
+        Contact Me
         <a
           href={`#${id}`}
           className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity"

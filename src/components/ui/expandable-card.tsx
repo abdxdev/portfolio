@@ -116,12 +116,28 @@ export function ExpandableCard({
               <div className="relative h-full before:fixed before:inset-x-0 before:bottom-0 before:z-50 before:h-[70px] before:bg-linear-to-t before:from-background">
                 <div className="flex h-auto items-start justify-between p-8">
                   <div className="flex-1 pr-6 flex flex-col">
-                    <motion.p
-                      layoutId={maybeLayoutId(`description-${description}-${id}`)}
-                      className="text-lg text-muted-foreground"
-                    >
-                      {description}
-                    </motion.p>
+                    <div className="flex">
+                      <motion.p
+                        layoutId={maybeLayoutId(`description-${description}-${id}`)}
+                        className="text-lg text-muted-foreground"
+                      >
+                        {description}
+                      </motion.p>
+                      <motion.button
+                        aria-label="Close card"
+                        layoutId={maybeLayoutId(`button-${title}-${id}`)}
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border relative z-100"
+                        onClick={() => setActive(false)}
+                      >
+                        <motion.div
+                          animate={{ rotate: active ? 45 : 0 }}
+                          transition={noTransition ?? { duration: 0.4 }}
+                        >
+                          <Plus className="h-5 w-5" />
+                        </motion.div>
+                      </motion.button>
+
+                    </div>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-0.5">
                       <motion.h3
                         layoutId={maybeLayoutId(`title-${title}-${id}`)}
@@ -139,19 +155,6 @@ export function ExpandableCard({
                       </motion.div>
                     )}
                   </div>
-                  <motion.button
-                    aria-label="Close card"
-                    layoutId={maybeLayoutId(`button-${title}-${id}`)}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border relative z-100"
-                    onClick={() => setActive(false)}
-                  >
-                    <motion.div
-                      animate={{ rotate: active ? 45 : 0 }}
-                      transition={noTransition ?? { duration: 0.4 }}
-                    >
-                      <Plus className="h-5 w-5" />
-                    </motion.div>
-                  </motion.button>
                 </div>
                 <div className="px-8 pb-6 w-full">
                   <hr className="w-full border-border" />
@@ -203,12 +206,29 @@ export function ExpandableCard({
           </motion.div>
           <div className="flex items-start justify-between p-4 px-5 pb-5 flex-1">
             <div className="flex flex-col flex-1 h-full relative top-[-4px]">
-              <motion.p
-                layoutId={maybeLayoutId(`description-${description}-${id}`)}
-                className="text-sm font-medium md:text-left text-muted-foreground"
-              >
-                {description}
-              </motion.p>
+              <div className="flex">
+                <motion.p
+                  layoutId={maybeLayoutId(`description-${description}-${id}`)}
+                  className="text-sm font-medium md:text-left text-muted-foreground"
+                >
+                  {description}
+                </motion.p>
+                <motion.button
+                  aria-label="Open card"
+                  layoutId={maybeLayoutId(`button-${title}-${id}`)}
+                  className={cn(
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none mb-auto ml-4"
+                  )}
+                >
+                  <motion.div
+                    animate={{ rotate: active ? 45 : 0 }}
+                    transition={noTransition ?? { duration: 0.4 }}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </motion.div>
+                </motion.button>
+
+              </div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
                 <motion.h3
                   layoutId={maybeLayoutId(`title-${title}-${id}`)}
@@ -226,20 +246,6 @@ export function ExpandableCard({
                 </motion.div>
               )}
             </div>
-            <motion.button
-              aria-label="Open card"
-              layoutId={maybeLayoutId(`button-${title}-${id}`)}
-              className={cn(
-                "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none mb-auto ml-4"
-              )}
-            >
-              <motion.div
-                animate={{ rotate: active ? 45 : 0 }}
-                transition={noTransition ?? { duration: 0.4 }}
-              >
-                <Plus className="h-4 w-4" />
-              </motion.div>
-            </motion.button>
           </div>
         </div>
       </MotionCard>

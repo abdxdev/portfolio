@@ -8,7 +8,9 @@ const REVEAL_ATTR = "data-reveal";
 
 const IGNORED_TAGS = new Set([
   "HTML", "BODY", "HEAD", "SCRIPT", "STYLE", "LINK",
-  "META", "TITLE", "NOSCRIPT", "TEMPLATE", "SVG", "PATH",
+  "META", "TITLE", "NOSCRIPT", "TEMPLATE",
+  "SVG", "PATH", "G", "CIRCLE", "RECT", "LINE", "POLYLINE", "POLYGON",
+  "ASIDE", "NAV", "HEADER", "FOOTER", "MAIN", "SECTION",
 ]);
 
 function isSideOn(width: string, style: string, color: string): boolean {
@@ -23,24 +25,40 @@ function isSideOn(width: string, style: string, color: string): boolean {
 function syncElement(el: Element) {
   if (IGNORED_TAGS.has(el.tagName)) return;
 
-  const s   = getComputedStyle(el);
-  const top    = isSideOn(s.borderTopWidth,    s.borderTopStyle,    s.borderTopColor);
-  const right  = isSideOn(s.borderRightWidth,  s.borderRightStyle,  s.borderRightColor);
-  const bottom = isSideOn(s.borderBottomWidth, s.borderBottomStyle, s.borderBottomColor);
-  const left   = isSideOn(s.borderLeftWidth,   s.borderLeftStyle,   s.borderLeftColor);
+  const s = getComputedStyle(el);
+  const pos = s.position;
 
-  const htmlEl  = el as HTMLElement;
+  // Never touch fixed/sticky elements — they must keep their positioning
+  if (pos === "fixed" || pos === "sticky") return;
+
+  const top = isSideOn(s.borderTopWidth, s.borderTopStyle, s.borderTopColor);
+  const right = isSideOn(s.borderRightWidth, s.borderRightStyle, s.borderRightColor);
+  const bottom = isSideOn(s.borderBottomWidth, s.borderBottomStyle, s.borderBottomColor);
+  const left = isSideOn(s.borderLeftWidth, s.borderLeftStyle, s.borderLeftColor);
+
+  const htmlEl = el as HTMLElement;
   const anySide = top || right || bottom || left;
   const allSides = top && right && bottom && left;
 
   if (anySide) {
     el.setAttribute(REVEAL_ATTR, allSides ? "full" : "partial");
-    htmlEl.style.setProperty("--reveal-pt", top    ? "1px" : "0px");
-    htmlEl.style.setProperty("--reveal-pr", right  ? "1px" : "0px");
+    // Set position:relative inline only when the element is static —
+    // this cannot override fixed/sticky/absolute set by Tailwind classes
+    // because inline styles lose to nothing (they always win), but we
+    // only reach here when pos === "static" or "relative" already.
+    if (pos === "static") {
+      htmlEl.style.setProperty("position", "relative");
+    }
+    htmlEl.style.setProperty("--reveal-pt", top ? "1px" : "0px");
+    htmlEl.style.setProperty("--reveal-pr", right ? "1px" : "0px");
     htmlEl.style.setProperty("--reveal-pb", bottom ? "1px" : "0px");
-    htmlEl.style.setProperty("--reveal-pl", left   ? "1px" : "0px");
+    htmlEl.style.setProperty("--reveal-pl", left ? "1px" : "0px");
   } else {
     el.removeAttribute(REVEAL_ATTR);
+    // Only remove the inline position if we were the ones who set it
+    if (htmlEl.style.position === "relative") {
+      htmlEl.style.removeProperty("position");
+    }
     htmlEl.style.removeProperty("--reveal-pt");
     htmlEl.style.removeProperty("--reveal-pr");
     htmlEl.style.removeProperty("--reveal-pb");
