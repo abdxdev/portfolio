@@ -120,7 +120,6 @@ export const Profile = () => {
 
     setIsReloading(true);
 
-    const selector = isLight ? '#light-profile-pic' : '#dark-profile-pic';
     const setSrc = isLight ? setLightGifSrc : setDarkGifSrc;
     const placeholderSrc = isLight ? lightPlaceholder : darkPlaceholder;
     const gifSrc = isLight ? lightGifPath : darkGifPath;
@@ -159,43 +158,55 @@ export const Profile = () => {
             <div className="flex-none mr-4 md:mr-0 md:mb-4 relative">
               {/* Profile Picture layer */}
               <div className={`transition-opacity duration-500 ${showLogo ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                <Image
-                  src={PROFILE_PICTURE_LIGHT}
-                  id="profile-pic-light"
-                  alt="Abdul Rahman - Software Engineer Profile Picture (Light Mode)"
-                  width={500}
-                  height={500}
-                  loading="eager"
-                  className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
+                {/* Wrapper div carries the border so ::before/::after pseudo-elements render */}
+                <div
+                  className="relative rounded-full size-12 md:w-full md:h-auto border-2 dark:hidden overflow-hidden hover:cursor-pointer"
                   onClick={handlePfpClick}
-                />
-                <Image
-                  src={PROFILE_PICTURE_DARK}
-                  id="profile-pic-dark"
-                  alt="Abdul Rahman - Software Engineer Profile Picture (Dark Mode)"
-                  width={500}
-                  height={500}
-                  loading="eager"
-                  className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
+                >
+                  <Image
+                    src={PROFILE_PICTURE_LIGHT}
+                    id="profile-pic-light"
+                    alt="Abdul Rahman - Software Engineer Profile Picture (Light Mode)"
+                    width={500}
+                    height={500}
+                    loading="eager"
+                    className="rounded-full size-12 md:w-full h-auto object-cover"
+                  />
+                </div>
+                <div
+                  className="relative rounded-full size-12 md:w-full md:h-auto border-2 hidden dark:block overflow-hidden hover:cursor-pointer"
                   onClick={handlePfpClick}
-                />
+                >
+                  <Image
+                    src={PROFILE_PICTURE_DARK}
+                    id="profile-pic-dark"
+                    alt="Abdul Rahman - Software Engineer Profile Picture (Dark Mode)"
+                    width={500}
+                    height={500}
+                    loading="eager"
+                    className="rounded-full size-12 md:w-full h-auto object-cover"
+                  />
+                </div>
               </div>
 
               {/* Spinning Logo layer */}
               <div className={`absolute inset-0 transition-opacity duration-500 ${showLogo ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 <Popover open={lightPopoverOpen} onOpenChange={setLightPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <div className="relative">
+                    {/* Wrapper div carries the border so ::before/::after pseudo-elements render */}
+                    <div
+                      id="light-profile-pic"
+                      className="relative rounded-full size-12 md:w-full md:h-auto border-2 dark:hidden overflow-hidden hover:cursor-pointer"
+                      onClick={() => reloadGif(true)}
+                    >
                       <Image
                         src={lightGifSrc}
-                        id="light-profile-pic"
                         alt="Abdul Rahman - Software Engineer Profile Picture (Light Mode)"
                         width={500}
                         height={500}
                         unoptimized={true}
                         loading="eager"
-                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 dark:hidden hover:cursor-pointer"
-                        onClick={() => reloadGif(true)}
+                        className="rounded-full size-12 md:w-full h-auto object-cover"
                       />
                     </div>
                   </PopoverTrigger>
@@ -206,17 +217,20 @@ export const Profile = () => {
 
                 <Popover open={darkPopoverOpen} onOpenChange={setDarkPopoverOpen}>
                   <PopoverTrigger asChild>
-                    <div className="relative">
+                    {/* Wrapper div carries the border so ::before/::after pseudo-elements render */}
+                    <div
+                      id="dark-profile-pic"
+                      className="relative rounded-full size-12 md:w-full md:h-auto border-2 hidden dark:block overflow-hidden hover:cursor-pointer"
+                      onClick={() => reloadGif(false)}
+                    >
                       <Image
                         src={darkGifSrc}
-                        id="dark-profile-pic"
                         alt="Abdul Rahman - Software Engineer Profile Picture (Dark Mode)"
                         width={500}
                         height={500}
                         unoptimized={true}
                         loading="eager"
-                        className="rounded-full size-12 md:w-full h-auto object-cover border-2 hidden dark:block hover:cursor-pointer"
-                        onClick={() => reloadGif(false)}
+                        className="rounded-full size-12 md:w-full h-auto object-cover"
                       />
                     </div>
                   </PopoverTrigger>
