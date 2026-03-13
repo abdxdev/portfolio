@@ -183,7 +183,7 @@ function ProjectItem({ project }: { project: Project }) {
       customImageNode={CarouselContentRender}
       links={LinksNode}
       description={project.description}
-      disableAnimation={!settings.expandableCardAnimation}
+      disableAnimation={!settings.expandableCard}
       classNameExpanded="[&_h4]:text-black dark:[&_h4]:text-white [&_h4]:font-medium"
       className="h-full"
     >
