@@ -194,46 +194,68 @@
 }
 
 /* ── Windows 10 Fluent Reveal Border Glow ── */
-[data-slot="card"] {
+[data-reveal] {
   position: relative;
 }
 
-/* Border glow */
-[data-slot="card"]::before {
+/* Full borders: large radius is fine — cursor is always inside the box
+   so it's naturally close to every edge. */
+[data-reveal="full"]::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: radial-gradient(300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.15), transparent 60%);
+  background: radial-gradient(300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.5), transparent 70%);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-  opacity: 1;
   z-index: 3;
 }
 
-/* Surface highlight (subtle) */
-[data-slot="card"]::after {
+/* Partial borders: tight radius so it only glows when the cursor is
+   actually near the edge — no ambient glow from across the element. */
+[data-reveal="partial"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--reveal-pt, 0px) var(--reveal-pr, 0px) var(--reveal-pb, 0px) var(--reveal-pl, 0px);
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.9), transparent 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Surface highlight — only on fully-bordered elements */
+[data-reveal="full"]::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  opacity: 1;
-  background: radial-gradient(600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.04), transparent 40%);
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.04), transparent 40%);
   z-index: 2;
 }
 
-.dark [data-slot="card"]::before {
-  background: radial-gradient(300px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.2), transparent 60%);
+/* ── Dark mode ── */
+.dark [data-reveal="full"]::before {
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.5), transparent 40%);
 }
 
-.dark [data-slot="card"]::after {
-  background: radial-gradient(600px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.025), transparent 40%);
+.dark [data-reveal="partial"]::before {
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.7), transparent 40%);
+}
+
+.dark [data-reveal="full"]::after {
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.03), transparent 40%);
 }
 
 @layer base {

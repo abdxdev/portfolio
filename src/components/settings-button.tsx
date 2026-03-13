@@ -7,6 +7,7 @@ import {
   Sparkles,
   Play,
   Type,
+  Expand,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -34,6 +35,7 @@ const items: {
     { key: "cardHover", label: "Card hover", icon: <MousePointerClick className="h-3.5 w-3.5" /> },
     { key: "clickSparks", label: "Click sparks", icon: <Sparkles className="h-3.5 w-3.5" /> },
     { key: "shinyText", label: "Shiny text", icon: <Type className="h-3.5 w-3.5" /> },
+    { key: "expandableCardAnimation", label: "Expandable card", icon: <Expand className="h-3.5 w-3.5" /> },
   ];
 
 export function SettingsButton() {

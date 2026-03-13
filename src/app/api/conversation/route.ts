@@ -13,6 +13,19 @@ async function sendEmailNotification(message: string, sessionId: string) {
   });
 }
 
+function parse_message(message: string): string {
+  let body = message;
+  const recMatch = message.match(/^%%REC%%([\s\S]+)%%REC%%$/);
+  if (recMatch) {
+    try {
+      const rec = JSON.parse(recMatch[1]);
+      const emoji = rec.type === 'game' ? '🎮' : '📺';
+      body = `${emoji} Recommended: ${rec.title}`;
+    } catch { /* use raw message */ }
+  }
+  return body;
+}
+
 async function sendPushToSession(sessionId: string, message: string) {
   const supabase = getSupabase();
   const { data } = await supabase
@@ -24,15 +37,7 @@ async function sendPushToSession(sessionId: string, message: string) {
   if (!data?.player_id) return;
 
   // Parse recommendation messages so push content is readable
-  let body = message;
-  const recMatch = message.match(/^%%REC%%([\s\S]+)%%REC%%$/);
-  if (recMatch) {
-    try {
-      const rec = JSON.parse(recMatch[1]);
-      const emoji = rec.type === 'game' ? '🎮' : '📺';
-      body = `${emoji} Recommended: ${rec.title}`;
-    } catch { /* use raw message */ }
-  }
+  let body = parse_message(message)
   if (body.length > 120) body = body.slice(0, 120) + '\u2026';
   await fetch('https://api.onesignal.com/notifications', {
     method: 'POST',
@@ -92,7 +97,7 @@ export async function POST(request: Request) {
     const response = NextResponse.json({ message: 'Message sent', sessionId }, { status: 201 });
 
     if (!isAdmin) {
-      sendEmailNotification(message.trim(), sessionId).catch(() => { });
+      sendEmailNotification(parse_message(message), sessionId).catch(() => { });
       response.cookies.set('conversation_session', sessionId, {
         httpOnly: false,
         secure: process.env.NODE_ENV === 'production',

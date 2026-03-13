@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Github, Globe, LinkIcon } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Project } from "@/types/project";
@@ -19,6 +17,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import MarkdownRenderer from "./markdown-renderer";
+import { useAnimationSettings } from "./animation-settings";
 
 const techColors: Record<string, string> = {
   "React": "bg-blue-500",
@@ -37,6 +36,7 @@ const techColors: Record<string, string> = {
 function ProjectItem({ project }: { project: Project }) {
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
   const [isLoadingReadme, setIsLoadingReadme] = useState(false);
+  const { settings } = useAnimationSettings();
 
   useEffect(() => {
     const fetchReadme = async () => {
@@ -183,6 +183,7 @@ function ProjectItem({ project }: { project: Project }) {
       customImageNode={CarouselContentRender}
       links={LinksNode}
       description={project.description}
+      disableAnimation={!settings.expandableCardAnimation}
       classNameExpanded="[&_h4]:text-black dark:[&_h4]:text-white [&_h4]:font-medium"
       className="h-full"
     >

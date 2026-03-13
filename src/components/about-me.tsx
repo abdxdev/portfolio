@@ -17,8 +17,8 @@ export const AboutMe = ({ id }: { id?: string }) => {
   }, []);
 
   return (
-    <section id={id} aria-labelledby="about-heading">
-      <Card className="mb-6">
+    <section id={id}>
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center group">
             About Me

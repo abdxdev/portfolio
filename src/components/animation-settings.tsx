@@ -15,6 +15,7 @@ export interface AnimationSettings {
   clickSparks: boolean;
   introAnimation: boolean;
   shinyText: boolean;
+  expandableCardAnimation: boolean;
 }
 
 interface AnimationSettingsContextValue {
@@ -38,6 +39,7 @@ function getDefaults(): AnimationSettings {
     clickSparks: true,
     introAnimation: true,
     shinyText: true,
+    expandableCardAnimation: true,
   };
 }
 
@@ -84,6 +86,7 @@ export function AnimationSettingsProvider({
       clickSparks: enabled,
       introAnimation: enabled,
       shinyText: enabled,
+      expandableCardAnimation: enabled,
     });
   }, []);
 

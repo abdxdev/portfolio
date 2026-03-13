@@ -30,7 +30,7 @@ export const Experience = ({ id }: { id?: string }) => (
         <LinkIcon className="h-5 w-5 text-primary/80 hover:text-primary" />
       </a>
     </h2>
-    <Card className="mb-6">
+    <Card>
       <CardContent>
         <ul className="space-y-8">
           {jobs.map((j, i) => (
@@ -52,13 +52,6 @@ export const Experience = ({ id }: { id?: string }) => (
                 {j.duration}
               </p>
               <p className="text-sm mt-2">{j.description}</p>
-              {/* Job Images */}
-              {/* <JobImages 
-                                role={j.role} 
-                                link={j.link}
-                                images={j.images} 
-                                duration={j.duration} 
-                            /> */}
             </li>
           ))}
         </ul>
