@@ -108,7 +108,7 @@ export function SpotlightProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!settings.cardHover) {
+    if (!settings.mouseHover) {
       document.querySelectorAll<HTMLElement>(`[${REVEAL_ATTR}]`).forEach((el) => {
         el.style.removeProperty("--mouse-x");
         el.style.removeProperty("--mouse-y");
@@ -145,7 +145,7 @@ export function SpotlightProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, [settings.cardHover]);
+  }, [settings.mouseHover]);
 
   return <>{children}</>;
 }

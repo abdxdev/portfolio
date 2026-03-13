@@ -10,7 +10,7 @@ import {
 } from "react";
 
 export interface AnimationSettings {
-  cardHover: boolean;
+  mouseHover: boolean;
   lightRays: boolean;
   clickSparks: boolean;
   introAnimation: boolean;
@@ -34,7 +34,7 @@ function getIsMd() {
 function getDefaults(): AnimationSettings {
   const isMd = getIsMd();
   return {
-    cardHover: !isMd,
+    mouseHover: !isMd,
     lightRays: true,
     clickSparks: !isMd,
     introAnimation: true,
@@ -81,7 +81,7 @@ export function AnimationSettingsProvider({
 
   const setAll = useCallback((enabled: boolean) => {
     setSettings({
-      cardHover: enabled,
+      mouseHover: enabled,
       lightRays: enabled,
       clickSparks: enabled,
       introAnimation: enabled,
