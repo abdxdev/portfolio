@@ -115,8 +115,8 @@ export function ExpandableCard({
               </motion.div>
               <div className="relative h-full before:fixed before:inset-x-0 before:bottom-0 before:z-50 before:h-[70px] before:bg-linear-to-t before:from-background">
                 <div className="flex h-auto items-start justify-between p-8">
-                  <div className="flex-1 pr-6 flex flex-col">
-                    <div className="flex">
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex gap-4">
                       <motion.p
                         layoutId={maybeLayoutId(`description-${description}-${id}`)}
                         className="text-lg text-muted-foreground"
@@ -206,7 +206,7 @@ export function ExpandableCard({
           </motion.div>
           <div className="flex items-start justify-between p-4 px-5 pb-5 flex-1">
             <div className="flex flex-col flex-1 h-full relative top-[-4px]">
-              <div className="flex">
+              <div className="flex gap-1">
                 <motion.p
                   layoutId={maybeLayoutId(`description-${description}-${id}`)}
                   className="text-sm font-medium md:text-left text-muted-foreground"

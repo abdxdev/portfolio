@@ -24,7 +24,7 @@ import { NumberTicker } from "./ui/number-ticker";
 import { Skeleton } from "./ui/skeleton";
 import { highlight } from "@/lib/highlight";
 
-const PROFILE_PICTURE_LIGHT = '/pfp/light.png';
+const PROFILE_PICTURE_LIGHT = '/pfp/dark.jpeg';
 const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
 
 const socials = [

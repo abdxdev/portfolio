@@ -56,7 +56,7 @@ export const HomeClient = () => {
 const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSettings>["settings"] }) => (
   <div className="relative w-full h-full">
     {settings.lightRays && (
-      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-30">
+      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-30 [mask-image:linear-gradient(to_bottom,black_40%,transparent_100%)]">
         <LightRays />
       </div>
     )}
