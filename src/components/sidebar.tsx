@@ -1,6 +1,7 @@
 import { Skills } from "./skills";
 import { Profile } from "./profile";
 import { Conversation } from "./conversation";
+import { Blogs } from "./blogs";
 
 export const Sidebar = () => {
   return (
@@ -11,6 +12,8 @@ export const Sidebar = () => {
       <Skills id="skills" />
       {/* Conversation Section */}
       <Conversation id="conversation" />
+      {/* Blogs Section */}
+      <Blogs id="blogs" />
     </aside>
   )
 }

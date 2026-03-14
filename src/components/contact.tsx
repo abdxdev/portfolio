@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ConfettiButton, type ConfettiButtonRef } from "@/components/ui/confetti";
-import { LinkIcon, Mail, Send, MessageCircle, ArrowRight, CalendarCheck, X } from "lucide-react";
+import { LinkIcon, Mail, Send, MessageCircle, ArrowRight, CalendarCheck, X, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { highlight } from "@/lib/highlight";
@@ -21,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ShakeElement, ShakeHandle } from "./shake-element";
 
 const socials = [
   {
@@ -46,7 +47,7 @@ const socials = [
   }
 ];
 
-interface ScheduledMeeting {
+interface ScheduledAppointment {
   date: Date;
   time: string;
 }
@@ -59,9 +60,10 @@ export const Contact = ({ id }: { id?: string }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
-  const [scheduledMeeting, setScheduledMeeting] = useState<ScheduledMeeting | null>(null);
+  const [scheduledAppointment, setScheduledAppointment] = useState<ScheduledAppointment | null>(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const confettiRef = useRef<ConfettiButtonRef>(null);
+  const shakeRef = useRef<ShakeHandle>(null)
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -75,7 +77,7 @@ export const Contact = ({ id }: { id?: string }) => {
   };
 
   /** Combines a local-midnight Date with a 12-hr time string into a UTC ISO datetime. */
-  const buildMeetingDatetime = (date: Date, time: string): string => {
+  const buildAppointmentDatetime = (date: Date, time: string): string => {
     const m = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i)!;
     const hour = (parseInt(m[1]) % 12) + (m[3].toUpperCase() === "PM" ? 12 : 0);
     const minute = parseInt(m[2]);
@@ -98,8 +100,8 @@ export const Contact = ({ id }: { id?: string }) => {
           firstName: firstName.trim(),
           lastName: lastName.trim() || null,
           message: message.trim(),
-          meeting: scheduledMeeting
-            ? { datetime: buildMeetingDatetime(scheduledMeeting.date, scheduledMeeting.time) }
+          appointment: scheduledAppointment
+            ? { datetime: buildAppointmentDatetime(scheduledAppointment.date, scheduledAppointment.time) }
             : null,
         }),
       });
@@ -116,7 +118,7 @@ export const Contact = ({ id }: { id?: string }) => {
       setFirstName("");
       setLastName("");
       setMessage("");
-      setScheduledMeeting(null);
+      setScheduledAppointment(null);
       setErrors({});
       setTimeout(() => setSent(false), 4000);
     } catch {
@@ -126,18 +128,35 @@ export const Contact = ({ id }: { id?: string }) => {
     }
   };
 
-  const handleMeetingConfirm = (date: Date, time: string) => {
-    setScheduledMeeting({ date, time });
+  const handleAppointmentConfirm = (date: Date, time: string) => {
+    setScheduledAppointment({ date, time });
     setCalendarOpen(false);
   };
 
-  const formattedMeeting = scheduledMeeting
-    ? `${scheduledMeeting.date.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      })} at ${scheduledMeeting.time}`
+  const formattedAppointment = scheduledAppointment
+    ? `${scheduledAppointment.date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    })} at ${scheduledAppointment.time}`
     : null;
+
+  const anonymousButton = (
+    <Button
+      variant="link"
+      onClick={() => {
+        const section = document.getElementById("conversation");
+        section?.scrollIntoView({ behavior: "smooth", block: "center" });
+        const card = section?.querySelector('[data-slot="card"]') as HTMLElement | null;
+        if (card) highlight(card);
+      }}
+      className="hover:no-underline group/anon inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all duration-300"
+    >
+      <MessageCircle className="size-4" />
+      <span>Prefer to reach out anonymously?</span>
+      <ArrowRight className="size-3 opacity-0 -translate-x-1 transition-all group-hover/anon:opacity-100 group-hover/anon:translate-x-0" />
+    </Button>
+  );
 
   return (
     <section id={id} aria-labelledby="contact-heading">
@@ -152,44 +171,52 @@ export const Contact = ({ id }: { id?: string }) => {
         </a>
       </h2>
 
-      <Card className="mb-6 overflow-hidden p-0">
+      <Card className="p-0">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1">
-            {/* ─── Left: Socials & Quick Actions ─── */}
-            <div className="p-6 border-b border-border">
-              <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
-                Connect
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-2">
 
-              {/* Social links — vertical list */}
-              <div className="space-y-1">
-                {socials.map((s, i) => (
-                  <div key={i}>
-                    <Link
-                      href={s.href}
-                      target="_blank"
-                      aria-label={s.name}
-                      className={`group/social flex items-center gap-3 rounded-lg px-3 py-2.5 -mx-3 text-muted-foreground transition-colors hover:bg-accent/50 ${s.color}`}
-                    >
-                      <span className="shrink-0">
-                        {s.icon}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <span className="text-sm font-medium text-foreground block leading-none mb-0.5">
-                          {s.name}
+            {/* ─── Left col: Socials on top, Anonymous pinned to bottom ─── */}
+            <div className="flex flex-col border-b md:border-b-0 md:border-r border-border">
+              <div className="p-6 flex-1">
+                <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
+                  Connect
+                </p>
+
+                {/* Social links — vertical list */}
+                <div className="space-y-1">
+                  {socials.map((s, i) => (
+                    <div key={i}>
+                      <Link
+                        href={s.href}
+                        target="_blank"
+                        aria-label={s.name}
+                        className={`group/social flex items-center gap-3 rounded-lg px-3 py-2.5 -mx-3 text-muted-foreground transition-colors hover:bg-accent/50 ${s.color}`}
+                      >
+                        <span className="shrink-0">
+                          {s.icon}
                         </span>
-                        <span className="text-xs text-muted-foreground block">
-                          {s.handle}
-                        </span>
-                      </div>
-                      <ArrowRight className="size-3.5 opacity-0 -translate-x-1 transition-all group-hover/social:opacity-60 group-hover/social:translate-x-0" />
-                    </Link>
-                  </div>
-                ))}
+                        <div className="min-w-0 flex-1">
+                          <span className="text-sm font-medium text-foreground block leading-none mb-0.5">
+                            {s.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground block">
+                            {s.handle}
+                          </span>
+                        </div>
+                        <ArrowRight className="size-3.5 opacity-0 -translate-x-1 transition-all group-hover/social:opacity-60 group-hover/social:translate-x-0" />
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Anonymous — desktop only, pinned to bottom of left col */}
+              <div className="hidden md:flex border-t border-border bg-muted/20 p-2 justify-center">
+                {anonymousButton}
               </div>
             </div>
 
-            {/* ─── Right: Message Form ─── */}
+            {/* ─── Right col: Message Form (full height) ─── */}
             <div className="p-6">
               <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
                 Send a Message
@@ -215,7 +242,8 @@ export const Contact = ({ id }: { id?: string }) => {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="contact-last-name" className="text-xs">
-                      Last Name
+                      Last Name{" "}
+                      <span className="text-muted-foreground font-normal">(optional)</span>
                     </Label>
                     <Input
                       id="contact-last-name"
@@ -262,49 +290,70 @@ export const Contact = ({ id }: { id?: string }) => {
                   )}
                 </div>
 
-                {/* ─── Schedule Meeting ─── */}
+                {/* ─── Schedule Appointment ─── */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="schedule-meeting" className="text-xs">
-                    Schedule Meeting{" "}
+                  <Label htmlFor="schedule-appointment" className="text-xs">
+                    Schedule Appointment{" "}
                     <span className="text-muted-foreground font-normal">(optional)</span>
                   </Label>
-
-                  {scheduledMeeting ? (
-                    // Prefilled state — full-width pill matching input height
+                  {scheduledAppointment ? (
                     <div className="flex items-center gap-2 h-9 w-full rounded-md border border-border bg-muted/30 px-3 text-sm">
                       <CalendarCheck className="size-4 shrink-0" />
-                      <span className="flex-1 font-medium truncate">{formattedMeeting}</span>
+                      <span className="flex-1 font-medium truncate">{formattedAppointment}</span>
                       <button
                         type="button"
-                        onClick={() => setScheduledMeeting(null)}
-                        aria-label="Remove scheduled meeting"
+                        onClick={() => setScheduledAppointment(null)}
+                        aria-label="Remove scheduled appointment"
                         className="rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground"
                       >
                         <X className="size-3.5" />
                       </button>
                     </div>
                   ) : (
-                    // Picker trigger — full-width like every other field
-                    <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          id="schedule-meeting"
-                          type="button"
-                          variant="outline"
-                          className="w-full h-9 justify-start gap-2 font-normal text-muted-foreground"
+                    <>
+                      {calendarOpen && (
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => shakeRef.current?.shake()}
+                        />
+                      )}
+                      <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            id="schedule-appointment"
+                            type="button"
+                            variant="outline"
+                            className="w-full h-9 justify-start gap-2 font-normal text-muted-foreground"
+                          >
+                            <CalendarDays className="size-4" />
+                            Pick a date & time…
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto max-w-[90vw] p-0 z-50"
+                          align="start"
+                          sideOffset={8}
+                          onInteractOutside={(e) => {
+                            e.preventDefault()
+                            shakeRef.current?.shake()
+                          }}
+                          onEscapeKeyDown={(e) => {
+                            e.preventDefault()
+                            shakeRef.current?.shake()
+                          }}
                         >
-                          <CalendarCheck className="size-4" />
-                          Pick a date &amp; time…
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto p-0"
-                        align="start"
-                        sideOffset={8}
-                      >
-                        <CalendarAppointment onConfirm={handleMeetingConfirm} />
-                      </PopoverContent>
-                    </Popover>
+                          <ShakeElement ref={shakeRef}>
+                            <CalendarAppointment
+                              onConfirm={(date, time) => {
+                                handleAppointmentConfirm(date, time)
+                                setCalendarOpen(false)
+                              }}
+                              onCancel={() => setCalendarOpen(false)}
+                            />
+                          </ShakeElement>
+                        </PopoverContent>
+                      </Popover>
+                    </>
                   )}
                 </div>
 
@@ -313,7 +362,8 @@ export const Contact = ({ id }: { id?: string }) => {
                   manualstart={true}
                   type="submit"
                   className="w-full gap-2 h-10 transition-all font-medium"
-                  disabled={isSubmitting || sent}
+                  disabled={isSubmitting || sent || (!email.trim() || !firstName.trim() || !message.trim())}
+                  variant="outline"
                 >
                   {sent ? (
                     <>Sent!</>
@@ -331,26 +381,12 @@ export const Contact = ({ id }: { id?: string }) => {
                 </ConfettiButton>
               </form>
             </div>
-          </div>
 
-          {/* Anonymous link — full width footer */}
-          <div className="border-t border-border bg-muted/20 p-2 text-center">
-            <div>
-              <Button
-                variant="link"
-                onClick={() => {
-                  const section = document.getElementById("conversation");
-                  section?.scrollIntoView({ behavior: "smooth", block: "center" });
-                  const card = section?.querySelector('[data-slot="card"]') as HTMLElement | null;
-                  if (card) highlight(card);
-                }}
-                className="hover:no-underline group/anon inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-all duration-300"
-              >
-                <MessageCircle className="size-4" />
-                <span>Prefer to reach out anonymously?</span>
-                <ArrowRight className="size-3 opacity-0 -translate-x-1 transition-all group-hover/anon:opacity-100 group-hover/anon:translate-x-0" />
-              </Button>
+            {/* Anonymous — mobile only, spans full width as footer */}
+            <div className="md:hidden col-span-full border-t border-border bg-muted/20 p-2 text-center">
+              {anonymousButton}
             </div>
+
           </div>
         </CardContent>
       </Card>

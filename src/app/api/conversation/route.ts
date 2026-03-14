@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSupabase } from '@/lib/db/init';
 import { Resend } from "resend";
-import { FROM_FULL, FROM_ADDRESS, FROM_DISPLAY, SITE_URL, ADMIN_EMAIL } from "@/lib/constants";
+import { CONVERSATIONS_TBL, PUSH_SUBSCRIPTIONS_TBL, FROM_ADDRESS, SITE_URL, ADMIN_EMAIL } from "@/lib/constants";
 import { emailLayout, emailH1, emailRow, emailP, emailButton } from "@/lib/email";
 
 async function sendEmailNotification(message: string, sessionId: string) {
@@ -42,7 +42,7 @@ function parse_message(message: string): string {
 async function sendPushToSession(sessionId: string, message: string) {
   const supabase = getSupabase();
   const { data } = await supabase
-    .from('conversation_push_subscriptions')
+    .from(PUSH_SUBSCRIPTIONS_TBL)
     .select('player_id')
     .eq('session_id', sessionId)
     .single();
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     }
 
     const supabase = getSupabase();
-    const { error } = await supabase.from('portfolio_conversations').insert({
+    const { error } = await supabase.from(CONVERSATIONS_TBL).insert({
       session_id: sessionId,
       message: message.trim(),
       is_admin: isAdmin,
@@ -142,7 +142,7 @@ export async function GET(request: Request) {
     if (isAdmin) {
       if (targetSessionId) {
         const { data, error } = await supabase
-          .from('portfolio_conversations')
+          .from(CONVERSATIONS_TBL)
           .select('*')
           .eq('session_id', targetSessionId)
           .order('created_at', { ascending: true });
@@ -154,7 +154,7 @@ export async function GET(request: Request) {
         ).map((m: any) => m.id);
         if (unseenUserIds.length > 0) {
           supabase
-            .from('portfolio_conversations')
+            .from(CONVERSATIONS_TBL)
             .update({ last_seen_at: new Date().toISOString() })
             .in('id', unseenUserIds)
             .then(() => { });
@@ -164,7 +164,7 @@ export async function GET(request: Request) {
       }
 
       const { data, error } = await supabase
-        .from('portfolio_conversations')
+        .from(CONVERSATIONS_TBL)
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -224,7 +224,7 @@ export async function GET(request: Request) {
     }
 
     const { data, error } = await supabase
-      .from('portfolio_conversations')
+      .from(CONVERSATIONS_TBL)
       .select('*')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
@@ -238,7 +238,7 @@ export async function GET(request: Request) {
     ).map((m: any) => m.id);
     if (unseenAdminIds.length > 0) {
       supabase
-        .from('portfolio_conversations')
+        .from(CONVERSATIONS_TBL)
         .update({ last_seen_at: new Date().toISOString() })
         .in('id', unseenAdminIds)
         .then(() => { });
@@ -271,7 +271,7 @@ export async function DELETE(request: Request) {
       if (isAdmin && targetSessionId) {
         if (hardDelete) {
           const { error } = await supabase
-            .from('portfolio_conversations')
+            .from(CONVERSATIONS_TBL)
             .delete()
             .eq('session_id', targetSessionId);
 
@@ -280,7 +280,7 @@ export async function DELETE(request: Request) {
         }
 
         const { error } = await supabase
-          .from('portfolio_conversations')
+          .from(CONVERSATIONS_TBL)
           .update({ is_deleted: true })
           .eq('session_id', targetSessionId);
 
@@ -296,7 +296,7 @@ export async function DELETE(request: Request) {
       }
 
       const { error } = await supabase
-        .from('portfolio_conversations')
+        .from(CONVERSATIONS_TBL)
         .update({ is_deleted: true })
         .eq('session_id', sessionId);
 
@@ -310,7 +310,7 @@ export async function DELETE(request: Request) {
 
     if (isAdmin) {
       const { error } = await supabase
-        .from('portfolio_conversations')
+        .from(CONVERSATIONS_TBL)
         .update({ is_deleted: true })
         .eq('id', Number(messageId));
 
@@ -326,7 +326,7 @@ export async function DELETE(request: Request) {
     }
 
     const { error } = await supabase
-      .from('portfolio_conversations')
+      .from(CONVERSATIONS_TBL)
       .update({ is_deleted: true })
       .eq('id', Number(messageId))
       .eq('session_id', sessionId)
@@ -358,7 +358,7 @@ export async function PATCH(request: Request) {
 
     const supabase = getSupabase();
     const { error } = await supabase
-      .from('portfolio_conversations')
+      .from(CONVERSATIONS_TBL)
       .update({ is_deleted: false })
       .eq('id', Number(messageId));
 

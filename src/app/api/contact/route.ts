@@ -37,8 +37,8 @@ function buildICS(
     `DTSTAMP:${toICSDate(new Date())}`,
     `DTSTART:${toICSDate(startDate)}`,
     `DTEND:${toICSDate(endDate)}`,
-    `SUMMARY:Meeting with ${FROM_DISPLAY}`,
-    foldLine(`DESCRIPTION:Your meeting with ${FROM_DISPLAY} is confirmed for ${humanDate} at ${humanTime}.`),
+    `SUMMARY:Appointment with ${FROM_DISPLAY}`,
+    foldLine(`DESCRIPTION:Your appointment with ${FROM_DISPLAY} is confirmed for ${humanDate} at ${humanTime}.`),
     foldLine(`ORGANIZER;CN="${FROM_DISPLAY}":MAILTO:${FROM_ADDRESS}`),
     foldLine(`ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN="${guestName}":MAILTO:${guestEmail}`),
     "STATUS:CONFIRMED",
@@ -51,16 +51,16 @@ function buildICS(
 
 export async function POST(req: Request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const { email, firstName, lastName, message, meeting } = await req.json();
+  const { email, firstName, lastName, message, appointment } = await req.json();
 
   if (!email || !firstName || !message) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
   const fullName = `${firstName} ${lastName ?? ""}`.trim();
-  const hasMeeting = !!meeting?.datetime;
+  const hasAppointment = !!appointment?.datetime;
 
-  // ── Meeting / ICS ──────────────────────────────────────────────────────────
+  // ── Appointment / ICS ──────────────────────────────────────────────────────────
   let calendarAttachment: {
     filename: string;
     content: string;
@@ -70,8 +70,8 @@ export async function POST(req: Request) {
   let humanDate = "";
   let humanTime = "";
 
-  if (hasMeeting) {
-    const startDate = new Date(meeting.datetime);
+  if (hasAppointment) {
+    const startDate = new Date(appointment.datetime);
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
     humanDate = startDate.toLocaleDateString("en-US", {
@@ -98,8 +98,8 @@ export async function POST(req: Request) {
 
     // ── Guest confirmation email ─────────────────────────────────────────────
     const guestHtml = emailLayout(
-      emailH1("Meeting confirmed ✓") +
-      emailP(`Hi ${firstName}, your meeting with ${FROM_DISPLAY} is all set.`) +
+      emailH1("Appointment confirmed ✓") +
+      emailP(`Hi ${firstName}, your appointment with ${FROM_DISPLAY} is all set.`) +
       emailRow(
         "Date & Time",
         `<strong style="font-size:16px;">${humanDate}</strong><br />
@@ -111,26 +111,26 @@ export async function POST(req: Request) {
         true
       ) +
       emailButton("Visit portfolio →", SITE_URL),
-      `Meeting confirmed — ${humanDate} at ${humanTime}`
+      `Appointment confirmed — ${humanDate} at ${humanTime}`
     );
 
     await resend.emails.send({
       from: FROM_FULL,
-      to: [email],
-      subject: `Meeting Confirmed — ${humanDate} at ${humanTime}`,
-      replyTo: FROM_FULL,
+      to: email,
+      subject: `Appointment Confirmed — ${humanDate} at ${humanTime}`,
+      replyTo: ADMIN_EMAIL,
       html: guestHtml,
       attachments: [calendarAttachment],
     });
   }
 
-  // ── Admin notification — always sent for messages and meeting requests ─────
-  const adminSubject = hasMeeting
-    ? `Meeting request from ${fullName} — ${humanDate} at ${humanTime}`
+  // ── Admin notification — always sent for messages and appointment requests ─────
+  const adminSubject = hasAppointment
+    ? `Appointment request from ${fullName} — ${humanDate} at ${humanTime}`
     : `New message from ${fullName}`;
 
   const adminHtml = emailLayout(
-    emailH1(hasMeeting ? "New meeting request" : "New message from your portfolio") +
+    emailH1(hasAppointment ? "New appointment request" : "New message from your portfolio") +
     emailRow(
       "From",
       `<strong>${fullName}</strong><br />
@@ -141,9 +141,9 @@ export async function POST(req: Request) {
       "Message",
       `<p style="margin:0;font-size:15px;line-height:1.7;color:#09090b;white-space:pre-wrap;">${message}</p>`
     ) +
-    (hasMeeting
+    (hasAppointment
       ? emailRow(
-          "Requested meeting",
+          "Requested appointment",
           `<strong>${humanDate}</strong> at <strong>${humanTime}</strong>`
         )
       : "") +

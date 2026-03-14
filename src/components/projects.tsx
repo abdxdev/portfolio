@@ -154,13 +154,16 @@ function ProjectItem({ project }: { project: Project }) {
   );
 
   const TitleNode = (
-    <span className="py-1">
+    <span className="py-1 content-between items-center">
+      <span className="mr-2">
       {project.title}
+      </span>
+
       {project.priority === 0 && (
-        <span className="text-yellow-500 text-2xl relative top-0.5 ml-2 inline" title="Featured Project">★</span>
+        <span className="text-yellow-500 text-2xl relative top-0.5 mr-2 inline" title="Featured Project">★</span>
       )}
       {BadgesNode && (
-        <span className="inline-flex gap-1.5 items-center ml-2 align-middle">
+        <span className="inline-flex gap-1.5 items-center align-middle my-2">
           {project.working_on && (
             <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
               Active

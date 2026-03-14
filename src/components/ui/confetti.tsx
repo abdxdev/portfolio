@@ -25,6 +25,7 @@ type Props = React.ComponentPropsWithRef<"canvas"> & {
   options?: ConfettiOptions
   globalOptions?: ConfettiGlobalOptions
   manualstart?: boolean
+  variant?: "default" | "outline" | "ghost" | "link" | "secondary" | "destructive"
   children?: ReactNode
 }
 
@@ -37,6 +38,7 @@ const ConfettiComponent = forwardRef<ConfettiRef, Props>((props, ref) => {
     options,
     globalOptions = { resize: true, useWorker: true },
     manualstart = false,
+    variant,
     children,
     ...rest
   } = props
@@ -101,12 +103,13 @@ export const Confetti = ConfettiComponent
 interface ConfettiButtonProps extends React.ComponentProps<"button"> {
   options?: ConfettiOptions & ConfettiGlobalOptions & { canvas?: HTMLCanvasElement }
   manualstart?: boolean
+  variant?: "default" | "outline" | "ghost" | "link" | "secondary" | "destructive"
 }
 
 export type ConfettiButtonRef = { fire: () => void }
 
 const ConfettiButtonComponent = forwardRef<ConfettiButtonRef, ConfettiButtonProps>(
-  ({ options, manualstart = false, children, ...props }, ref) => {
+  ({ options, manualstart = false, children, variant, ...props }, ref) => {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const fire = useCallback(async () => {
@@ -128,7 +131,7 @@ const ConfettiButtonComponent = forwardRef<ConfettiButtonRef, ConfettiButtonProp
     useImperativeHandle(ref, () => ({ fire }), [fire])
 
     return (
-      <Button ref={buttonRef} onClick={manualstart ? undefined : fire} {...props}>
+      <Button ref={buttonRef} onClick={manualstart ? undefined : fire} variant={variant} {...props}>
         {children}
       </Button>
     )

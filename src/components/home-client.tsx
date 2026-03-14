@@ -56,14 +56,14 @@ export const HomeClient = () => {
 const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSettings>["settings"] }) => (
   <div className="relative w-full h-full">
     {settings.lightRays && (
-      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-30 [mask-image:linear-gradient(to_bottom,black_40%,transparent_100%)]">
+      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-30 mask-[linear-gradient(to_bottom,black_40%,transparent_100%)]">
         <LightRays />
       </div>
     )}
     <div className="sticky top-0 right-0 z-50">
-      <div className="m-4 absolute right-0 top-0 gap-2 flex items-center">
-        <SettingsButton />
+      <div className="m-4 absolute right-0 top-0 flex items-center">
         <ApiButton />
+        <SettingsButton />
         <AnimatedThemeToggler />
       </div>
     </div>
@@ -76,9 +76,12 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
         <main className="md:col-span-2 gap-6 flex flex-col">
           <AboutMe id="about-me" />
           <Experience id="experience" />
-          <Projects id="projects" />
           <Contact id="contact" />
+          <Projects id="projects" />
         </main>
+        <footer className="md:col-span-3 text-center text-sm opacity-50">
+          &copy; {new Date().getFullYear()} abdxdev.
+        </footer>
       </div>
     </div>
   </div>
