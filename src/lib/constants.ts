@@ -1,5 +1,5 @@
 export const SITE_URL = "https://abdxdev.vercel.app";
-export const SITE_DOMAIN = SITE_URL.replace(/^https?:\/\//, '') || 'localhost';
+export const SITE_DOMAIN = "abdxdev.vercel.app";
 export const SITE_NAME = "abdxdev";
 
 export const FROM_ADDRESS = "onboarding@resend.dev";
