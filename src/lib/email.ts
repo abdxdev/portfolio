@@ -28,7 +28,7 @@ export function emailLayout(content: string, preview?: string): string {
     <!-- Header -->
     <div style="${BASE_STYLES.header}">
       <a href="${SITE_URL}" style="text-decoration:none;">
-        <span style="font-size:16px;font-weight:700;color:#ffffff;letter-spacing:-.01em;">${SITE_NAME}</span>
+        <span style="font-size:16px;font-weight:700;color:#ffffff;">${SITE_NAME}</span>
         <span style="font-size:16px;color:#52525b;">.vercel.app</span>
       </a>
     </div>
