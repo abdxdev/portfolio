@@ -1,4 +1,8 @@
+import { ASSETS_URL, METRICS_URL, SITE_DOMAIN, SITE_URL } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
+// import { FaGlobe, FaLinkedin } from "react-icons/fa";
+// import { IoMdMail } from "react-icons/io";
+// import { FaRegNewspaper } from "react-icons/fa6";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -87,7 +91,7 @@ function skillNameToSlug(name: string): string {
   return overrides[lower] ?? lower.replace(/[^a-z0-9]/g, "");
 }
 
-function mdBadge({ label, message, color = "080808", logo, logoColor = "ffffff", style = "for-the-badge", labelColor }: BadgeOptions): string {
+function mdBadge({ label = "", message = "", color = "080808", logo, logoColor = "ffffff", style = "for-the-badge", labelColor }: BadgeOptions): string {
   // shields.io path encoding: spaces → "_", hyphens → "--", underscores → "__"
   const encode = (s: string) =>
     encodeURIComponent(s.replace(/-/g, "--").replace(/_/g, "__").replace(/ /g, "_"));
@@ -178,6 +182,12 @@ function getFriends(friends: any[]): string {
     Name: f.github_name,
     Avatar: mdLink(mdImage(f.github_name, f.github_avatar), f.github_url),
     Link: mdLink("@" + f.github_username, f.github_url),
+    contacts: [
+      f.linkedin_username && mdLink(mdImage("LinkedIn", `${ASSETS_URL}/icons/linkedin.svg`), "https://linkedin.com/in/" + f.linkedin_username),
+      f.email && mdLink(mdImage("Email", `${ASSETS_URL}/icons/email.svg`), "mailto:" + f.email),
+      f.portfolio && mdLink(mdImage("Portfolio", `${ASSETS_URL}/icons/portfolio.svg`), f.portfolio),
+      f.resume && mdLink(mdImage("Resume", `${ASSETS_URL}/icons/resume.svg`), f.resume),
+    ].filter(Boolean).join(" "),
   }));
   return getGalleryView(formatted, 3);
 }
@@ -283,14 +293,9 @@ async function fetchStaticAsset(url: string): Promise<string> {
 // ─── Main handler ────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
-  const origin = request.nextUrl.origin;
-  const BASE = `${origin}/assets/md/`;
-  const assets_url = "https://raw.githubusercontent.com/abdxdev/portfolio/refs/heads/main/public/assets";
-  const metrics_url = "https://raw.githubusercontent.com/abdxdev/abdxdev/refs/heads/main/metrics";
-
   const [portfolio, description] = await Promise.all([
-    fetch(`${origin}/api/portfolio?fetch=true`).then((r) => r.json()),
-    fetchStaticAsset(BASE + "description.md"),
+    fetch(`${SITE_URL}/api/portfolio?fetch=true`).then((r) => r.json()),
+    fetchStaticAsset(SITE_URL + "/assets/md/description.md"),
   ]);
 
   const now = new Date().toISOString().replace("T", " ").split(".")[0] + " UTC";
@@ -298,41 +303,41 @@ export async function GET(request: NextRequest) {
   const parts: string[] = [];
   const p = (text: string, opts?: Parameters<typeof write>[1]) => parts.push(write(text, opts));
 
-  p(mdLink(mdImage("Abd Dev", `${assets_url}/gif/intro.gif`), origin));
+  p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
   p(description);
-  p(`### **[${origin.replace("https://", "").replace("http://", "")}](${origin})**`);
+  p(`### **[${SITE_DOMAIN}](${SITE_URL})**`);
 
-  p(mdImage("Languages & Tools", `${assets_url}/titles/languages_and_tools.png`));
+  p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
   p(getFeaturedSkills(portfolio.skills));
-  p(mdImage("GitHub Stats", `${metrics_url}/languages.svg`));
+  p(mdImage("GitHub Stats", `${METRICS_URL}/languages.svg`));
   p(getAllSkills(portfolio.skills), { centered: false, summary: "See more skills" });
 
-  p(mdImage("Featured Projects", `${assets_url}/titles/featured_projects.png`));
+  p(mdImage("Featured Projects", `${ASSETS_URL}/titles/featured_projects.png`));
   p(getProjectsGallery(portfolio.projects));
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
-  p(mdImage("Anime List", `${assets_url}/titles/anime_list.png`));
+  p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
   p('*"Planning to watch" list == "Issues" tab*');
-  p(mdLink(mdImage("Anime Stats", `${metrics_url}/anilist.svg`), portfolio.anilist_url));
-  p(`<img align='right' src='${assets_url}/gif/anime_gif.gif' height='170'>`, { centered: false });
+  p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
+  p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
-  p(mdImage("Game List", `${assets_url}/titles/game_list.png`));
+  p(mdImage("Game List", `${ASSETS_URL}/titles/game_list.png`));
   p("*a professional respawner*");
   p(getGames(portfolio.games), { centered: false });
 
-  p(mdImage("Meet my Code Buddies!", `${assets_url}/titles/friends.png`));
+  p(mdImage("Meet my Code Buddies!", `${ASSETS_URL}/titles/friends.png`));
   p("*The real ones*");
   p(getFriends(portfolio.friends));
 
-  // p(mdImage("Support Me", `${assets_url}/titles/support_me.png`));
+  // p(mdImage("Support Me", `${ASSETS_URL}/titles/support_me.png`));
   // p("Help me keep my work open source and free for everyone—because the world needs more free stuff (and less paywalls).");
   // p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
-  
+
   const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
-  p(`[![Click to Update](${updateBadge})](${origin}/update-readme)`);
+  p(`[![Click to Update](${updateBadge})](${SITE_URL}/update-readme)`);
   p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
-  p(mdImage("Footer", `${assets_url}/svg/footer.svg`));
+  p(mdImage("Footer", `${ASSETS_URL}/svg/footer.svg`));
 
   return new NextResponse(parts.join("").trim(), {
     headers: {
