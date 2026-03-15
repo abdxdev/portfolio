@@ -1,10 +1,15 @@
 [
     {
         "github_username": "Abeehimr",
-        "linkedin_username": "ibraheemqureshi"
+        "linkedin_username": "ibraheemqureshi",
+        "portfolio": "https://ibraheem-qureshi.vercel.app/",
+        "email": "ibraheemkureshi@gmail.com"
     },
     {
         "github_username": "SSKnT",
-        "linkedin_username": "sohaib-shaukat-7s"
+        "linkedin_username": "sohaib-shaukat-7s",
+        "portfolio": "https://sohaibshaukat.netlify.app/",
+        "email": "sohaibshaukat.dev@gmail.com",
+        "resume": "https://sohaibshaukat.netlify.app/resume.pdf"
     }
 ]
