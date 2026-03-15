@@ -305,7 +305,7 @@ export async function GET(request: NextRequest) {
 
   p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
   p(description);
-  p(`### **[${SITE_DOMAIN}](${SITE_URL})**`);
+  p(`### **${mdLink(SITE_DOMAIN, SITE_URL)} / ${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 
   p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
   p(getFeaturedSkills(portfolio.skills));
@@ -327,13 +327,13 @@ export async function GET(request: NextRequest) {
   p(getGames(portfolio.games), { centered: false });
 
   p(mdImage("Meet my Code Buddies!", `${ASSETS_URL}/titles/friends.png`));
-  p("*The real ones*");
+  p("*Giga Nigas*");
   p(getFriends(portfolio.friends));
-
   // p(mdImage("Support Me", `${ASSETS_URL}/titles/support_me.png`));
   // p("Help me keep my work open source and free for everyone—because the world needs more free stuff (and less paywalls).");
   // p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
 
+  p('---')
   const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
   p(`[![Click to Update](${updateBadge})](${SITE_URL}/update-readme)`);
   p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
