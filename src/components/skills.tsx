@@ -30,7 +30,7 @@ export const Skills = ({ id }: { id?: string }) => {
 
   return (
     <section id={id}>
-      <Card className="mb-6">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center group">
             Skills

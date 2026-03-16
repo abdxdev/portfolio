@@ -114,7 +114,7 @@ export function ExpandableCard({
                 <div className="absolute inset-x-0 bottom-0 z-50 h-[80px] bg-linear-to-t from-background to-transparent pointer-events-none" />
               </motion.div>
               <div className="relative h-full before:fixed before:inset-x-0 before:bottom-0 before:z-50 before:h-[70px] before:bg-linear-to-t before:from-background">
-                <div className="flex h-auto items-start justify-between p-8">
+                <div className="flex h-auto items-start justify-between p-8 border-b mb-8">
                   <div className="flex-1 flex flex-col">
                     <div className="flex gap-4">
                       <motion.p
@@ -155,9 +155,6 @@ export function ExpandableCard({
                       </motion.div>
                     )}
                   </div>
-                </div>
-                <div className="px-8 pb-6 w-full">
-                  <hr className="w-full border-border" />
                 </div>
                 <div className="relative px-6 sm:px-8">
                   <motion.div

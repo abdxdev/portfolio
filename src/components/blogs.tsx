@@ -6,7 +6,7 @@ export const Blogs = ({ id }: { id?: string }) => {
 
   return (
     <section id={id}>
-      <Card className="mb-6">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center group">
             Blogs
@@ -17,7 +17,10 @@ export const Blogs = ({ id }: { id?: string }) => {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground content-center">
-            Comming soon... I plan to share my thoughts on software development, design, and my journey as a developer. Stay tuned for updates!
+            Comming soon...
+            <br/>
+            <br/>
+            I plan to share my thoughts on software development, design, and my journey as a developer. Stay tuned for updates!
           </p>
         </CardContent>
       </Card>

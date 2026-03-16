@@ -151,7 +151,7 @@ export const Profile = () => {
   };
 
   return (
-    <Card className="mb-6">
+    <Card>
       <CardContent>
         <div className="flex flex-col items-start gap-2 ">
           <div className="flex flex-row md:flex-col w-full">
