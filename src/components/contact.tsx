@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import {
@@ -68,8 +68,6 @@ export const Contact = ({ id }: { id?: string }) => {
   const validate = () => {
     const e: Record<string, string> = {};
     if (!email.trim()) e.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      e.email = "Enter a valid email";
     if (!firstName.trim()) e.firstName = "First name is required";
     if (!message.trim()) e.message = "Message is required";
     setErrors(e);
@@ -232,7 +230,7 @@ export const Contact = ({ id }: { id?: string }) => {
                       id="contact-first-name"
                       placeholder="Gabe"
                       value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      onChange={(e) => { setFirstName(e.target.value); setErrors(prev => ({ ...prev, firstName: "" })); }}
                       aria-invalid={!!errors.firstName}
                       className="h-9"
                     />
@@ -249,7 +247,7 @@ export const Contact = ({ id }: { id?: string }) => {
                       id="contact-last-name"
                       placeholder="Newell"
                       value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
+                      onChange={(e) => { setLastName(e.target.value); setErrors(prev => ({ ...prev, lastName: "" })); }}
                       className="h-9"
                     />
                   </div>
@@ -264,7 +262,7 @@ export const Contact = ({ id }: { id?: string }) => {
                     type="email"
                     placeholder="gabe@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); setErrors(prev => ({ ...prev, email: "" })); }}
                     aria-invalid={!!errors.email}
                     className="h-9"
                   />
@@ -281,7 +279,7 @@ export const Contact = ({ id }: { id?: string }) => {
                     id="contact-message"
                     placeholder="What's on your mind?"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => { setMessage(e.target.value); setErrors(prev => ({ ...prev, message: "" })); }}
                     className="min-h-25 resize-none"
                     aria-invalid={!!errors.message}
                   />
