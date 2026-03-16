@@ -7,9 +7,9 @@ const Error = () => {
         <h2 className='mb-6 text-5xl font-semibold'>Whoops!</h2>
         <h3 className='mb-1.5 text-3xl font-semibold'>Something went wrong</h3>
         <p className='text-muted-foreground mb-6 max-w-sm'>
-          The page you&apos;re looking for isn&apos;t found, we suggest you back to home.
+          The page you're looking for isn't found, we suggest you back to home.
         </p>
-        <Button asChild size='lg' className='rounded-lg text-base'>
+        <Button size='lg' className='rounded-lg text-base'>
           <a href='/'>Back to home page</a>
         </Button>
       </div>
