@@ -1,14 +1,25 @@
-/* ── Windows 10 Fluent Reveal Border Glow ── */
+:root {
+  --reveal-intensity: 1;
+  --reveal-color: rgba(0, 0, 0, calc(0.5 * var(--reveal-intensity)));
+  --reveal-surface: rgba(0, 0, 0, calc(0.03 * var(--reveal-intensity)));
+}
 
-/* Full borders */
-[data-reveal="full"]::before {
+.dark {
+  --reveal-color: rgba(255, 255, 255, calc(0.5 * var(--reveal-intensity)));
+  --reveal-surface: rgba(255, 255, 255, calc(0.03 * var(--reveal-intensity)));
+}
+
+[data-reveal]::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.5), transparent 40%);
+  padding: var(--reveal-pt, 1px) var(--reveal-pr, 1px) var(--reveal-pb, 1px) var(--reveal-pl, 1px);
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--reveal-color), transparent 40%);
   -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -17,43 +28,12 @@
   z-index: 3;
 }
 
-/* Partial borders */
-[data-reveal="partial"]::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: var(--reveal-pt, 0px) var(--reveal-pr, 0px) var(--reveal-pb, 0px) var(--reveal-pl, 0px);
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.7), transparent 40%);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 3;
-}
-
-/* Surface highlight — only on fully-bordered elements */
 [data-reveal="full"]::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(0, 0, 0, 0.03), transparent 40%);
+  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--reveal-surface), transparent 40%);
   z-index: 2;
-}
-
-/* ── Dark mode ── */
-.dark [data-reveal="full"]::before {
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.5), transparent 40%);
-}
-
-.dark [data-reveal="partial"]::before {
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.7), transparent 40%);
-}
-
-.dark [data-reveal="full"]::after {
-  background: radial-gradient(400px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(255, 255, 255, 0.03), transparent 40%);
 }

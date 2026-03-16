@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Github, Globe, LinkIcon } from "lucide-react";
+import { ChevronDown, LinkIcon } from "lucide-react";
+import { FaGithub, FaGlobe } from "react-icons/fa";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +33,8 @@ const techColors: Record<string, string> = {
   "Default": "bg-gray-500",
   "TypeScript": "bg-blue-500",
 };
+
+const PROJECTS_NUM = 6;
 
 function ProjectItem({ project }: { project: Project }) {
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
@@ -135,7 +138,7 @@ function ProjectItem({ project }: { project: Project }) {
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
-            <Globe className="size-4" />
+            <FaGlobe className="size-4" />
             <span>Site</span>
           </a>
         )}
@@ -146,7 +149,7 @@ function ProjectItem({ project }: { project: Project }) {
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
         >
-          <Github className="size-4" />
+          <FaGithub className="size-4" />
           <span>GitHub</span>
         </a>
       </div>
@@ -156,7 +159,7 @@ function ProjectItem({ project }: { project: Project }) {
   const TitleNode = (
     <span className="py-1 content-between items-center">
       <span className="mr-2">
-      {project.title}
+        {project.title}
       </span>
 
       {project.priority === 0 && (
@@ -203,7 +206,7 @@ function ProjectItem({ project }: { project: Project }) {
 
 export const Projects = ({ id }: { id?: string }) => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(PROJECTS_NUM);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -243,7 +246,7 @@ export const Projects = ({ id }: { id?: string }) => {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {isLoading ? (
-          Array.from({ length: 6 }).map((_, index) => (
+          Array.from({ length: PROJECTS_NUM }).map((_, index) => (
             <Card key={index} className="overflow-hidden p-0">
               <Skeleton className="w-full aspect-video rounded-none" />
               <div className="p-4 px-5 pb-5 flex items-start justify-between">
@@ -277,8 +280,10 @@ export const Projects = ({ id }: { id?: string }) => {
           <Button
             variant="ghost"
             onClick={() => setVisibleCount(visibleCount + 100)}
+            className="gap-1"
           >
-            Load More
+            Show All
+            <ChevronDown />
           </Button>
         </div>
       )}

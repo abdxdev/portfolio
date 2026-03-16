@@ -1,100 +1,132 @@
 "use client";
 
-import { useEffect } from "react";
-import { useAnimationSettings } from "@/components/animation-settings";
-import "./spotlight.css";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import "./reveal-highlight.css";
 
-const REVEAL_ATTR = "data-reveal";
+interface RevealHighlightContextValue {
+  enabled: boolean;
+  intensity: number;
+  setEnabled: (enabled: boolean) => void;
+  setIntensity: (intensity: number) => void;
+  toggle: () => void;
+}
 
-const IGNORED_TAGS = new Set([
+const RevealHighlightContext = createContext<RevealHighlightContextValue>({
+  enabled: true,
+  intensity: 1,
+  setEnabled: () => { },
+  setIntensity: () => { },
+  toggle: () => { },
+});
+
+export const useRevealHighlight = () => useContext(RevealHighlightContext);
+
+const ATTR = "data-reveal";
+
+const SKIP = new Set([
   "HTML", "BODY", "HEAD", "SCRIPT", "STYLE", "LINK",
   "META", "TITLE", "NOSCRIPT", "TEMPLATE",
   "SVG", "PATH", "G", "CIRCLE", "RECT", "LINE", "POLYLINE", "POLYGON",
-  "ASIDE", "NAV", "HEADER", "FOOTER", "MAIN", "SECTION",
 ]);
 
-function isSideOn(width: string, style: string, color: string): boolean {
-  if (parseFloat(width) <= 0) return false;
-  if (style === "none" || style === "hidden") return false;
-  if (color === "transparent") return false;
-  const parts = color.match(/[\d.]+/g) ?? [];
-  if (parts.length === 4 && parseFloat(parts[3]) === 0) return false;
+function isBorderVisible(w: string, s: string, c: string) {
+  if (parseFloat(w) <= 0 || s === "none" || s === "hidden" || c === "transparent") return false;
+  const p = c.match(/[\d.]+/g);
+  return !(p && p.length === 4 && parseFloat(p[3]) === 0);
+}
+
+function sync(el: Element, tracked: Set<HTMLElement>): boolean {
+  if (SKIP.has(el.tagName)) return false;
+
+  const cs = getComputedStyle(el);
+  if (cs.position === "fixed" || cs.position === "sticky") return false;
+
+  const t = isBorderVisible(cs.borderTopWidth, cs.borderTopStyle, cs.borderTopColor);
+  const r = isBorderVisible(cs.borderRightWidth, cs.borderRightStyle, cs.borderRightColor);
+  const b = isBorderVisible(cs.borderBottomWidth, cs.borderBottomStyle, cs.borderBottomColor);
+  const l = isBorderVisible(cs.borderLeftWidth, cs.borderLeftStyle, cs.borderLeftColor);
+
+  const html = el as HTMLElement;
+
+  if (!(t || r || b || l)) {
+    if (tracked.has(html)) {
+      el.removeAttribute(ATTR);
+      if (html.style.position === "relative") html.style.removeProperty("position");
+      html.style.removeProperty("--reveal-pt");
+      html.style.removeProperty("--reveal-pr");
+      html.style.removeProperty("--reveal-pb");
+      html.style.removeProperty("--reveal-pl");
+      tracked.delete(html);
+    }
+    return false;
+  }
+
+  el.setAttribute(ATTR, t && r && b && l ? "full" : "partial");
+  if (cs.position === "static") html.style.setProperty("position", "relative");
+  html.style.setProperty("--reveal-pt", t ? "1px" : "0px");
+  html.style.setProperty("--reveal-pr", r ? "1px" : "0px");
+  html.style.setProperty("--reveal-pb", b ? "1px" : "0px");
+  html.style.setProperty("--reveal-pl", l ? "1px" : "0px");
+  tracked.add(html);
   return true;
 }
 
-function syncElement(el: Element) {
-  if (IGNORED_TAGS.has(el.tagName)) return;
-
-  const s = getComputedStyle(el);
-  const pos = s.position;
-
-  // Never touch fixed/sticky elements — they must keep their positioning
-  if (pos === "fixed" || pos === "sticky") return;
-
-  const top = isSideOn(s.borderTopWidth, s.borderTopStyle, s.borderTopColor);
-  const right = isSideOn(s.borderRightWidth, s.borderRightStyle, s.borderRightColor);
-  const bottom = isSideOn(s.borderBottomWidth, s.borderBottomStyle, s.borderBottomColor);
-  const left = isSideOn(s.borderLeftWidth, s.borderLeftStyle, s.borderLeftColor);
-
-  const htmlEl = el as HTMLElement;
-  const anySide = top || right || bottom || left;
-  const allSides = top && right && bottom && left;
-
-  if (anySide) {
-    el.setAttribute(REVEAL_ATTR, allSides ? "full" : "partial");
-    // Set position:relative inline only when the element is static —
-    // this cannot override fixed/sticky/absolute set by Tailwind classes
-    // because inline styles lose to nothing (they always win), but we
-    // only reach here when pos === "static" or "relative" already.
-    if (pos === "static") {
-      htmlEl.style.setProperty("position", "relative");
-    }
-    htmlEl.style.setProperty("--reveal-pt", top ? "1px" : "0px");
-    htmlEl.style.setProperty("--reveal-pr", right ? "1px" : "0px");
-    htmlEl.style.setProperty("--reveal-pb", bottom ? "1px" : "0px");
-    htmlEl.style.setProperty("--reveal-pl", left ? "1px" : "0px");
-  } else {
-    el.removeAttribute(REVEAL_ATTR);
-    // Only remove the inline position if we were the ones who set it
-    if (htmlEl.style.position === "relative") {
-      htmlEl.style.removeProperty("position");
-    }
-    htmlEl.style.removeProperty("--reveal-pt");
-    htmlEl.style.removeProperty("--reveal-pr");
-    htmlEl.style.removeProperty("--reveal-pb");
-    htmlEl.style.removeProperty("--reveal-pl");
-  }
+function syncTree(root: Element | Document, tracked: Set<HTMLElement>) {
+  const it = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT);
+  let n: Node | null;
+  while ((n = it.nextNode())) sync(n as Element, tracked);
 }
 
-function syncSubtree(root: Element | Document = document) {
-  const iter = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT);
-  let node: Node | null;
-  while ((node = iter.nextNode())) {
-    syncElement(node as Element);
-  }
-}
-
-export function SpotlightProvider({ children }: { children: React.ReactNode }) {
-  const { settings } = useAnimationSettings();
+export function RevealHighlightProvider({
+  children,
+  defaultEnabled = true,
+  defaultIntensity = 1,
+}: {
+  children: React.ReactNode;
+  defaultEnabled?: boolean;
+  defaultIntensity?: number;
+}) {
+  const [enabled, setEnabled] = useState(defaultEnabled);
+  const [intensity, setIntensityRaw] = useState(defaultIntensity);
+  const setIntensity = useCallback((v: number) => setIntensityRaw(Math.max(0, Math.min(1, v))), []);
+  const toggle = useCallback(() => setEnabled((v) => !v), []);
+  const ctx = useMemo(
+    () => ({ enabled, intensity, setEnabled, setIntensity, toggle }),
+    [enabled, intensity, setIntensity, toggle],
+  );
 
   useEffect(() => {
-    const scanId = (globalThis.requestIdleCallback ?? setTimeout)(
-      () => syncSubtree()
+    document.documentElement.style.setProperty("--reveal-intensity", String(intensity));
+    return () => { document.documentElement.style.removeProperty("--reveal-intensity"); };
+  }, [intensity]);
+
+  useEffect(() => {
+    const tracked = new Set<HTMLElement>();
+
+    const scanId = (globalThis.requestIdleCallback ?? setTimeout)(() =>
+      syncTree(document, tracked)
     );
 
-    const observer = new MutationObserver((mutations) => {
-      for (const m of mutations) {
+    const obs = new MutationObserver((muts) => {
+      for (const m of muts) {
         if (m.type === "childList") {
           m.addedNodes.forEach((n) => {
-            if (n.nodeType === Node.ELEMENT_NODE) syncSubtree(n as Element);
+            if (n.nodeType === Node.ELEMENT_NODE) syncTree(n as Element, tracked);
           });
-        } else if (m.type === "attributes" && m.attributeName !== REVEAL_ATTR) {
-          syncElement(m.target as Element);
+          m.removedNodes.forEach((n) => {
+            if (n.nodeType === Node.ELEMENT_NODE) {
+              const it = document.createNodeIterator(n, NodeFilter.SHOW_ELEMENT);
+              let node: Node | null;
+              while ((node = it.nextNode())) tracked.delete(node as HTMLElement);
+            }
+          });
+        } else if (m.type === "attributes" && m.attributeName !== ATTR) {
+          sync(m.target as Element, tracked);
         }
       }
     });
 
-    observer.observe(document.body, {
+    obs.observe(document.body, {
       childList: true,
       subtree: true,
       attributes: true,
@@ -102,50 +134,71 @@ export function SpotlightProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
-      observer.disconnect();
+      obs.disconnect();
       (globalThis.cancelIdleCallback ?? clearTimeout)(scanId as number);
+      tracked.clear();
     };
   }, []);
 
   useEffect(() => {
-    if (!settings.mouseHover) {
-      document.querySelectorAll<HTMLElement>(`[${REVEAL_ATTR}]`).forEach((el) => {
+    if (!enabled) {
+      document.querySelectorAll<HTMLElement>(`[${ATTR}]`).forEach((el) => {
         el.style.removeProperty("--mouse-x");
         el.style.removeProperty("--mouse-y");
       });
       return;
     }
 
-    let rafId: number | null = null;
+    const els = new Set(document.querySelectorAll<HTMLElement>(`[${ATTR}]`));
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        document.querySelectorAll<HTMLElement>(`[${REVEAL_ATTR}]`).forEach((el) => {
-          const rect = el.getBoundingClientRect();
-          el.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-          el.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+    const obs = new MutationObserver((muts) => {
+      for (const m of muts) {
+        if (m.type !== "childList") continue;
+        m.addedNodes.forEach((n) => {
+          if (n instanceof HTMLElement && n.hasAttribute(ATTR)) els.add(n);
+          (n as Element).querySelectorAll?.(`[${ATTR}]`).forEach((c) => els.add(c as HTMLElement));
         });
-        rafId = null;
+        m.removedNodes.forEach((n) => {
+          if (n instanceof HTMLElement) els.delete(n);
+          (n as Element).querySelectorAll?.(`[${ATTR}]`).forEach((c) => els.delete(c as HTMLElement));
+        });
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    let raf: number | null = null;
+
+    const onMove = (e: MouseEvent) => {
+      if (raf !== null) return;
+      raf = requestAnimationFrame(() => {
+        els.forEach((el) => {
+          const r = el.getBoundingClientRect();
+          el.style.setProperty("--mouse-x", `${e.clientX - r.left}px`);
+          el.style.setProperty("--mouse-y", `${e.clientY - r.top}px`);
+        });
+        raf = null;
       });
     };
 
-    const handleMouseLeave = () => {
-      document.querySelectorAll<HTMLElement>(`[${REVEAL_ATTR}]`).forEach((el) => {
-        el.style.removeProperty("--mouse-x");
-        el.style.removeProperty("--mouse-y");
-      });
-    };
+    const onLeave = () => els.forEach((el) => {
+      el.style.removeProperty("--mouse-x");
+      el.style.removeProperty("--mouse-y");
+    });
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mousemove", onMove);
+    document.documentElement.addEventListener("mouseleave", onLeave);
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
-      if (rafId !== null) cancelAnimationFrame(rafId);
+      obs.disconnect();
+      document.removeEventListener("mousemove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      if (raf !== null) cancelAnimationFrame(raf);
     };
-  }, [settings.mouseHover]);
+  }, [enabled]);
 
-  return <>{children}</>;
+  return (
+    <RevealHighlightContext.Provider value={ctx}>
+      {children}
+    </RevealHighlightContext.Provider>
+  );
 }

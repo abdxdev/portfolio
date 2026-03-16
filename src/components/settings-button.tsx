@@ -20,6 +20,7 @@ import {
   useAnimationSettings,
   type AnimationSettings,
 } from "@/components/animation-settings";
+import { useRevealHighlight } from "./reveal-highlight";
 import {
   useReplyNotifications,
   NotificationToggleRow,
@@ -32,7 +33,6 @@ const items: {
 }[] = [
     { key: "introAnimation", label: "Intro animation", icon: <Play className="h-3.5 w-3.5" /> },
     { key: "lightRays", label: "Light rays", icon: <Sun className="h-3.5 w-3.5" /> },
-    { key: "mouseHover", label: "Mouse hover", icon: <MousePointerClick className="h-3.5 w-3.5" /> },
     { key: "clickSparks", label: "Click sparks", icon: <Sparkles className="h-3.5 w-3.5" /> },
     { key: "shinyText", label: "Shiny text", icon: <Type className="h-3.5 w-3.5" /> },
     { key: "expandableCard", label: "Expandable card", icon: <Expand className="h-3.5 w-3.5" /> },
@@ -40,6 +40,7 @@ const items: {
 
 export function SettingsButton() {
   const { settings, toggle, setAll } = useAnimationSettings();
+  const { enabled: revealEnabled, toggle: toggleReveal } = useRevealHighlight();
   const { enabled: notifEnabled, loading: notifLoading, toggle: toggleNotif } = useReplyNotifications([]);
   const allEnabled = Object.values(settings).every(Boolean);
   const noneEnabled = Object.values(settings).every((v) => !v);
@@ -67,6 +68,15 @@ export function SettingsButton() {
 
         {/* Toggle list */}
         <div className="px-4 py-2 space-y-1">
+          {/* Reveal highlight (own provider) */}
+          <label className="flex items-center justify-between py-1.5 rounded-md cursor-pointer group">
+            <span className="flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+              <MousePointerClick className="h-3.5 w-3.5" />
+              Mouse hover
+            </span>
+            <Switch checked={revealEnabled} onCheckedChange={toggleReveal} />
+          </label>
+          {/* Animation settings */}
           {items.map(({ key, label, icon }) => (
             <label
               key={key}
