@@ -1,8 +1,5 @@
-"use client";
-
 import { useRef, useEffect, useState } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
-import './LightRays.css';
 
 export type RaysOrigin =
   | 'top-center'
@@ -338,8 +335,7 @@ void main() {
         }
       };
 
-      const resizeObserver = new ResizeObserver(() => updatePlacement());
-      resizeObserver.observe(containerRef.current);
+      window.addEventListener('resize', updatePlacement);
       updatePlacement();
       animationIdRef.current = requestAnimationFrame(loop);
 
@@ -349,7 +345,7 @@ void main() {
           animationIdRef.current = null;
         }
 
-        resizeObserver.disconnect();
+        window.removeEventListener('resize', updatePlacement);
 
         if (renderer) {
           try {
@@ -448,7 +444,12 @@ void main() {
     }
   }, [followMouse]);
 
-  return <div ref={containerRef} className={`light-rays-container ${className}`.trim()} />;
+  return (
+    <div
+      ref={containerRef}
+      className={`w-full h-full pointer-events-none z-[3] overflow-hidden relative ${className}`.trim()}
+    />
+  );
 };
 
 export default LightRays;
