@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "fumadocs-ui/css/neutral.css";
-@import "fumadocs-ui/css/preset.css";
-@import "fumadocs-openapi/css/preset.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -191,6 +188,12 @@
       box-shadow: 0 0 0 2px transparent;
     }
   }
+
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --radius-4xl: calc(var(--radius) * 2.6)
 }
 
 @layer base {
@@ -209,6 +212,9 @@
   ::selection {
     background-color: lightgray;
     color: black;
+  }
+  html {
+    @apply font-sans;
   }
 }
 

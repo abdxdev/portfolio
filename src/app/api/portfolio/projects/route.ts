@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Project, GitHubRepo } from "@/types/project";
-import { parse, camelToTitle, snakeToTitle } from "@/lib/utils";
+import { parse, camelToTitle, snakeToTitle } from "@/lib/helpers";
 
 async function getGithubProjects(username: string): Promise<Project[]> {
   const response = await fetch(

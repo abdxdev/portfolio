@@ -62,7 +62,7 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
     )}
     <div className="sticky top-0 right-0 z-50">
       <div className="m-4 absolute right-0 top-0 flex items-center">
-        <ApiButton />
+        {/* <ApiButton /> */}
         <SettingsButton />
         <AnimatedThemeToggler />
       </div>

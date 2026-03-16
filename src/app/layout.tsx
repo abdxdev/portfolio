@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SpotlightProvider } from "@/components/ui/spotlight";
 import { AnimationSettingsProvider } from "@/components/animation-settings";
-import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Toaster } from '@/components/ui/sonner';
 import { OneSignalInit } from '@/components/onesignal-init';
 import { Analytics } from '@vercel/analytics/next';
@@ -44,13 +43,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <RootProvider>
-            <AnimationSettingsProvider>
-              <SpotlightProvider>
-                {children}
-              </SpotlightProvider>
-            </AnimationSettingsProvider>
-          </RootProvider>
+          <AnimationSettingsProvider>
+            <SpotlightProvider>
+              {children}
+            </SpotlightProvider>
+          </AnimationSettingsProvider>
           <Toaster />
         </ThemeProvider>
         <OneSignalInit />
