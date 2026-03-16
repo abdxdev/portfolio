@@ -230,13 +230,14 @@ export const Contact = ({ id }: { id?: string }) => {
                       id="contact-first-name"
                       placeholder="Gabe"
                       value={firstName}
-                      onChange={(e) => { setFirstName(e.target.value); setErrors(prev => ({ ...prev, firstName: "" })); }}
+                      onChange={(e) => { setFirstName(e.target.value) }}
+                      onFocus={() => { setErrors(prev => ({ ...prev, firstName: "" })) }}
                       aria-invalid={!!errors.firstName}
                       className="h-9"
                     />
-                    {errors.firstName && (
+                    {/* {errors.firstName && (
                       <p className="text-[11px] text-destructive">{errors.firstName}</p>
-                    )}
+                    )} */}
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="contact-last-name" className="text-xs">
@@ -247,7 +248,8 @@ export const Contact = ({ id }: { id?: string }) => {
                       id="contact-last-name"
                       placeholder="Newell"
                       value={lastName}
-                      onChange={(e) => { setLastName(e.target.value); setErrors(prev => ({ ...prev, lastName: "" })); }}
+                      onChange={(e) => { setLastName(e.target.value) }}
+                      onFocus={() => { setErrors(prev => ({ ...prev, lastName: "" })) }}
                       className="h-9"
                     />
                   </div>
@@ -262,13 +264,14 @@ export const Contact = ({ id }: { id?: string }) => {
                     type="email"
                     placeholder="gabe@example.com"
                     value={email}
-                    onChange={(e) => { setEmail(e.target.value); setErrors(prev => ({ ...prev, email: "" })); }}
+                    onChange={(e) => { setEmail(e.target.value) }}
+                    onFocus={() => { setErrors(prev => ({ ...prev, email: "" })) }}
                     aria-invalid={!!errors.email}
                     className="h-9"
                   />
-                  {errors.email && (
+                  {/* {errors.email && (
                     <p className="text-[11px] text-destructive">{errors.email}</p>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="space-y-1.5">
@@ -279,13 +282,14 @@ export const Contact = ({ id }: { id?: string }) => {
                     id="contact-message"
                     placeholder="What's on your mind?"
                     value={message}
-                    onChange={(e) => { setMessage(e.target.value); setErrors(prev => ({ ...prev, message: "" })); }}
+                    onChange={(e) => { setMessage(e.target.value) }}
+                    onFocus={() => { setErrors(prev => ({ ...prev, message: "" })) }}
                     className="min-h-25 resize-none"
                     aria-invalid={!!errors.message}
                   />
-                  {errors.message && (
+                  {/* {errors.message && (
                     <p className="text-[11px] text-destructive">{errors.message}</p>
-                  )}
+                  )} */}
                 </div>
 
                 {/* ─── Schedule Appointment ─── */}
