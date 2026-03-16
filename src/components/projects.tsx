@@ -243,7 +243,7 @@ export const Projects = ({ id }: { id?: string }) => {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {isLoading ? (
-          Array.from({ length: 4 }).map((_, index) => (
+          Array.from({ length: 6 }).map((_, index) => (
             <Card key={index} className="overflow-hidden p-0">
               <Skeleton className="w-full aspect-video rounded-none" />
               <div className="p-4 px-5 pb-5 flex items-start justify-between">
@@ -276,7 +276,7 @@ export const Projects = ({ id }: { id?: string }) => {
         <div className="flex justify-end mt-4">
           <Button
             variant="ghost"
-            onClick={() => setVisibleCount(visibleCount + 4)}
+            onClick={() => setVisibleCount(visibleCount + 100)}
           >
             Load More
           </Button>

@@ -171,10 +171,10 @@ export const Contact = ({ id }: { id?: string }) => {
 
       <Card className="p-0">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-20">
 
             {/* ─── Left col: Socials on top, Anonymous pinned to bottom ─── */}
-            <div className="flex flex-col border-b md:border-b-0 md:border-r border-border">
+            <div className="flex flex-col border-b md:border-b-0 md:border-r border-border col-span-9">
               <div className="p-6 flex-1">
                 <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
                   Connect
@@ -215,7 +215,7 @@ export const Contact = ({ id }: { id?: string }) => {
             </div>
 
             {/* ─── Right col: Message Form (full height) ─── */}
-            <div className="p-6">
+            <div className="p-6 col-span-11">
               <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
                 Send a Message
               </p>

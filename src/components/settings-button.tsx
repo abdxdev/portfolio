@@ -59,9 +59,9 @@ export function SettingsButton() {
             variant="ghost"
             size="sm"
             className="h-auto px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => setAll(!allEnabled)}
+            onClick={() => setAll(noneEnabled)}
           >
-            {allEnabled || (!allEnabled && !noneEnabled) ? "Disable all" : "Enable all"}
+            {noneEnabled ? "Enable all" : "Disable all"}
           </Button>
         </div>
 
