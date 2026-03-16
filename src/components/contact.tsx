@@ -362,7 +362,7 @@ export const Contact = ({ id }: { id?: string }) => {
                   manualstart={true}
                   type="submit"
                   className="w-full gap-2 h-10 transition-all font-medium"
-                  disabled={isSubmitting || sent || (!email.trim() || !firstName.trim() || !message.trim())}
+                  disabled={isSubmitting || sent}
                   variant="outline"
                 >
                   {sent ? (
