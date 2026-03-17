@@ -22,6 +22,7 @@ export function OneSignalInit() {
   useEffect(() => {
     if (initialized) return;
     initialized = true;
+    if (process.env.VERCEL_ENV !== "production") return;
 
     OneSignal.init({
       appId: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID!,
