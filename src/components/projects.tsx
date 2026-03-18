@@ -39,7 +39,7 @@ const PROJECTS_NUM = 6;
 
 function FeaturedBadge() {
   return (
-    <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-lg select-none overflow-hidden"
+    <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-lg select-none overflow-hidden"
       style={{
         background: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%)",
         backgroundSize: "200% 100%",
@@ -57,8 +57,8 @@ function FeaturedBadge() {
           animation: "featuredShimmerOverlay 2.4s ease-in-out infinite",
         }}
       />
-      <IoStar className="size-3 relative z-10 shrink-0" />
-      <span className="relative z-10">Featured</span>
+      <IoStar className="size-3 relative shrink-0" />
+      <span className="relative">Featured</span>
 
       <style>{`
         @keyframes featuredShimmerOverlay {
@@ -157,7 +157,7 @@ function ProjectItem({ project }: { project: Project }) {
         {project.homepage && (
           <a
             href={project.homepage}
-            className="flex items-center gap-1 text-sm hover:underline z-20 relative pointer-events-auto"
+            className="flex items-center gap-1 text-sm hover:underline relative pointer-events-auto"
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
@@ -168,7 +168,7 @@ function ProjectItem({ project }: { project: Project }) {
         )}
         <a
           href={project.html_url}
-          className="flex items-center gap-1 text-sm hover:underline z-20 relative pointer-events-auto"
+          className="flex items-center gap-1 text-sm hover:underline relative pointer-events-auto"
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
