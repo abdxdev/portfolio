@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown, LinkIcon } from "lucide-react";
+import { IoStar } from "react-icons/io5";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,10 +37,44 @@ const techColors: Record<string, string> = {
 
 const PROJECTS_NUM = 6;
 
+function FeaturedBadge() {
+  return (
+    <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-lg select-none overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%)",
+        backgroundSize: "200% 100%",
+        color: "#431407",
+        boxShadow: "0 2px 12px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
+        animation: "featuredShimmer 2.4s ease-in-out infinite",
+      }}
+    >
+      {/* Shimmer overlay */}
+      <span
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%)",
+          backgroundSize: "200% 100%",
+          animation: "featuredShimmerOverlay 2.4s ease-in-out infinite",
+        }}
+      />
+      <IoStar className="size-3 relative z-10 shrink-0" />
+      <span className="relative z-10">Featured</span>
+
+      <style>{`
+        @keyframes featuredShimmerOverlay {
+          0%   { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 function ProjectItem({ project }: { project: Project }) {
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
   const [isLoadingReadme, setIsLoadingReadme] = useState(false);
   const { settings } = useAnimationSettings();
+  const isFeatured = project.priority === 0;
 
   useEffect(() => {
     const fetchReadme = async () => {
@@ -78,42 +113,31 @@ function ProjectItem({ project }: { project: Project }) {
   }, [api]);
 
   const CarouselContentRender = (isExpanded: boolean) => (
-    <Carousel
-      opts={{ startIndex: isExpanded ? current : 0, align: "start" }}
-      plugins={!isExpanded ? [Autoplay({ delay: 5000 })] : undefined}
-      setApi={isExpanded ? undefined : setApi}
-      className="w-full h-full"
-    >
-      <CarouselContent className="h-full ml-0">
-        {images.map((src, index) => (
-          <CarouselItem key={index} className="pl-0 basis-full">
-            <div className="relative aspect-video w-full">
-              <img
-                src={src}
-                alt={`${project.title} screenshot ${index + 1}`}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-    </Carousel>
-  );
+    <div className="relative w-full h-full">
+      <Carousel
+        opts={{ startIndex: isExpanded ? current : 0, align: "start" }}
+        plugins={!isExpanded ? [Autoplay({ delay: 5000 })] : undefined}
+        setApi={isExpanded ? undefined : setApi}
+        className="w-full h-full"
+      >
+        <CarouselContent className="h-full ml-0">
+          {images.map((src, index) => (
+            <CarouselItem key={index} className="pl-0 basis-full">
+              <div className="relative aspect-video w-full">
+                <img
+                  src={src}
+                  alt={`${project.title} screenshot ${index + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
 
-  const BadgesNode = (project.working_on || project.is_university_project) ? (
-    <span className="flex gap-1.5 items-center">
-      {project.working_on && (
-        <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
-          Active
-        </Badge>
-      )}
-      {project.is_university_project && (
-        <Badge className="bg-blue-500/20 dark:bg-blue-900/30 text-blue-900 dark:text-blue-400 font-medium px-2 py-0">
-          University
-        </Badge>
-      )}
-    </span>
-  ) : null;
+      {isFeatured && !isExpanded && <FeaturedBadge />}
+    </div>
+  );
 
   const LinksNode = (
     <div className="flex items-center justify-between w-full">
@@ -157,19 +181,16 @@ function ProjectItem({ project }: { project: Project }) {
   );
 
   const TitleNode = (
-    <span className="py-1 content-between items-center">
+    <span className="content-between items-center align-middle">
       <span className="mr-2">
         {project.title}
       </span>
 
-      {project.priority === 0 && (
-        <span className="text-yellow-500 text-2xl relative top-0.5 mr-2 inline" title="Featured Project">★</span>
-      )}
-      {BadgesNode && (
+      {(project.working_on || project.is_university_project) && (
         <span className="inline-flex gap-1.5 items-center align-middle my-2">
           {project.working_on && (
             <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
-              Active
+              Working
             </Badge>
           )}
           {project.is_university_project && (
