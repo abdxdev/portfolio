@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Project, GitHubRepo } from "@/types/project";
 import { parse, camelToTitle, snakeToTitle } from "@/lib/helpers";
 
-async function getGithubProjects(username: string): Promise<Project[]> {
+const ONE_DAY_SECONDS = 60 * 60 * 24;
+
+async function getGithubProjects(username: string, shouldRefresh: boolean): Promise<Project[]> {
   const response = await fetch(
-    `https://api.github.com/users/${username}/repos`
+    `https://api.github.com/users/${username}/repos`,
+    shouldRefresh
+      ? { cache: 'no-store' }
+      : { next: { revalidate: ONE_DAY_SECONDS } }
   );
 
   if (!response.ok) {
@@ -57,10 +62,14 @@ export async function GET(request: NextRequest) {
   try {
     const username = "abdxdev";
     const unfiltered = request.nextUrl.searchParams.get('unfiltered') === 'true';
+    const shouldRefresh = request.nextUrl.searchParams.get('refresh') === 'true';
 
     if (unfiltered) {
       const response = await fetch(
-        `https://api.github.com/users/${username}/repos?per_page=100`
+        `https://api.github.com/users/${username}/repos?per_page=100`,
+        shouldRefresh
+          ? { cache: 'no-store' }
+          : { next: { revalidate: ONE_DAY_SECONDS } }
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -81,7 +90,7 @@ export async function GET(request: NextRequest) {
     }
 
     let projects: Project[] = [];
-    projects = await getGithubProjects(username);
+    projects = await getGithubProjects(username, shouldRefresh);
 
     projects.sort((a, b) => {
       if (a.priority !== undefined && b.priority !== undefined) {

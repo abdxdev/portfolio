@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const maxDuration = 300;
+const ONE_DAY_SECONDS = 60 * 60 * 24;
 
 interface Game {
   background_image_cropped: string;
@@ -22,8 +23,9 @@ const STATUSES = [
   'owned',
 ];
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const username = "abdxdev";
+  const shouldRefresh = request.nextUrl.searchParams.get('refresh') === 'true';
 
   const allGames: Game[] = [];
 
@@ -36,7 +38,10 @@ export async function GET() {
       url.searchParams.set('page_size', '100');
       url.searchParams.set('ordering', '-released');
 
-      const res = await fetch(url.toString());
+      const res = await fetch(url.toString(), shouldRefresh
+        ? { cache: 'no-store' }
+        : { next: { revalidate: ONE_DAY_SECONDS } }
+      );
       if (!res.ok) {
         return NextResponse.json({ error: `RAWG API error: ${res.status}` }, { status: res.status });
       }

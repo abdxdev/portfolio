@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const GRAPHQL_URL = 'https://graphql.anilist.co';
+const ONE_DAY_SECONDS = 60 * 60 * 24;
 const QUERY = `
 query ($username: String) {
   MediaListCollection(userName: $username, type: ANIME) {
@@ -18,10 +19,14 @@ query ($username: String) {
 }
 `;
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const username = "abdxdev";
+  const shouldRefresh = request.nextUrl.searchParams.get('refresh') === 'true';
   const response = await fetch(GRAPHQL_URL, {
     method: 'POST',
+    ...(shouldRefresh
+      ? { cache: 'no-store' }
+      : { next: { revalidate: ONE_DAY_SECONDS } }),
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
