@@ -307,7 +307,8 @@ export async function GET(request: NextRequest) {
 
   p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
   p(description);
-  p(`### **${mdLink(SITE_DOMAIN, SITE_URL)} / ${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
+  p(`### Portfolio: **${mdLink(SITE_DOMAIN, SITE_URL)}**`);
+  p(`### Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 
   p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
   p(getFeaturedSkills(portfolio.skills));
@@ -319,9 +320,9 @@ export async function GET(request: NextRequest) {
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
   p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
-  p('*"Planning to watch" list == "Issues" tab*');
-  p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
-  p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });
+  p('*keep calm and watch on*');
+  // p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
+  // p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
   p(mdImage("Game List", `${ASSETS_URL}/titles/game_list.png`));
