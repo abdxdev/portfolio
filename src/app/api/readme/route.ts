@@ -301,32 +301,37 @@ export async function GET(request: NextRequest) {
   ]);
 
   const now = new Date().toISOString().replace("T", " ").split(".")[0] + " UTC";
+  const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
 
-  const parts: string[] = [];
-  const p = (text: string, opts?: Parameters<typeof write>[1]) => parts.push(write(text, opts));
+  const parts: { text: string; centered: boolean; summary: string; sep: string }[] = [];
+  const p = (text: string, { centered = true, summary = "", sep = "\n\n" }: { centered?: boolean; summary?: string; sep?: string } = {}) => {
+    parts.push({ text: text.trim(), centered, summary, sep });
+  };
 
   p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
   p(description);
-  p(`### Portfolio: **${mdLink(SITE_DOMAIN, SITE_URL)}**`);
-  p(`### Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
+  p(`Portfolio: **${mdLink(SITE_DOMAIN, SITE_URL)}**`);
+  p(`Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 
   p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
+  p("*click see more to view all skills*");
   p(getFeaturedSkills(portfolio.skills));
-  p(mdImage("GitHub Stats", `${METRICS_URL}/languages.svg`));
+  // p(mdImage("GitHub Stats", `${METRICS_URL}/languages.svg`));
   p(getAllSkills(portfolio.skills), { centered: false, summary: "See more skills" });
 
   p(mdImage("Featured Projects", `${ASSETS_URL}/titles/featured_projects.png`));
+  p("*click see more to view all projects*");
   p(getProjectsGallery(portfolio.projects));
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
   p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
-  p('*keep calm and watch on*');
+  p('*you reek of not having watched enough anime*');
   // p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
   // p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
   p(mdImage("Game List", `${ASSETS_URL}/titles/game_list.png`));
-  p("*a professional respawner*");
+  p("*git commit -m 'died again'*");
   p(getGames(portfolio.games), { centered: false });
 
   p(mdImage("Meet my Code Buddies!", `${ASSETS_URL}/titles/friends.png`));
@@ -337,12 +342,32 @@ export async function GET(request: NextRequest) {
   // p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
 
   p('---')
-  const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
   p(`[![Click to Update](${updateBadge})](${SITE_URL}/update-readme)`);
   p("_This GitHub profile is auto-generated. If you want to update it, click the button above._");
   p(mdImage("Footer", `${ASSETS_URL}/svg/footer.svg`));
 
-  return new NextResponse(parts.join("").trim(), {
+  let out = "";
+  let isCentered = false;
+
+  for (const part of parts) {
+    if (part.centered && !isCentered) {
+      out += '<div align="center">\n\n';
+      isCentered = true;
+    } else if (!part.centered && isCentered) {
+      out += '</div>\n\n';
+      isCentered = false;
+    }
+
+    if (part.summary) out += `<details><summary>${part.summary}</summary>\n\n`;
+    out += part.text + (part.text ? part.sep : "");
+    if (part.summary) out += "</details>\n\n";
+  }
+
+  if (isCentered) {
+    out += '</div>\n\n';
+  }
+
+  return new NextResponse(out.trim(), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store",
