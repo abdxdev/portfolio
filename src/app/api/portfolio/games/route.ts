@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const maxDuration = 300;
+export const maxDuration = 60;
 const ONE_DAY_SECONDS = 60 * 60 * 24;
 
 interface Game {
