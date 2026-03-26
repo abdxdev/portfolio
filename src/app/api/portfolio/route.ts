@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+export const maxDuration = 300;
+
 export async function GET(request: NextRequest) {
   const dir = request.nextUrl.pathname;
   let basePath = path.join(process.cwd(), 'src', 'app', dir);

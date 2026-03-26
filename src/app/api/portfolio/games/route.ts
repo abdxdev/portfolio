@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const maxDuration = 300;
+
 interface Game {
   background_image_cropped: string;
   status: string;

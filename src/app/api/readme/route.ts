@@ -1,5 +1,7 @@
 import { ASSETS_URL, METRICS_URL, SITE_DOMAIN, SITE_URL } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
+
+export const maxDuration = 300;
 // import { FaGlobe, FaLinkedin } from "react-icons/fa";
 // import { IoMdMail } from "react-icons/io";
 // import { FaRegNewspaper } from "react-icons/fa6";
