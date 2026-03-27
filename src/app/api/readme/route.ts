@@ -295,11 +295,24 @@ async function fetchStaticAsset(url: string): Promise<string> {
 // ─── Main handler ────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
-  const [portfolio, description] = await Promise.all([
+  const [portfolio, descriptionLines] = await Promise.all([
     fetch(`${SITE_URL}/api/portfolio?fetch=true`).then((r) => r.json()),
-    fetchStaticAsset(SITE_URL + "/assets/md/description.md"),
+    fetch(`${SITE_URL}/assets/json/description.json`)
+      .then((r) => r.json())
+      .then((json: unknown) =>
+        Array.isArray(json) && json.every((v) => typeof v === "string")
+          ? (json as string[]).map((s) => s.trim()).filter(Boolean)
+          : []
+      )
+      .catch(() => [] as string[]),
   ]);
 
+  const description = descriptionLines.length
+    ? descriptionLines[0]
+    // "\n\n" +
+    // descriptionLines.slice(1).map((l) => `- ${l}`).join("\n")
+    : "";
+  
   const now = new Date().toISOString().replace("T", " ").split(".")[0] + " UTC";
   const updateBadge = mdBadge({ label: "Click to Update", message: `Last Updated: ${now}`, color: "080808" });
 
