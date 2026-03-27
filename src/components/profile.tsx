@@ -23,6 +23,7 @@ import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { NumberTicker } from "./ui/number-ticker";
 import { Skeleton } from "./ui/skeleton";
 import { highlight } from "@/lib/highlight";
+import { WordRotate } from "@/components/ui/word-rotate";
 
 const PROFILE_PICTURE_LIGHT = '/pfp/dark.jpeg';
 const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
@@ -72,6 +73,8 @@ export const Profile = () => {
 
   const [easterEggMessages, setEasterEggMessages] = useState<string[]>([]);
 
+  const [subtitles, setSubtitles] = useState<string[]>([]);
+
   useEffect(() => {
     fetch('/assets/json/easterEggMessages.json')
       .then(res => res.json())
@@ -84,6 +87,9 @@ export const Profile = () => {
     }).catch(() => { });
     fetch('/api/portfolio/games').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setGameCount(data.length);
+    }).catch(() => { });
+    fetch('/assets/json/subtitles.json').then(r => r.json()).then(data => {
+      if (Array.isArray(data) && data.every((v) => typeof v === 'string')) setSubtitles(data.map((s: string) => s.trim()).filter(Boolean));
     }).catch(() => { });
   }, []);
   const revertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -261,6 +267,17 @@ export const Profile = () => {
             </div>
 
           </div>
+
+          {/* Word Rotate */}
+          {subtitles.length > 0 && (
+            <div className="h-12 w-full flex items-center">
+              <WordRotate
+                words={subtitles}
+                duration={4000}
+                className="text-sm text-muted-foreground"
+              />
+            </div>
+          )}
 
           <div className="flex w-full items-center justify-between text-center py-3 gap-5">
             <div className="flex flex-1 flex-col items-center gap-1">
