@@ -6,7 +6,7 @@ const ONE_DAY_SECONDS = 60 * 60 * 24;
 
 async function getGithubProjects(username: string, shouldRefresh: boolean): Promise<Project[]> {
   const response = await fetch(
-    `https://api.github.com/users/${username}/repos`,
+    `https://api.github.com/users/${username}/repos?per_page=100`,
     shouldRefresh
       ? { cache: 'no-store' }
       : { next: { revalidate: ONE_DAY_SECONDS } }
