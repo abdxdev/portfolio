@@ -24,6 +24,8 @@ import { NumberTicker } from "./ui/number-ticker";
 import { Skeleton } from "./ui/skeleton";
 import { highlight } from "@/lib/highlight";
 import { WordRotate } from "@/components/ui/word-rotate";
+import { VideoIntroduction } from "./video-introduction";
+import { ArrowUpRight, FileText, Send } from "lucide-react";
 
 const PROFILE_PICTURE_LIGHT = '/pfp/dark.jpeg';
 const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
@@ -301,6 +303,7 @@ export const Profile = () => {
           </div>
 
           <RainbowButton className="mt-2 w-full rounded-md font-semibold text-sm"
+            startIcon={<Send className="h-4 w-4" />}
             onClick={() => {
               const section = document.getElementById("contact");
               section?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -311,11 +314,15 @@ export const Profile = () => {
           </RainbowButton>
 
           <InteractiveHoverButton className="rounded-md w-full font-semibold text-sm"
+            startIcon={<FileText className="h-4 w-4" />}
+            icon={<ArrowUpRight className="h-4 w-4" />}
             onClick={() => {
               window.open('/resume', '_blank')
             }}>
             RESUME
           </InteractiveHoverButton>
+
+          <VideoIntroduction />
 
           <div className="mt-4 flex flex-col space-y-2 border-t border-border pt-4 w-full">
             {socials.map((s, i) => {

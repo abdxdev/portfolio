@@ -22,23 +22,25 @@ const rainbowButtonVariants = cva(
   }
 )
 
-type RainbowButtonProps = React.ComponentProps<typeof Button> &
+export type RainbowButtonProps = React.ComponentProps<typeof InteractiveHoverButton> &
   VariantProps<typeof rainbowButtonVariants>
 
-function RainbowButton({
+export const RainbowButton = React.forwardRef<HTMLButtonElement, RainbowButtonProps>(({
   className,
   variant = "default",
   ...props
-}: RainbowButtonProps) {
+}, ref) => {
   return (
     <div className="relative w-full">
-      <div className="absolute bottom-[-20%] left-1/2 z-0 h-1/5 w-3/5 -translate-x-1/2 animate-rainbow bg-[linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] bg-[length:200%] [filter:blur(0.75rem)]" />
+      <div className="absolute bottom-[-20%] left-1/2 z-0 h-1/5 w-3/5 -translate-x-1/2 animate-rainbow bg-[linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] bg-size-[200%] filter-[blur(0.75rem)]" />
       <InteractiveHoverButton variant="secondary"
+        ref={ref}
         className={cn(rainbowButtonVariants({ variant }), className)}
         {...props}
       />
     </div>
   )
-}
+})
 
-export { RainbowButton, rainbowButtonVariants, type RainbowButtonProps }
+RainbowButton.displayName = "RainbowButton"
+export { rainbowButtonVariants }

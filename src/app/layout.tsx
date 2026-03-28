@@ -44,11 +44,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AnimationSettingsProvider>
-            <RevealHighlightProvider defaultIntensity={0.5}>
+            <RevealHighlightProvider defaultIntensity={0.6}>
               {children}
             </RevealHighlightProvider>
           </AnimationSettingsProvider>
-          <Toaster />
+          <Toaster position="top-center" />
         </ThemeProvider>
         <OneSignalInit />
         <Analytics />
