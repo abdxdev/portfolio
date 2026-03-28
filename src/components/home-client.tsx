@@ -7,7 +7,11 @@ import { Experience } from "@/components/experience";
 import LightRays from "@/components/LightRays";
 import { Projects } from "@/components/projects";
 import { Contact } from "@/components/contact";
-import { Leftbar } from "@/components/leftbar";
+import { Skills } from "./skills";
+import { Profile } from "./profile";
+import { Conversation } from "./conversation";
+import { Education } from "./education";
+import { Blogs } from "./blogs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntroOverlay } from "@/components/intro-overlay";
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler";
@@ -71,9 +75,20 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
         <h1>Abdul Rahman - Software Engineer & UI/UX Designer</h1>
       </header>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Leftbar />
+        <aside className="md:col-span-1 gap-6 flex flex-col">
+          <Profile />
+          <div className="md:hidden block" >
+            <AboutMe id="about-me" />
+          </div>
+          <Skills id="skills" />
+          <Education id="education" />
+          <Conversation id="conversation" />
+          <Blogs id="blogs" />
+        </aside>
         <main className="md:col-span-2 gap-6 flex flex-col">
-          <AboutMe id="about-me" />
+          <div className="md:block hidden" >
+            <AboutMe id="about-me" />
+          </div>
           <Experience id="experience" />
           <Contact id="contact" />
           <Projects id="projects" />
