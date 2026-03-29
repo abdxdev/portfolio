@@ -1,13 +1,15 @@
 'use client'
-import { useState } from 'react'
+import { RefObject, useState } from 'react'
 import { Check, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { ShakeElement, ShakeHandle } from './shake-element'
 
 interface CalendarAppointmentProps {
   onConfirm?: (date: Date, time: string) => void
   onCancel?: () => void
+  shakeRef?: RefObject<ShakeHandle | null>
 }
 
 function getNextWeekday(from: Date): Date {
@@ -18,7 +20,7 @@ function getNextWeekday(from: Date): Date {
   return d
 }
 
-const CalendarAppointment = ({ onConfirm, onCancel }: CalendarAppointmentProps) => {
+const CalendarAppointment = ({ onConfirm, onCancel, shakeRef }: CalendarAppointmentProps) => {
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
   tomorrow.setHours(0, 0, 0, 0)
@@ -120,26 +122,28 @@ const CalendarAppointment = ({ onConfirm, onCancel }: CalendarAppointmentProps) 
           )}
         </p>
 
-        <div className="flex shrink-0 gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={handleCancel}
-            title="Cancel"
-          >
-            <X className="size-4" />
-          </Button>
-          <Button
-            type="button"
-            size="icon"
-            disabled={!canConfirm}
-            onClick={handleConfirm}
-            title="Confirm appointment"
-          >
-            <Check className="size-4" />
-          </Button>
-        </div>
+        <ShakeElement ref={shakeRef}>
+          <div className="flex shrink-0 gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={handleCancel}
+              title="Cancel"
+            >
+              <X className="size-4" />
+            </Button>
+            <Button
+              type="button"
+              size="icon"
+              disabled={!canConfirm}
+              onClick={handleConfirm}
+              title="Confirm appointment"
+            >
+              <Check className="size-4" />
+            </Button>
+          </div>
+        </ShakeElement>
       </div>
     </div>
   )

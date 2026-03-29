@@ -13,7 +13,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { FaTrashRestore } from "react-icons/fa";
+import { toast } from "sonner";
 
 // ── Shared message type ───────────────────────────────────────────
 export interface ChatMessage {
@@ -169,7 +176,7 @@ export function ChatView({
             onCancelReply={() => onSetReplyTo(null)}
           />
         </div>
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {error && toast.error(error)}
       </div>
     );
   }
@@ -189,12 +196,17 @@ export function ChatView({
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
           {msgSearch && (
-            <button
-              onClick={() => onSearchChange("")}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <X className="h-3 w-3" />
-            </button>
+            <Tooltip>
+              <TooltipTrigger>
+                <button
+                  onClick={() => onSearchChange("")}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="top">Clear Search</TooltipContent>
+            </Tooltip>
           )}
         </div>
       )}
@@ -284,7 +296,14 @@ export function ChatView({
                         >
                           {formatTime(msg.created_at)}
                           {self && msg.last_seen_at && (
-                            <CheckCheck className="h-3 w-3 text-blue-500" />
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <span className="cursor-pointer">
+                                  <CheckCheck className="h-3 w-3 text-blue-500" />
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent side="top">Seen at {formatTime(msg.last_seen_at)}</TooltipContent>
+                            </Tooltip>
                           )}
                         </p>
                       </div>
@@ -303,7 +322,14 @@ export function ChatView({
                         >
                           {formatTime(msg.created_at)}
                           {self && msg.last_seen_at && (
-                            <CheckCheck className="h-3 w-3 text-blue-500" />
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <span className="cursor-pointer">
+                                  <CheckCheck className="h-3 w-3 text-blue-500" />
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent side="top">Seen at {formatTime(msg.last_seen_at)}</TooltipContent>
+                            </Tooltip>
                           )}
                         </p>
                       </div>
@@ -322,27 +348,39 @@ export function ChatView({
                         align={self ? "end" : "start"}
                         className="min-w-0"
                       >
-                        <DropdownMenuItem onClick={() => onSetReplyTo(msg)} title="Reply">
-                          <Reply className="h-3.5 w-3.5" />
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          title="Copy"
-                          onClick={() => {
-                            const rec = parseRecommendation(msg.message);
-                            const text = rec ? rec.title : msg.message;
-                            navigator.clipboard.writeText(text);
-                          }}
-                        >
-                          <Copy className="h-3.5 w-3.5" />
-                        </DropdownMenuItem>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <DropdownMenuItem onClick={() => onSetReplyTo(msg)}>
+                              <Reply className="h-3.5 w-3.5" />
+                            </DropdownMenuItem>
+                          </TooltipTrigger>
+                          <TooltipContent side="top">Reply</TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                const rec = parseRecommendation(msg.message);
+                                const text = rec ? rec.title : msg.message;
+                                navigator.clipboard.writeText(text);
+                              }}
+                            >
+                              <Copy className="h-3.5 w-3.5" />
+                            </DropdownMenuItem>
+                          </TooltipTrigger>
+                          <TooltipContent side="top">Copy</TooltipContent>
+                        </Tooltip>
                         {canDelete && (
-                          <DropdownMenuItem
-                            onClick={() => onDelete(msg.id)}
-                            className="text-destructive focus:text-destructive"
-                            title="Delete"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </DropdownMenuItem>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <DropdownMenuItem
+                                onClick={() => onDelete(msg.id)}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </DropdownMenuItem>
+                            </TooltipTrigger>
+                            <TooltipContent side="top">Delete</TooltipContent>
+                          </Tooltip>
                         )}
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -357,9 +395,14 @@ export function ChatView({
                         </button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align={self ? "end" : "start"} className="min-w-0">
-                        <DropdownMenuItem onClick={() => onUndelete(msg.id)} title="Restore">
-                          <ArchiveRestore className="h-3.5 w-3.5" />
-                        </DropdownMenuItem>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <DropdownMenuItem onClick={() => onUndelete(msg.id)}>
+                              <ArchiveRestore className="h-3.5 w-3.5" />
+                            </DropdownMenuItem>
+                          </TooltipTrigger>
+                          <TooltipContent side="top">Restore</TooltipContent>
+                        </Tooltip>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   )}
@@ -387,7 +430,7 @@ export function ChatView({
         replyPreview={replyPreviewText}
         onCancelReply={() => onSetReplyTo(null)}
       />
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && toast.error(error)}
     </div>
   );
 }

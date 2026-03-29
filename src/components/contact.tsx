@@ -64,6 +64,7 @@ export const Contact = ({ id }: { id?: string }) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const confettiRef = useRef<ConfettiButtonRef>(null);
   const shakeRef = useRef<ShakeHandle>(null)
+  const buttonRef = useRef<ShakeHandle>(null)
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -86,7 +87,10 @@ export const Contact = ({ id }: { id?: string }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate() || isSubmitting) return;
+    if (!validate() || isSubmitting) {
+      buttonRef.current?.shake();
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -235,9 +239,6 @@ export const Contact = ({ id }: { id?: string }) => {
                       aria-invalid={!!errors.firstName}
                       className="h-9"
                     />
-                    {/* {errors.firstName && (
-                      <p className="text-[11px] text-destructive">{errors.firstName}</p>
-                    )} */}
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="contact-last-name" className="text-xs">
@@ -269,9 +270,6 @@ export const Contact = ({ id }: { id?: string }) => {
                     aria-invalid={!!errors.email}
                     className="h-9"
                   />
-                  {/* {errors.email && (
-                    <p className="text-[11px] text-destructive">{errors.email}</p>
-                  )} */}
                 </div>
 
                 <div className="space-y-1.5">
@@ -287,9 +285,6 @@ export const Contact = ({ id }: { id?: string }) => {
                     className="min-h-25 resize-none"
                     aria-invalid={!!errors.message}
                   />
-                  {/* {errors.message && (
-                    <p className="text-[11px] text-destructive">{errors.message}</p>
-                  )} */}
                 </div>
 
                 {/* ─── Schedule Appointment ─── */}
@@ -344,43 +339,45 @@ export const Contact = ({ id }: { id?: string }) => {
                             shakeRef.current?.shake()
                           }}
                         >
-                          <ShakeElement ref={shakeRef}>
-                            <CalendarAppointment
-                              onConfirm={(date, time) => {
-                                handleAppointmentConfirm(date, time)
-                                setCalendarOpen(false)
-                              }}
-                              onCancel={() => setCalendarOpen(false)}
-                            />
-                          </ShakeElement>
+                          <CalendarAppointment
+                            onConfirm={(date, time) => {
+                              handleAppointmentConfirm(date, time)
+                              setCalendarOpen(false)
+                            }}
+                            onCancel={() => setCalendarOpen(false)}
+                            shakeRef={shakeRef}
+                          />
                         </PopoverContent>
                       </Popover>
                     </>
                   )}
                 </div>
 
-                <ConfettiButton
-                  ref={confettiRef}
-                  manualstart={true}
-                  type="submit"
-                  className="w-full gap-2 h-10 transition-all font-medium"
-                  disabled={isSubmitting || sent}
-                  variant="outline"
-                >
-                  {sent ? (
-                    <>Sent!</>
-                  ) : isSubmitting ? (
-                    <>
-                      <span className="size-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="size-4" />
-                      Send Message
-                    </>
-                  )}
-                </ConfettiButton>
+                <ShakeElement ref={buttonRef}>
+                  <ConfettiButton
+                    ref={confettiRef}
+                    manualstart={true}
+                    type="submit"
+                    className="w-full gap-2 h-10 transition-all font-medium"
+                    disabled={isSubmitting || sent}
+                    variant="outline"
+                  >
+                    {sent ? (
+                      <>Sent!</>
+                    ) : isSubmitting ? (
+                      <>
+                        <span className="size-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="size-4" />
+                        Send Message
+                      </>
+                    )}
+                  </ConfettiButton>
+                </ShakeElement>
+
               </form>
             </div>
 

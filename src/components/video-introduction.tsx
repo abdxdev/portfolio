@@ -26,7 +26,7 @@ export function VideoIntroduction({
   return (
     <ShakeElement ref={buttonRef} className="w-full border rounded-md">
       <InteractiveHoverButton
-        className="rounded-md w-full font-semibold text-sm border-none bg-transparent text-foreground relative overflow-hidden before:absolute before:inset-0 before:-z-20 before:bg-cover before:bg-center before:[background-image:var(--thumb-url)] after:absolute after:inset-0 after:-z-10 after:bg-linear-to-r after:from-card after:via-card/50 after:to-card"
+        className="rounded-md w-full font-semibold text-sm border-none bg-transparent text-foreground relative overflow-hidden before:absolute before:inset-0 before:-z-1 before:bg-cover before:bg-center before:[background-image:var(--thumb-url)] after:absolute after:inset-0 after:-z-1 after:bg-linear-to-r after:from-card after:via-card/50 after:to-card"
         style={{ '--thumb-url': `url('${thumbnailUrl}')` } as React.CSSProperties}
         startIcon={<Play className="h-4 w-4" />}
         onClick={() => { buttonRef.current?.shake(); toast.info("Coming Soon!") }}

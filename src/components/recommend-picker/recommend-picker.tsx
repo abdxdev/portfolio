@@ -23,6 +23,7 @@ import { statusLabel, allStatusLabels, encodeRecommendation, norm } from "./util
 import { searchGames, searchAnime } from "./search";
 import { ResultRow } from "./result-row";
 import { DoodleCircle } from "@/components/svg/doodle-circle";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 // ── Accent colours per mode ───────────────────────────────────────
 const modeRing: Record<PickerMode, string> = {
@@ -324,26 +325,38 @@ export function RecommendPicker({
         <InputGroup className="rounded-none border-0 shadow-none">
           {/* Left icons */}
           <InputGroupAddon align="inline-start" className="gap-0">
-            <InputGroupButton
-              id="game-recommendation"
-              type="button"
-              size="icon-sm"
-              className={`${open && mode === "game" ? modeIcon.game : "text-muted-foreground hover:text-foreground"}`}
-              title="Recommend a game"
-              onClick={() => toggleMode("game")}
-            >
-              <Gamepad2 className="h-4 w-4" />
-            </InputGroupButton>
-            <InputGroupButton
-              id="anime-recommendation"
-              type="button"
-              size="icon-sm"
-              className={`${open && mode === "anime" ? modeIcon.anime : "text-muted-foreground hover:text-foreground"}`}
-              title="Recommend an anime"
-              onClick={() => toggleMode("anime")}
-            >
-              <AnilistIcon className="h-4 w-4 fill-current" />
-            </InputGroupButton>
+            <Tooltip>
+              <TooltipTrigger>
+                <InputGroupButton
+                  id="game-recommendation"
+                  type="button"
+                  size="icon-sm"
+                  className={`${open && mode === "game" ? modeIcon.game : "text-muted-foreground hover:text-foreground"}`}
+                  onClick={() => toggleMode("game")}
+                >
+                  <Gamepad2 className="h-4 w-4" />
+                </InputGroupButton>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Recommend a game</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <InputGroupButton
+                  id="anime-recommendation"
+                  type="button"
+                  size="icon-sm"
+                  className={`${open && mode === "anime" ? modeIcon.anime : "text-muted-foreground hover:text-foreground"}`}
+                  onClick={() => toggleMode("anime")}
+                >
+                  <AnilistIcon className="h-4 w-4 fill-current" />
+                </InputGroupButton>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Recommend an anime</p>
+              </TooltipContent>
+            </Tooltip>
           </InputGroupAddon>
 
           <InputGroupTextarea
@@ -360,32 +373,44 @@ export function RecommendPicker({
           <InputGroupAddon align="inline-end" className="gap-0">
             {open ? (
               <>
-                <button
-                  type="button"
-                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors whitespace-nowrap ${view === "list"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                    }`}
-                  title={view === "list" ? "Back to search" : "View my list"}
-                  onClick={() => {
-                    setView(view === "list" ? "search" : "list");
-                    setListFilter("");
-                    setStatusFilter(null);
-                    setQuery("");
-                    setResults([]);
-                  }}
-                >
-                  {view === "list" ? "My List" : "Global"}
-                </button>
-                <InputGroupButton
-                  type="button"
-                  size="icon-sm"
-                  className="text-muted-foreground hover:text-foreground"
-                  title="Close picker"
-                  onClick={dismiss}
-                >
-                  <X className="h-3.5 w-3.5" />
-                </InputGroupButton>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <button
+                      type="button"
+                      className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-colors whitespace-nowrap ${view === "list"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:text-foreground"
+                        }`}
+                      onClick={() => {
+                        setView(view === "list" ? "search" : "list");
+                        setListFilter("");
+                        setStatusFilter(null);
+                        setQuery("");
+                        setResults([]);
+                      }}
+                    >
+                      {view === "list" ? "My List" : "Global"}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{view === "list" ? "Back to search" : "View my list"}</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <InputGroupButton
+                      type="button"
+                      size="icon-sm"
+                      className="text-muted-foreground hover:text-foreground"
+                      onClick={dismiss}
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </InputGroupButton>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Close picker</p>
+                  </TooltipContent>
+                </Tooltip>
               </>
             ) : (
               <InputGroupButton

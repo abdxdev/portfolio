@@ -33,6 +33,7 @@ const techColors: Record<string, string> = {
   "TSQL": "bg-blue-500",
   "Default": "bg-gray-500",
   "TypeScript": "bg-blue-500",
+  "TeX": "bg-neutral-700"
 };
 
 const PROJECTS_NUM = 6;

@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 interface Session {
   sessionId: string;
@@ -58,6 +59,7 @@ export default function ConversationsPage() {
       const data = await response.json();
       setSessions(data.sessions || []);
     } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to load")
       setError(err instanceof Error ? err.message : "Failed to load");
     } finally {
       setLoading(false);
@@ -212,13 +214,7 @@ export default function ConversationsPage() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <p className="text-sm text-destructive">{error}</p>
-      </div>
-    );
-  }
+  if (error) return;
 
   // ── Session detail ──────────────────────────────────────────────
   if (selectedSession) {

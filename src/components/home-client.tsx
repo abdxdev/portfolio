@@ -4,13 +4,17 @@ import { useState, useEffect } from "react";
 import { LayoutGroup } from "motion/react";
 import { AboutMe } from "@/components/about-me";
 import { Experience } from "@/components/experience";
-import LightRays from "@/components/LightRays";
+import { LightRays } from "@/components/ui/light-rays";
 import { Projects } from "@/components/projects";
 import { Contact } from "@/components/contact";
-import { Leftbar } from "@/components/leftbar";
+import { Skills } from "./skills";
+import { Profile } from "./profile";
+import { Conversation } from "./conversation";
+import { Education } from "./education";
+import { Blogs } from "./blogs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntroOverlay } from "@/components/intro-overlay";
-import { AnimatedThemeToggler } from "./ui/animated-theme-toggler";
+import { ToggleTheme } from "./ui/toggle-theme";
 import { SettingsButton } from "@/components/settings-button";
 import { useAnimationSettings } from "@/components/animation-settings";
 import ClickSpark from "@/components/ClickSpark";
@@ -55,15 +59,14 @@ export const HomeClient = () => {
 const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSettings>["settings"] }) => (
   <div className="relative w-full h-full">
     {settings.lightRays && (
-      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-30 mask-[linear-gradient(to_bottom,black_40%,transparent_100%)]">
+      <div className="absolute inset-x-0 top-0 h-screen z-1 pointer-events-none opacity-70">
         <LightRays />
       </div>
     )}
     <div className="sticky top-0 right-0 z-50">
       <div className="m-4 absolute right-0 top-0 flex items-center">
-        {/* <ApiButton /> */}
         <SettingsButton />
-        <AnimatedThemeToggler />
+        <ToggleTheme animationType="circle-spread" duration={600} />
       </div>
     </div>
     <div className="container max-w-5xl mx-auto px-4 py-8">
@@ -71,9 +74,20 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
         <h1>Abdul Rahman - Software Engineer & UI/UX Designer</h1>
       </header>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Leftbar />
+        <aside className="md:col-span-1 gap-6 flex flex-col">
+          <Profile />
+          <div className="md:hidden block" >
+            <AboutMe id="about-me" />
+          </div>
+          <Skills id="skills" />
+          <Education id="education" />
+          <Conversation id="conversation" />
+          <Blogs id="blogs" />
+        </aside>
         <main className="md:col-span-2 gap-6 flex flex-col">
-          <AboutMe id="about-me" />
+          <div className="md:block hidden" >
+            <AboutMe id="about-me" />
+          </div>
           <Experience id="experience" />
           <Contact id="contact" />
           <Projects id="projects" />

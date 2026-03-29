@@ -25,6 +25,7 @@ import {
   useReplyNotifications,
   NotificationToggleRow,
 } from "@/components/notification-prompt";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const items: {
   key: keyof AnimationSettings;
@@ -40,18 +41,24 @@ const items: {
 
 export function SettingsButton() {
   const { settings, toggle, setAll } = useAnimationSettings();
-  const { enabled: revealEnabled, toggle: toggleReveal } = useRevealHighlight();
+  const { enabled: revealEnabled, toggle: toggleReveal, setEnabled: setRevealEnabled } = useRevealHighlight();
   const { enabled: notifEnabled, loading: notifLoading, toggle: toggleNotif } = useReplyNotifications([]);
-  const allEnabled = Object.values(settings).every(Boolean);
-  const noneEnabled = Object.values(settings).every((v) => !v);
+  const isAllEnabled = Object.values(settings).every(Boolean) && revealEnabled;
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Animation settings">
-          <Settings className="h-[1.2rem] w-[1.2rem]" />
-        </Button>
-      </PopoverTrigger>
+      <Tooltip>
+        <TooltipTrigger>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label="Animation settings" className="group">
+              <Settings className="transition-transform duration-500 ease-in-out group-hover:-rotate-60 group-data-[state=open]:rotate-180" />
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Settings</p>
+        </TooltipContent>
+      </Tooltip>
       <PopoverContent align="end" className="w-64 p-0">
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-3 ">
@@ -60,9 +67,13 @@ export function SettingsButton() {
             variant="ghost"
             size="sm"
             className="h-auto px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
-            onClick={() => setAll(noneEnabled)}
+            onClick={() => {
+              const newState = !isAllEnabled;
+              setAll(newState);
+              setRevealEnabled(newState);
+            }}
           >
-            {noneEnabled ? "Enable all" : "Disable all"}
+            {isAllEnabled ? "Disable all" : "Enable all"}
           </Button>
         </div>
 

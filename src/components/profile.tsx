@@ -25,7 +25,9 @@ import { Skeleton } from "./ui/skeleton";
 import { highlight } from "@/lib/highlight";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { VideoIntroduction } from "./video-introduction";
-import { ArrowUpRight, FileText, Send } from "lucide-react";
+import { ArrowUpRight, FileText, Send, Volume2 } from "lucide-react";
+import { Button } from "./ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const PROFILE_PICTURE_LIGHT = '/pfp/dark.jpeg';
 const PROFILE_PICTURE_DARK = '/pfp/dark.jpeg';
@@ -252,17 +254,36 @@ export const Profile = () => {
             {/* Text content */}
 
             <div className="flex flex-col items-start justify-center">
-              <motion.h1
-                layoutId={settings.introAnimation ? "name-heading" : undefined}
-                className="font-bold md:mt-0 text-xl md:text-2xl"
-                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-              >
-                <ShinyText
-                  disabled={!settings.shinyText}
+              <div className="flex items-center gap-2">
+                <motion.h1
+                  layoutId={settings.introAnimation ? "name-heading" : undefined}
+                  className="font-bold md:mt-0 text-xl md:text-2xl"
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                 >
-                  Abdul Rahman
-                </ShinyText>
-              </motion.h1>
+                  <ShinyText
+                    disabled={!settings.shinyText}
+                  >
+                    Abdul Rahman
+                  </ShinyText>
+                </motion.h1>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button
+                      onClick={() => {
+                        const audio = new Audio('/name-pronunciation.mp3');
+                        audio.play();
+                      }}
+                      variant="ghost"
+                      size="icon"
+                    >
+                      <Volume2 className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>ab-DOOL rah-MAAN</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
               <p className="text-sm md:text-base text-muted-foreground">
                 Software Engineer & UI/UX Designer
               </p>
@@ -272,7 +293,7 @@ export const Profile = () => {
 
           {/* Word Rotate */}
           {subtitles.length > 0 && (
-            <div className="h-12 w-full flex items-center">
+            <div className="h-14 w-full flex items-center">
               <WordRotate
                 words={subtitles}
                 duration={4000}
@@ -283,22 +304,22 @@ export const Profile = () => {
 
           <div className="flex w-full items-center justify-between text-center py-3 gap-5">
             <div className="flex flex-1 flex-col items-center gap-1">
-              <span className="text-2xl font-bold text-foreground">
+              <span className="text-2xl font-mono text-foreground">
                 {repoCount !== null ? <NumberTicker value={repoCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
-              <span className="text-xs text-muted-foreground">Repos Published</span>
+              <span className="text-xs text-muted-foreground">Repos<br />Published</span>
             </div>
             <div className="flex flex-1 flex-col items-center gap-1">
-              <span className="text-2xl font-bold text-foreground">
+              <span className="text-2xl font-mono text-foreground">
                 {animeCount !== null ? <NumberTicker value={animeCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
-              <span className="text-xs text-muted-foreground">Anime Watched</span>
+              <span className="text-xs text-muted-foreground">Anime<br />Watched</span>
             </div>
             <div className="flex flex-1 flex-col items-center gap-1">
-              <span className="text-2xl font-bold text-foreground">
+              <span className="text-2xl font-mono text-foreground">
                 {gameCount !== null ? <NumberTicker value={gameCount} /> : <Skeleton className="h-7 w-8 rounded" />}
               </span>
-              <span className="text-xs text-muted-foreground">Games Played</span>
+              <span className="text-xs text-muted-foreground">Games<br />Played</span>
             </div>
           </div>
 

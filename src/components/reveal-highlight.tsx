@@ -85,7 +85,7 @@ function syncTree(root: Element | Document, tracked: Set<HTMLElement>) {
 
 export function RevealHighlightProvider({
   children,
-  defaultEnabled = true,
+  defaultEnabled,
   defaultIntensity = 1,
   defaultRadius = 200,
 }: {
@@ -94,7 +94,13 @@ export function RevealHighlightProvider({
   defaultIntensity?: number;
   defaultRadius?: number;
 }) {
-  const [enabled, setEnabled] = useState(defaultEnabled);
+  const [enabled, setEnabled] = useState(() => {
+    if (defaultEnabled !== undefined) return defaultEnabled;
+    if (typeof window !== "undefined") {
+      return !window.matchMedia("(max-width: 767px)").matches;
+    }
+    return true;
+  });
   const [intensity, setIntensityRaw] = useState(defaultIntensity);
   const [radius, setRadiusRaw] = useState(defaultRadius);
   const setIntensity = useCallback((v: number) => setIntensityRaw(Math.max(0, Math.min(1, v))), []);

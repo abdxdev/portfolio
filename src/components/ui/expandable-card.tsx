@@ -126,7 +126,7 @@ export function ExpandableCard({
                       <motion.button
                         aria-label="Close card"
                         layoutId={maybeLayoutId(`button-${title}-${id}`)}
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border relative z-100 ml-auto"
+                        className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none ml-auto"
                         onClick={() => setActive(false)}
                       >
                         <motion.div
@@ -203,7 +203,7 @@ export function ExpandableCard({
           </motion.div>
           <div className="flex items-start justify-between p-4 px-5 pb-5 flex-1">
             <div className="flex flex-col flex-1 h-full relative top-[-4px]">
-              <div className="flex gap-1 w-full items-center">
+              <div className="flex gap-1 w-full">
                 <motion.p
                   layoutId={maybeLayoutId(`description-${description}-${id}`)}
                   className="flex-1 text-sm font-medium md:text-left text-muted-foreground"
@@ -214,14 +214,14 @@ export function ExpandableCard({
                   aria-label="Open card"
                   layoutId={maybeLayoutId(`button-${title}-${id}`)}
                   className={cn(
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none ml-auto"
+                    "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus:outline-none ml-auto"
                   )}
                 >
                   <motion.div
                     animate={{ rotate: active ? 45 : 0 }}
                     transition={noTransition ?? { duration: 0.4 }}
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-5 w-5" />
                   </motion.div>
                 </motion.button>
               </div>

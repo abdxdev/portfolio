@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { RevealHighlightProvider } from "@/components/reveal-highlight";
@@ -7,14 +7,15 @@ import { AnimationSettingsProvider } from "@/components/animation-settings";
 import { Toaster } from '@/components/ui/sonner';
 import { OneSignalInit } from '@/components/onesignal-init';
 import { Analytics } from '@vercel/analytics/next';
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -41,11 +42,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${jetBrainsMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AnimationSettingsProvider>
             <RevealHighlightProvider defaultIntensity={0.6}>
-              {children}
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
             </RevealHighlightProvider>
           </AnimationSettingsProvider>
           <Toaster position="top-center" />
