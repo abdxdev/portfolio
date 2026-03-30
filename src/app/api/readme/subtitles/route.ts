@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
   const spans: { x: number, text: string, sep: boolean }[] = [];
   let x = 0;
-  
+
   // Replace HTML encoded entities just in case
   const escapeHTML = (str: string) => str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     spans.push({ x, text: escapeHTML(SEP), sep: true });
     x += SEP_W;
   }
-  
+
   const copyWidth = x;
 
   const allSpans = [
@@ -62,14 +62,14 @@ export async function GET(request: Request) {
     <text
       x="${x}"
       y="${cy}"
-      dominant-baseline="central"
+      dominant-baseline="middle"
+      alignment-baseline="middle"
       font-size="${FONT_SIZE}"
       font-family="${FONT}"
       letter-spacing="0.02em"
-      fill="${sep ? "#374151" : "#c9d1d9"}"
-    >
-      ${text}
-    </text>
+      fill="${sep ? "#58a6ff" : "#c9d1d9"}"
+      xml:space="preserve"
+    >${text}</text>
   `).join("");
 
   const svg = `
