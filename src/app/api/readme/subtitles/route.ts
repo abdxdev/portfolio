@@ -100,6 +100,9 @@ export async function GET(request: Request) {
 
       <!-- Top accent stripe -->
       <rect width="${width}" height="2" fill="#3b82f6" opacity="0.85" rx="1" />
+      
+      <!-- Bottom accent stripe -->
+      <rect y="${height - 2}" width="${width}" height="2" fill="#3b82f6" opacity="0.85" rx="1" />
 
       <!-- Scrolling content -->
       <g clip-path="url(#pm-clip)">
