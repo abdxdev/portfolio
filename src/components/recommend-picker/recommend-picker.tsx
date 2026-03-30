@@ -22,7 +22,7 @@ import type {
 import { statusLabel, allStatusLabels, encodeRecommendation, norm } from "./utils";
 import { searchGames, searchAnime } from "./search";
 import { ResultRow } from "./result-row";
-import { DoodleCircle } from "@/components/svg/doodle-circle";
+import DoodleCircle from "@/components/svg/doodle-circle";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 // ── Accent colours per mode ───────────────────────────────────────

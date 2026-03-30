@@ -18,6 +18,7 @@ import { ToggleTheme } from "./ui/toggle-theme";
 import { SettingsButton } from "@/components/settings-button";
 import { useAnimationSettings } from "@/components/animation-settings";
 import ClickSpark from "@/components/ClickSpark";
+import Signature from "@/components/svg/signature";
 
 export const HomeClient = () => {
   const [introComplete, setIntroComplete] = useState(false);
@@ -92,8 +93,24 @@ const HomeContent = ({ settings }: { settings: ReturnType<typeof useAnimationSet
           <Contact id="contact" />
           <Projects id="projects" />
         </main>
-        <footer className="md:col-span-3 text-center text-sm opacity-50">
-          &copy; {new Date().getFullYear()} abdxdev.
+        <footer className="md:col-span-3 text-center text-sm overflow-hidden text-muted-foreground">
+          <Signature className="w-full max-h-20" />
+          <p>&copy; {new Date().getFullYear()} abdxdev.</p>
+          {/* <div className="pointer-events-none select-none w-full flex items-center justify-center text-primary">
+            <svg
+              viewBox="0 0 100 25"
+              className="w-full h-auto"
+              style={{
+                fontFamily: '"Latin Modern Roman", "Computer Modern Roman", serif',
+                fontStyle: 'italic',
+                fill: 'currentColor',
+              }}
+            >
+              <text x="50%" y="190%" textAnchor="middle" fontSize="65">
+                &alpha;&beta;&delta;
+              </text>
+            </ svg>
+          </div> */}
         </footer>
       </div>
     </div>
