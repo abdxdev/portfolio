@@ -1,0 +1,18 @@
+[
+  {
+    "role": "Software Engineer",
+    "company": "Freelance",
+    "logo": "BackendDeveloperIcon",
+    "duration": "2023 - Present",
+    "description": "Developed backend systems for clients using Django, Flask, and .NET, including REST APIs, web applications, and automation scripts.",
+    "images": []
+  },
+  {
+    "role": "UI Designer",
+    "company": "Freelance",
+    "logo": "GraphicDesignerIcon",
+    "duration": "2021 - 2023",
+    "description": "Directed and designed marketing materials for clients, including UI/UX design, branding, and social media content.",
+    "images": []
+  }
+]
