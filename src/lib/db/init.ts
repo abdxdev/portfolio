@@ -77,7 +77,7 @@ type Database = {
         }>;
         Relationships: [];
       };
-      conversation_push_subscriptions: {
+      portfolio_conversation_push_subscriptions: {
         Row: {
           session_id: string;
           player_id: string;

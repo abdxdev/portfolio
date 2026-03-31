@@ -70,14 +70,14 @@ SET default_tablespace = '';
 SET default_table_access_method = "heap";
 
 
-CREATE TABLE IF NOT EXISTS "public"."conversation_push_subscriptions" (
+CREATE TABLE IF NOT EXISTS "public"."portfolio_conversation_push_subscriptions" (
     "session_id" "text" NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "player_id" "text" NOT NULL
 );
 
 
-ALTER TABLE "public"."conversation_push_subscriptions" OWNER TO "postgres";
+ALTER TABLE "public"."portfolio_conversation_push_subscriptions" OWNER TO "postgres";
 
 
 CREATE TABLE IF NOT EXISTS "public"."portfolio_cache" (
@@ -116,8 +116,8 @@ ALTER TABLE "public"."portfolio_conversations" ALTER COLUMN "id" ADD GENERATED B
 
 
 
-ALTER TABLE ONLY "public"."conversation_push_subscriptions"
-    ADD CONSTRAINT "conversation_push_subscriptions_pkey" PRIMARY KEY ("session_id");
+ALTER TABLE ONLY "public"."portfolio_conversation_push_subscriptions"
+    ADD CONSTRAINT "portfolio_conversation_push_subscriptions_pkey" PRIMARY KEY ("session_id");
 
 
 
@@ -349,9 +349,9 @@ GRANT USAGE ON SCHEMA "public" TO "service_role";
 
 
 
-GRANT ALL ON TABLE "public"."conversation_push_subscriptions" TO "anon";
-GRANT ALL ON TABLE "public"."conversation_push_subscriptions" TO "authenticated";
-GRANT ALL ON TABLE "public"."conversation_push_subscriptions" TO "service_role";
+GRANT ALL ON TABLE "public"."portfolio_conversation_push_subscriptions" TO "anon";
+GRANT ALL ON TABLE "public"."portfolio_conversation_push_subscriptions" TO "authenticated";
+GRANT ALL ON TABLE "public"."portfolio_conversation_push_subscriptions" TO "service_role";
 
 
 

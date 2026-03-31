@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getSupabase } from '@/lib/db/init';
+import { PUSH_SUBSCRIPTIONS_TBL } from '@/lib/constants';
 
 export async function POST(request: Request) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
 
     const supabase = getSupabase();
     await supabase
-      .from('conversation_push_subscriptions')
+      .from(PUSH_SUBSCRIPTIONS_TBL)
       .upsert({ session_id: sessionId, player_id: playerId }, { onConflict: 'session_id' });
 
     return NextResponse.json({ ok: true });
@@ -31,7 +32,7 @@ export async function DELETE() {
 
     const supabase = getSupabase();
     await supabase
-      .from('conversation_push_subscriptions')
+      .from(PUSH_SUBSCRIPTIONS_TBL)
       .delete()
       .eq('session_id', sessionId);
 
