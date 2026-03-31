@@ -308,38 +308,43 @@ export async function GET(request: NextRequest) {
     parts.push({ text: text.trim(), centered, summary, sep });
   };
 
-  p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
+  // p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
+  p(mdImage("abdxdev", `${SITE_URL}/api/readme/title/hero?items=HI+THERE,I%27M,ABDUL+RAHMAN,AKA,ABDXDEV&color=teal`));
   p(description);
-  console.log("portfolio.subtitles:", portfolio.subtitles);
-  p(mdImage("Subtitles Marquee", `${SITE_URL}/api/readme/subtitles?width=860&height=48`));
+  p(mdImage("Subtitles Marquee", `${SITE_URL}/api/readme/subtitles?width=860&height=50`));
   p(`Portfolio: **${mdLink(SITE_DOMAIN, SITE_URL)}**`);
   p(`Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 
-  p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
-  p("*click see more to view all skills*");
+  // p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
+  p(mdImage("Languages & Tools", `${SITE_URL}/api/readme/title?t=LANGUAGES+&+TOOLS&c=teal`));
+  // p("*click see more to view all skills*");
   p(getFeaturedSkills(portfolio.skills));
   // p(mdImage("GitHub Stats", `${METRICS_URL}/languages.svg`));
   p(getAllSkills(portfolio.skills), { centered: false, summary: "See more skills" });
 
-  p(mdImage("Featured Projects", `${ASSETS_URL}/titles/featured_projects.png`));
-  p("*click see more to view all projects*");
+  // p(mdImage("Featured Projects", `${ASSETS_URL}/titles/featured_projects.png`));
+  p(mdImage("Featured Projects", `${SITE_URL}/api/readme/title?t=FEATURED+PROJECTS&c=teal`));
+  // p("*click see more to view all projects*");
   p(getProjectsGallery(portfolio.projects));
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
-  p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
-  p('*you reek of not having watched enough anime*');
+  // p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
+  p(mdImage("Anime List", `${SITE_URL}/api/readme/title?t=ANIME+LIST&c=teal`));
+  // p('*you reek of not having watched enough anime*');
   // p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
   // p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });
   p(getAnime(portfolio.anime), { centered: false });
 
-  p(mdImage("Game List", `${ASSETS_URL}/titles/game_list.png`));
-  p("*git commit -m 'died again'*");
+  // p(mdImage("Game List", `${ASSETS_URL}/titles/game_list.png`));
+  p(mdImage("Game List", `${SITE_URL}/api/readme/title?t=GAME+LIST&c=teal`));
+  // p("*git commit -m 'died again'*");
   p(getGames(portfolio.games), { centered: false });
 
-  p(mdImage("Meet my Code Buddies!", `${ASSETS_URL}/titles/friends.png`));
-  p("*Giga Nigas*");
+  // p(mdImage("Meet my Code Buddies!", `${ASSETS_URL}/titles/friends.png`));
+  p(mdImage("Meet my Code Buddies!", `${SITE_URL}/api/readme/title?t=MEET+MY+CODE+BUDDIES!&c=teal`));
+  // p("*Giga Nigas*");
   p(getFriends(portfolio.friends));
-  // p(mdImage("Support Me", `${ASSETS_URL}/titles/support_me.png`));
+
   // p("Help me keep my work open source and free for everyone—because the world needs more free stuff (and less paywalls).");
   // p(mdLink(mdImage("Buy me a coffee", mdBadge({ message: "Buy me a coffee", color: "ffdd00", logo: "buymeacoffee", logoColor: "000000", style: "for-the-badge" })), "https://www.buymeacoffee.com/abdbbdii"));
 
