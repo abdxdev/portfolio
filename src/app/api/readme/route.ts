@@ -309,9 +309,9 @@ export async function GET(request: NextRequest) {
   };
 
   // p(mdLink(mdImage("Abd Dev", `${ASSETS_URL}/gif/intro.gif`), SITE_URL));
-  p(mdImage("abdxdev", `${SITE_URL}/api/readme/title?i=HELLO+THERE,I'M,ABDUL+RAHMAN,AKA,ABDXDEV&c=teal`));
+  p(mdImage("abdxdev", `${SITE_URL}/api/readme/title?i=HELLO+THERE,I'M,ABDUL+RAHMAN,AKA,ABDXDEV,&c=teal`));
   p(description);
-  p(mdImage("Subtitles Marquee", `${SITE_URL}/api/readme/subtitles?width=860&height=50`));
+  p(mdImage("Subtitles Marquee", `${SITE_URL}/api/readme/subtitles?width=858&height=49`));
   p(`Portfolio: **${mdLink(SITE_DOMAIN, SITE_URL)}**`);
   p(`Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 

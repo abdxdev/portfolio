@@ -67,7 +67,7 @@ export async function GET(request: Request) {
       font-size="${FONT_SIZE}"
       font-family="${FONT}"
       letter-spacing="0.02em"
-      fill="${sep ? "#58a6ff" : "#c9d1d9"}"
+      fill="${sep ? "#5eead4" : "#c9d1d9"}"
       xml:space="preserve"
     >${text}</text>
   `).join("");
@@ -99,10 +99,10 @@ export async function GET(request: Request) {
       <rect width="${width}" height="${height}" fill="${BG}" rx="8" />
 
       <!-- Top accent stripe -->
-      <rect width="${width}" height="2" fill="#3b82f6" opacity="0.85" rx="1" />
+      <rect width="${width}" height="2" fill="#5eead4" opacity="0.85" rx="1" />
       
       <!-- Bottom accent stripe -->
-      <rect y="${height - 2}" width="${width}" height="2" fill="#3b82f6" opacity="0.85" rx="1" />
+      <rect y="${height - 2}" width="${width}" height="2" fill="#5eead4" opacity="0.85" rx="1" />
 
       <!-- Scrolling content -->
       <g clip-path="url(#pm-clip)">
