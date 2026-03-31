@@ -47,18 +47,18 @@ export function SettingsButton() {
 
   return (
     <Popover>
-      <Tooltip>
-        <TooltipTrigger>
-          <PopoverTrigger asChild>
+      <PopoverTrigger asChild>
+        <Tooltip>
+          <TooltipTrigger>
             <Button variant="ghost" size="icon" aria-label="Animation settings" className="group">
               <Settings className="transition-transform duration-500 ease-in-out group-hover:-rotate-60 group-data-[state=open]:rotate-180" />
             </Button>
-          </PopoverTrigger>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Settings</p>
-        </TooltipContent>
-      </Tooltip>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Settings</p>
+          </TooltipContent>
+        </Tooltip>
+      </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-0">
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-3 ">

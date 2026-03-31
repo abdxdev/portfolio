@@ -34,6 +34,24 @@ type Database = {
         }>;
         Relationships: [];
       };
+      portfolio_cache: {
+        Row: {
+          key: string;
+          data: any;
+          updated_at: string;
+        };
+        Insert: {
+          key: string;
+          data: any;
+          updated_at?: string;
+        };
+        Update: Partial<{
+          key: string;
+          data: any;
+          updated_at: string;
+        }>;
+        Relationships: [];
+      };
       contact_messages: {
         Row: {
           id: number;

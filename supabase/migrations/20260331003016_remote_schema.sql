@@ -80,6 +80,16 @@ CREATE TABLE IF NOT EXISTS "public"."conversation_push_subscriptions" (
 ALTER TABLE "public"."conversation_push_subscriptions" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."portfolio_cache" (
+    "key" "text" NOT NULL,
+    "data" "jsonb" NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "timezone"('utc'::"text", "now"()) NOT NULL
+);
+
+
+ALTER TABLE "public"."portfolio_cache" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."portfolio_conversations" (
     "id" bigint NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -108,6 +118,11 @@ ALTER TABLE "public"."portfolio_conversations" ALTER COLUMN "id" ADD GENERATED B
 
 ALTER TABLE ONLY "public"."conversation_push_subscriptions"
     ADD CONSTRAINT "conversation_push_subscriptions_pkey" PRIMARY KEY ("session_id");
+
+
+
+ALTER TABLE ONLY "public"."portfolio_cache"
+    ADD CONSTRAINT "portfolio_cache_pkey" PRIMARY KEY ("key");
 
 
 
@@ -340,6 +355,12 @@ GRANT ALL ON TABLE "public"."conversation_push_subscriptions" TO "service_role";
 
 
 
+GRANT ALL ON TABLE "public"."portfolio_cache" TO "anon";
+GRANT ALL ON TABLE "public"."portfolio_cache" TO "authenticated";
+GRANT ALL ON TABLE "public"."portfolio_cache" TO "service_role";
+
+
+
 GRANT ALL ON TABLE "public"."portfolio_conversations" TO "anon";
 GRANT ALL ON TABLE "public"."portfolio_conversations" TO "authenticated";
 GRANT ALL ON TABLE "public"."portfolio_conversations" TO "service_role";
@@ -411,8 +432,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 
-
-
-drop extension if exists "pg_net";
 
 
