@@ -316,7 +316,7 @@ export async function GET(request: NextRequest) {
   p(`Resume: **${mdLink(SITE_DOMAIN + "/resume", SITE_URL + "/resume")}**`);
 
   // p(mdImage("Languages & Tools", `${ASSETS_URL}/titles/languages_and_tools.png`));
-  p(mdImage("Languages & Tools", `${SITE_URL}/api/readme/title?t=LANGUAGES+&+TOOLS&c=teal`));
+  p(mdImage("Languages & Tools", `${SITE_URL}/api/readme/title?t=TOOLS+%26+FRAMEWORKS&c=teal`));
   // p("*click see more to view all skills*");
   p(getFeaturedSkills(portfolio.skills));
   // p(mdImage("GitHub Stats", `${METRICS_URL}/languages.svg`));
@@ -329,7 +329,7 @@ export async function GET(request: NextRequest) {
   p(getProjectsList(portfolio.projects), { centered: false, summary: "See more projects" });
 
   // p(mdImage("Anime List", `${ASSETS_URL}/titles/anime_list.png`));
-  p(mdImage("Anime List", `${SITE_URL}/api/readme/title?t=ANIME+LIST&c=teal`));
+  p(mdImage("Anime List", `${SITE_URL}/api/readme/title?t=ANILIST&c=teal`));
   // p('*you reek of not having watched enough anime*');
   // p(mdLink(mdImage("Anime Stats", `${METRICS_URL}/anilist.svg`), portfolio.anilist_url));
   // p(`<img align='right' src='${ASSETS_URL}/gif/anime_gif.gif' height='170'>`, { centered: false });

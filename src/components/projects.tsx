@@ -20,6 +20,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import MarkdownRenderer from "./markdown-renderer";
 import { useAnimationSettings } from "./animation-settings";
+import ShinyText from "./ShinyText";
 
 const techColors: Record<string, string> = {
   "React": "bg-blue-500",
@@ -37,39 +38,6 @@ const techColors: Record<string, string> = {
 };
 
 const PROJECTS_NUM = 6;
-
-function FeaturedBadge() {
-  return (
-    <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-lg select-none overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%)",
-        backgroundSize: "200% 100%",
-        color: "#431407",
-        boxShadow: "0 2px 12px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255,255,255,0.25)",
-        animation: "featuredShimmer 2.4s ease-in-out infinite",
-      }}
-    >
-      {/* Shimmer overlay */}
-      <span
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background: "linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%)",
-          backgroundSize: "200% 100%",
-          animation: "featuredShimmerOverlay 2.4s ease-in-out infinite",
-        }}
-      />
-      <IoStar className="size-3 relative shrink-0" />
-      <span className="relative">Featured</span>
-
-      <style>{`
-        @keyframes featuredShimmerOverlay {
-          0%   { background-position: 200% center; }
-          100% { background-position: -200% center; }
-        }
-      `}</style>
-    </div>
-  );
-}
 
 function ProjectItem({ project }: { project: Project }) {
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
@@ -136,7 +104,12 @@ function ProjectItem({ project }: { project: Project }) {
         </CarouselContent>
       </Carousel>
 
-      {isFeatured && !isExpanded && <FeaturedBadge />}
+      {isFeatured && !isExpanded && <Badge variant="secondary" className="absolute bottom-3 right-3 pointer-events-none ">
+        <ShinyText>
+          {/* <IoStar /> */}
+          Featured
+        </ShinyText>
+      </Badge>}
     </div>
   );
 
