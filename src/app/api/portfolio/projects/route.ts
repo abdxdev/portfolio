@@ -50,6 +50,7 @@ async function getGithubProjects(username: string, shouldRefresh: boolean): Prom
           thumbnails: screenshotCount > 0 ? Array.from({ length: screenshotCount }, (_, i) =>
             `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/screenshots/screenshot_${i + 1}.png`
           ) : [],
+          topics: repo.topics,
         };
       });
 
@@ -83,6 +84,7 @@ export async function GET(request: NextRequest) {
           language: repo.language,
           stargazers_count: repo.stargazers_count,
           watchers_count: repo.watchers_count,
+          topics: repo.topics,
         }));
       }, shouldRefresh);
 

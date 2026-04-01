@@ -201,7 +201,7 @@ export function ExpandableCard({
               />
             )}
           </motion.div>
-          <div className="flex items-start justify-between p-4 px-5 pb-5 flex-1">
+          <div className="flex items-start justify-between p-4 px-5 flex-1">
             <div className="flex flex-col flex-1 h-full relative top-[-4px]">
               <div className="flex gap-1 w-full">
                 <motion.p
@@ -236,7 +236,7 @@ export function ExpandableCard({
               {links && (
                 <motion.div
                   layoutId={maybeLayoutId(`links-${title}-${id}`)}
-                  className="mt-auto pt-3 flex w-full justify-between items-center"
+                  className="mt-auto pt-4 flex w-full justify-between items-center"
                 >
                   {links}
                 </motion.div>

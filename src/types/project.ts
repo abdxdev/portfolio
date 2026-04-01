@@ -9,6 +9,7 @@ export interface GitHubRepo {
   fork: boolean;
   stargazers_count: number;
   watchers_count: number;
+  topics: string[];
 }
 export interface Project {
   title: string;
@@ -28,4 +29,5 @@ export interface Project {
   working_on?: boolean;
   default_image_url: string;
   thumbnails: string[];
+  topics: string[];
 }

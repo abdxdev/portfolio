@@ -21,6 +21,7 @@ import Autoplay from "embla-carousel-autoplay";
 import MarkdownRenderer from "./markdown-renderer";
 import { useAnimationSettings } from "./animation-settings";
 import ShinyText from "./ShinyText";
+import { Label } from "./ui/label";
 
 const techColors: Record<string, string> = {
   "React": "bg-blue-500",
@@ -104,64 +105,82 @@ function ProjectItem({ project }: { project: Project }) {
         </CarouselContent>
       </Carousel>
 
-      {isFeatured && !isExpanded && <Badge variant="secondary" className="absolute bottom-3 right-3 pointer-events-none ">
+      {isFeatured && !isExpanded && <div className="rounded-full bg-secondary text-xs p-1 absolute top-3 right-3 pointer-events-none ">
         <ShinyText>
-          {/* <IoStar /> */}
-          Featured
+          ❤️
         </ShinyText>
-      </Badge>}
+      </div>}
     </div>
   );
 
   const LinksNode = (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center space-x-2 mr-4">
+    <div className="flex flex-col gap-4 w-full">
+      {project.topics && project.topics.length > 0 && (
         <div
-          className={cn(
-            "size-3.5 rounded-full",
-            project.language ? techColors[project.language] : techColors.Default ||
-              techColors.Default
+          className="flex flex-wrap gap-1.5"
+        >
+          {project.topics.map((topic) => (
+            <Badge
+              key={topic}
+              variant="secondary"
+              className="text-xs"
+            >
+              {topic}
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center space-x-2 mr-4">
+          <div
+            className={cn(
+              "size-3.5 rounded-full",
+              project.language ? techColors[project.language] : techColors.Default ||
+                techColors.Default
+            )}
+          />
+          <span className="text-xs font-medium text-muted-foreground mr-2">
+            {project.language}
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          {project.homepage && (
+            <a
+              href={project.homepage}
+              className="flex items-center gap-1 text-sm hover:underline relative pointer-events-auto"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaGlobe className="size-4" />
+              <span>Site</span>
+            </a>
           )}
-        />
-        <span className="text-xs font-medium text-muted-foreground mr-2">
-          {project.language}
-        </span>
-      </div>
-      <div className="flex items-center gap-4">
-        {project.homepage && (
           <a
-            href={project.homepage}
+            href={project.html_url}
             className="flex items-center gap-1 text-sm hover:underline relative pointer-events-auto"
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
-            <FaGlobe className="size-4" />
-            <span>Site</span>
+            <FaGithub className="size-4" />
+            <span>GitHub</span>
           </a>
-        )}
-        <a
-          href={project.html_url}
-          className="flex items-center gap-1 text-sm hover:underline relative pointer-events-auto"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <FaGithub className="size-4" />
-          <span>GitHub</span>
-        </a>
+        </div>
       </div>
+
     </div>
   );
 
   const TitleNode = (
-    <span className="content-between items-center align-middle">
+    <span className="inline-flex items-center">
       <span className="mr-2">
         {project.title}
       </span>
 
       {(project.working_on || project.is_university_project) && (
-        <span className="inline-flex gap-1.5 items-center align-middle my-2">
+        <span className="inline-flex gap-1.5 items-center">
           {project.working_on && (
             <Badge className="bg-green-500/20 dark:bg-green-600/30 text-green-700 dark:text-green-400 hover:bg-green-500/30 font-medium px-2 py-0">
               Working
