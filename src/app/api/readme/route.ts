@@ -205,8 +205,8 @@ function getProjectsList(projects: any[]): string {
     if (project.working_on) { prefix.push("`WIP`"); priority = 0; }
     if (priority !== 0 || project.working_on) {
       formatted.push({
-        Name: (prefix.length ? prefix.join(" ") + " " : "") + `**${mdLink(project.title, project.html_url)}**`,
-        Description: project.description.trim() + (project.homepage ? ` \\| ${mdLink(mdImage("Portfolio", `${ASSETS_URL}/icons/link.svg`), project.homepage)} ` : ""),
+        Name: (prefix.length ? prefix.join(" ") + " " : "") + `**${mdLink(project.title, project.html_url)}**` + (project.homepage ? ` ${mdLink(mdImage("Portfolio", `${ASSETS_URL}/icons/link.svg`), project.homepage)} ` : ""),
+        Description: project.description.trim(),
         Created: project.created_at.split("T")[0].slice(0, 4),
         _working_on: project.working_on ? "1" : "0",
       });
