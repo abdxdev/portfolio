@@ -1,10 +1,7 @@
-import { ASSETS_URL, METRICS_URL, SITE_DOMAIN, SITE_URL } from "@/lib/constants";
+import { ASSETS_URL, SITE_DOMAIN, SITE_URL } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 60;
-// import { FaGlobe, FaLinkedin } from "react-icons/fa";
-// import { IoMdMail } from "react-icons/io";
-// import { FaRegNewspaper } from "react-icons/fa6";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -207,6 +204,7 @@ function getProjectsList(projects: any[]): string {
       formatted.push({
         Name: (prefix.length ? prefix.join(" ") + " " : "") + `**${mdLink(project.title, project.html_url)}**` + (project.homepage ? ` ${mdLink(mdImage("Site", `${ASSETS_URL}/icons/external-link.svg`), project.homepage)} ` : ""),
         Description: project.description.trim(),
+        Tags: Array.isArray(project.tags) ? project.tags.map((element: string) => `\`${element}\``).join(", ") : "",
         Created: project.created_at.split("T")[0].slice(0, 4),
         _working_on: project.working_on ? "1" : "0",
       });
@@ -231,6 +229,7 @@ function getProjectsGallery(projects: any[]): string {
       formatted.push({
         Thumbnail: mdHtmlLink(mdHtmlImage(project.title, image, 300), project.html_url),
         Name: (prefix.length ? prefix.join(" ") + " " : "") + `**${mdLink(project.title, project.html_url)}**` + (project.homepage ? ` ${mdLink(mdImage("Site", `${ASSETS_URL}/icons/external-link.svg`), project.homepage)} ` : ""),
+        Tags: Array.isArray(project.tags) ? project.tags.map((element: string) => `\`${element}\``).join(", ") : "",
         Description: project.description.trim(),
       });
     }
