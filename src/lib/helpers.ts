@@ -117,37 +117,3 @@ export function filterItemsByQuery<T extends Record<string, unknown>>(
     ? items.filter(item => filters.includes(String(item[field])))
     : items;
 }
-
-function elementToSvg(el: any): string {
-  if (el == null) return "";
-
-  // Flatten arrays (react-icons passes children as nested arrays)
-  if (Array.isArray(el)) return el.map(elementToSvg).join("");
-
-  if (typeof el !== "object") return String(el);
-
-  // Unwrap function components
-  if (typeof el.type === "function") {
-    return elementToSvg(el.type(el.props ?? {}));
-  }
-
-  if (!el.type) return "";
-
-  const { children, style, className, key, ref, ...rest } = el.props ?? {};
-
-  const attrs = Object.entries(rest)
-    .filter(([, v]) => v != null && typeof v !== "object" && typeof v !== "function")
-    .map(([k, v]) => `${k}="${v}"`)
-    .join(" ");
-
-  const kids = elementToSvg(children);
-  const attrStr = attrs ? ` ${attrs}` : "";
-
-  return kids
-    ? `<${el.type}${attrStr}>${kids}</${el.type}>`
-    : `<${el.type}${attrStr}/>`;
-}
-
-function icon_string(Icon: React.ComponentType<any>): string {
-  return elementToSvg(createElement(Icon));
-}
