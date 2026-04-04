@@ -1,9 +1,10 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import fs from "fs";
-import { IoGlobe  } from "react-icons/io5";
+import { HiOutlineExternalLink } from "react-icons/hi";
+
 function icon_string(Icon: React.ComponentType<any>): string {
   return renderToStaticMarkup(createElement(Icon));
 }
 
-fs.writeFileSync("public/assets/icons/portfolio.svg", icon_string(IoGlobe ));
+fs.writeFileSync("public/assets/icons/external-link.svg", icon_string(HiOutlineExternalLink));
